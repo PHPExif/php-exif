@@ -1,5 +1,5 @@
 {
-    "name": "miljar/PHPExif",
+    "name": "miljar/php-exif",
     "description": "Object-Oriented EXIF parsing",
     "license": "MIT",
     "authors": [
