@@ -86,6 +86,76 @@ class Exif
     }
 
     /**
+     * Returns the Author
+     *
+     * @return string|boolean
+     */
+    public function getAuthor()
+    {
+        if (!isset($this->data['Artist'])) {
+            return false;
+        }
+
+        return $this->data['Artist'];
+    }
+
+    /**
+     * Returns the Headline
+     *
+     * @return string|boolean
+     */
+    public function getHeadline()
+    {
+        if (!isset($this->data[self::SECTION_IPTC]['headline'])) {
+            return false;
+        }
+
+        return $this->data[self::SECTION_IPTC]['headline'];
+    }
+
+    /**
+     * Returns the Credit
+     *
+     * @return string|boolean
+     */
+    public function getCredit()
+    {
+        if (!isset($this->data[self::SECTION_IPTC]['credit'])) {
+            return false;
+        }
+
+        return $this->data[self::SECTION_IPTC]['credit'];
+    }
+
+    /**
+     * Returns the source
+     *
+     * @return string|boolean
+     */
+    public function getSource()
+    {
+        if (!isset($this->data[self::SECTION_IPTC]['source'])) {
+            return false;
+        }
+
+        return $this->data[self::SECTION_IPTC]['source'];
+    }
+
+    /**
+     * Returns the Jobtitle
+     *
+     * @return string|boolean
+     */
+    public function getJobtitle()
+    {
+        if (!isset($this->data[self::SECTION_IPTC]['jobtitle'])) {
+            return false;
+        }
+
+        return $this->data[self::SECTION_IPTC]['jobtitle'];
+    }
+
+    /**
      * Returns the ISO speed
      *
      * @return int|boolean
