@@ -59,6 +59,10 @@ class Reader
         'keywords'  => '2#025',
         'copyright' => '2#116',
         'caption'   => '2#120',
+        'headline'  => '2#105',
+        'credit'    => '2#110',
+        'source'    => '2#115',
+        'jobtitle'  => '2#085'
     );
 
 
