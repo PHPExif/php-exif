@@ -75,7 +75,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetIptcData()
     {
-        $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool.jpg';
+        $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_smaller.jpg';
         $result = $this->reader->getIptcData($file);
         $expected = array(
             'title' => 'Morning Glory Pool',
