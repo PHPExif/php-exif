@@ -11,6 +11,9 @@
 
 namespace PHPExif;
 
+use PHPExif\Reader\AdapterInterface;
+use PHPExif\Reader\NoAdapterException;
+
 /**
  * PHP Exif Reader
  *
@@ -22,155 +25,86 @@ namespace PHPExif;
  */
 class Reader
 {
-    const INCLUDE_THUMBNAIL = true;
-    const NO_THUMBNAIL      = false;
-
-    const SECTIONS_AS_ARRAYS    = true;
-    const SECTIONS_FLAT         = false;
-
+    const TYPE_NATIVE = 'native';
+    
     /**
-     * List of EXIF sections
+     * The current adapter
      *
-     * @var array
+     * @var \PHPExif\Reader\AdapterInterface
      */
-    protected $sections = array();
-
+    protected $adapter;
+    
     /**
-     * Include the thumbnail in the EXIF data?
-     *
-     * @var boolean
+     * Reader constructor
+     * 
+     * @param \PHPExif\Reader\AdapterInterface $adapter
      */
-    protected $includeThumbnail = self::NO_THUMBNAIL;
-
-    /**
-     * Parse the sections as arrays?
-     *
-     * @var boolean
-     */
-    protected $sectionsAsArrays = self::SECTIONS_FLAT;
-
-    /**
-     * Contains the mapping of names to IPTC field numbers
-     *
-     * @var array
-     */
-    protected $iptcMapping  = array(
-        'title'     => '2#005',
-        'keywords'  => '2#025',
-        'copyright' => '2#116',
-        'caption'   => '2#120',
-        'headline'  => '2#105',
-        'credit'    => '2#110',
-        'source'    => '2#115',
-        'jobtitle'  => '2#085'
-    );
-
-
-    /**
-     * Getter for the EXIF sections
-     *
-     * @return array
-     */
-    public function getRequiredSections()
+    public function __construct(AdapterInterface $adapter = null)
     {
-        return $this->sections;
-    }
-
-    /**
-     * Setter for the EXIF sections
-     *
-     * @param array $sections List of EXIF sections
-     * @return \PHPExif\Reader Current instance for chaining
-     */
-    public function setRequiredSections(array $sections)
-    {
-        $this->sections = $sections;
-
-        return $this;
-    }
-
-    /**
-     * Adds an EXIF section to the list
-     *
-     * @param string $section
-     * @return \PHPExif\Reader Current instance for chaining
-     */
-    public function addRequiredSection($section)
-    {
-        if (!in_array($section, $this->sections)) {
-            array_push($this->sections, $section);
+        if (!is_null($adapter)) {
+            $this->setAdapter($adapter);
         }
-
-        return $this;
     }
-
+    
     /**
-     * Define if the thumbnail should be included into the EXIF data or not
-     *
-     * @param boolean $value
+     * Setter for the reader adapter
+     * 
+     * @param \PHPExif\Reader\AdapterInterface $adapter
      * @return \PHPExif\Reader Current instance for chaining
      */
-    public function setIncludeThumbnail($value)
+    public function setAdapter(AdapterInterface $adapter)
     {
-        $this->includeThumbnail = $value;
-
+        $this->adapter = $adapter;
+        
         return $this;
     }
-
+    
+    /**
+     * Getter for the reader adapter
+     * 
+     * @return \PHPExif\Reader\AdapterInterface
+     * @throws NoAdapterException When no adapter is set
+     */
+    public function getAdapter()
+    {
+        if (empty($this->adapter)) {
+            throw new NoAdapterException('No adapter set in the reader');
+        }
+        
+        return $this->adapter;
+    }
+    
+    /**
+     * Factory for the reader
+     * 
+     * @param string $type
+     * @return \PHPExif\Reader
+     * @throws \InvalidArgumentException When given type is invalid
+     */
+    public static function factory($type)
+    {
+        $classname = get_called_class();
+        
+        switch ($type) {
+            case self::TYPE_NATIVE:
+                $adapter = new Reader\Adapter\Native();
+                return new $classname($adapter);
+            default:
+                throw new \InvalidArgumentException(
+                    sprintf('Unknown type "%1$s"', $type)
+                );
+                break;
+        }
+    }
+    
     /**
      * Reads & parses the EXIF data from given file
      *
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
-     * @throws \RuntimeException If the EXIF data could not be read
      */
     public function getExifFromFile($file)
     {
-        $sections   = $this->getRequiredSections();
-        $sections   = implode(',', $sections);
-        $sections   = (empty($sections)) ? null : $sections;
-
-        $data = @exif_read_data($file, $sections, $this->sectionsAsArrays, $this->includeThumbnail);
-
-        if (false === $data) {
-            throw new \RuntimeException(
-                sprintf('Could not read EXIF data from file %1$s', $file)
-            );
-        }
-
-        $xmpData = $this->getIptcData($file);
-        $data = array_merge($data, array(Exif::SECTION_IPTC => $xmpData));
-        $exif = new Exif($data);
-
-        return $exif;
-    }
-
-    /**
-     * Returns an array of IPTC data
-     *
-     * @param string $file The file to read the IPTC data from
-     * @return array
-     */
-    public function getIptcData($file)
-    {
-        $size = getimagesize($file, $info);
-        $arrData = array();
-        if(isset($info['APP13'])) {
-            $iptc = iptcparse($info['APP13']);
-
-            foreach ($this->iptcMapping as $name => $field) {
-                if (!isset($iptc[$field])) {
-                    continue;
-                }
-
-                if (count($iptc[$field]) === 1) {
-                    $arrData[$name] = reset($iptc[$field]);
-                } else {
-                    $arrData[$name] = $iptc[$field];
-                }
-            }
-        }
-
-        return $arrData;
+        return $this->getAdapter()->getExifFromFile($file);
     }
 }
