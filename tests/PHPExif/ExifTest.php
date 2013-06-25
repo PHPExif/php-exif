@@ -8,8 +8,8 @@ class ExifTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->reader   = new \PHPExif\Reader();
-        $file           = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool.jpg';
+        $this->reader   = \PHPExif\Reader::factory(\PHPExif\Reader::TYPE_NATIVE);
+        $file           = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';
         $this->exif     = $this->reader->getExifFromFile($file);
     }
 
@@ -65,13 +65,13 @@ class ExifTest extends \PHPUnit_Framework_TestCase
 
     public function testGetWidth()
     {
-        $expected = 4288;
+        $expected = 500;
         $this->assertEquals($expected, $this->exif->getWidth());
     }
 
     public function testGetHeight()
     {
-        $expected = 2848;
+        $expected = 332;
         $this->assertEquals($expected, $this->exif->getHeight());
     }
 

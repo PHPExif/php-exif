@@ -168,7 +168,7 @@ class Native extends AdapterAbstract
         $data = @exif_read_data(
             $file,
             $sections,
-            $this->getSectionsAsArrays(),
+            $this->getSectionsAsArray(),
             $this->getIncludeThumbnail()
         );
 
