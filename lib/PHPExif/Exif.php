@@ -22,14 +22,27 @@ namespace PHPExif;
  */
 class Exif
 {
-    const SECTION_FILE      = 'FILE';
-    const SECTION_COMPUTED  = 'COMPUTED';
-    const SECTION_IFD0      = 'IFD0';
-    const SECTION_THUMBNAIL = 'THUMBNAIL';
-    const SECTION_COMMENT   = 'COMMENT';
-    const SECTION_EXIF      = 'EXIF';
-    const SECTION_ALL       = 'ANY_TAG';
-    const SECTION_IPTC      = 'IPTC';
+    const APERTURE              = 'aperture';
+    const AUTHOR                = 'author';
+    const CAMERA                = 'camera';
+    const CAPTION               = 'caption';
+    const COPYRIGHT             = 'copyright';
+    const CREATION_DATE         = 'creationdate';
+    const CREDIT                = 'credit';
+    const EXPOSURE              = 'exposure';
+    const FOCAL_LENGTH          = 'focalLength';
+    const FOCAL_DISTANCE        = 'focalDistance';
+    const HEADLINE              = 'headline';
+    const HEIGHT                = 'height';
+    const HORIZONTAL_RESOLUTION = 'horizontalResolution';
+    const ISO                   = 'iso';
+    const JOB_TITLE             = 'jobTitle';
+    const KEYWORDS              = 'keywords';
+    const SOFTWARE              = 'software';
+    const SOURCE                = 'source';
+    const TITLE                 = 'title';
+    const VERTICAL_RESOLUTION   = 'verticalResolution';
+    const WIDTH                 = 'width';
 
     /**
      * The EXIF data
@@ -78,11 +91,11 @@ class Exif
      */
     public function getAperture()
     {
-        if (!isset($this->data[self::SECTION_COMPUTED]['ApertureFNumber'])) {
+        if (!isset($this->data[self::APERTURE])) {
             return false;
         }
 
-        return $this->data[self::SECTION_COMPUTED]['ApertureFNumber'];
+        return $this->data[self::APERTURE];
     }
 
     /**
@@ -92,11 +105,11 @@ class Exif
      */
     public function getAuthor()
     {
-        if (!isset($this->data['Artist'])) {
+        if (!isset($this->data[self::AUTHOR])) {
             return false;
         }
 
-        return $this->data['Artist'];
+        return $this->data[self::AUTHOR];
     }
 
     /**
@@ -106,11 +119,11 @@ class Exif
      */
     public function getHeadline()
     {
-        if (!isset($this->data[self::SECTION_IPTC]['headline'])) {
+        if (!isset($this->data[self::HEADLINE])) {
             return false;
         }
 
-        return $this->data[self::SECTION_IPTC]['headline'];
+        return $this->data[self::HEADLINE];
     }
 
     /**
@@ -120,11 +133,11 @@ class Exif
      */
     public function getCredit()
     {
-        if (!isset($this->data[self::SECTION_IPTC]['credit'])) {
+        if (!isset($this->data[self::CREDIT])) {
             return false;
         }
 
-        return $this->data[self::SECTION_IPTC]['credit'];
+        return $this->data[self::CREDIT];
     }
 
     /**
@@ -134,11 +147,11 @@ class Exif
      */
     public function getSource()
     {
-        if (!isset($this->data[self::SECTION_IPTC]['source'])) {
+        if (!isset($this->data[self::SOURCE])) {
             return false;
         }
 
-        return $this->data[self::SECTION_IPTC]['source'];
+        return $this->data[self::SOURCE];
     }
 
     /**
@@ -148,11 +161,11 @@ class Exif
      */
     public function getJobtitle()
     {
-        if (!isset($this->data[self::SECTION_IPTC]['jobtitle'])) {
+        if (!isset($this->data[self::JOB_TITLE])) {
             return false;
         }
 
-        return $this->data[self::SECTION_IPTC]['jobtitle'];
+        return $this->data[self::JOB_TITLE];
     }
 
     /**
@@ -162,11 +175,11 @@ class Exif
      */
     public function getIso()
     {
-        if (!isset($this->data['ISOSpeedRatings'])) {
+        if (!isset($this->data[self::ISO])) {
             return false;
         }
 
-        return $this->data['ISOSpeedRatings'];
+        return $this->data[self::ISO];
     }
 
     /**
@@ -176,11 +189,11 @@ class Exif
      */
     public function getExposure()
     {
-        if (!isset($this->data['ExposureTime'])) {
+        if (!isset($this->data[self::EXPOSURE])) {
             return false;
         }
 
-        return $this->data['ExposureTime'];
+        return $this->data[self::EXPOSURE];
     }
 
     /**
@@ -190,11 +203,11 @@ class Exif
      */
     public function getExposureMilliseconds()
     {
-        if (!isset($this->data['ExposureTime'])) {
+        if (!isset($this->data[self::EXPOSURE])) {
             return false;
         }
 
-        $exposureParts  = explode('/', $this->data['ExposureTime']);
+        $exposureParts  = explode('/', $this->data[self::EXPOSURE]);
 
         return (int)reset($exposureParts) / (int)end($exposureParts);
     }
@@ -206,11 +219,11 @@ class Exif
      */
     public function getFocusDistance()
     {
-        if (!isset($this->data[self::SECTION_COMPUTED]['FocusDistance'])) {
+        if (!isset($this->data[self::FOCAL_DISTANCE])) {
             return false;
         }
 
-        return $this->data[self::SECTION_COMPUTED]['FocusDistance'];
+        return $this->data[self::FOCAL_DISTANCE];
     }
 
     /**
@@ -220,11 +233,11 @@ class Exif
      */
     public function getWidth()
     {
-        if (!isset($this->data[self::SECTION_COMPUTED]['Width'])) {
+        if (!isset($this->data[self::WIDTH])) {
             return false;
         }
 
-        return $this->data[self::SECTION_COMPUTED]['Width'];
+        return $this->data[self::WIDTH];
     }
 
     /**
@@ -234,11 +247,11 @@ class Exif
      */
     public function getHeight()
     {
-        if (!isset($this->data[self::SECTION_COMPUTED]['Height'])) {
+        if (!isset($this->data[self::HEIGHT])) {
             return false;
         }
 
-        return $this->data[self::SECTION_COMPUTED]['Height'];
+        return $this->data[self::HEIGHT];
     }
 
     /**
@@ -248,11 +261,11 @@ class Exif
      */
     public function getTitle()
     {
-        if (!isset($this->data[self::SECTION_IPTC]['title'])) {
+        if (!isset($this->data[self::TITLE])) {
             return false;
         }
 
-        return $this->data[self::SECTION_IPTC]['title'];
+        return $this->data[self::TITLE];
     }
 
     /**
@@ -262,11 +275,11 @@ class Exif
      */
     public function getCaption()
     {
-        if (!isset($this->data[self::SECTION_IPTC]['caption'])) {
+        if (!isset($this->data[self::CAPTION])) {
             return false;
         }
 
-        return $this->data[self::SECTION_IPTC]['caption'];
+        return $this->data[self::CAPTION];
     }
 
     /**
@@ -276,11 +289,11 @@ class Exif
      */
     public function getCopyright()
     {
-        if (!isset($this->data[self::SECTION_IPTC]['copyright'])) {
+        if (!isset($this->data[self::COPYRIGHT])) {
             return false;
         }
 
-        return $this->data[self::SECTION_IPTC]['copyright'];
+        return $this->data[self::COPYRIGHT];
     }
 
     /**
@@ -290,11 +303,11 @@ class Exif
      */
     public function getKeywords()
     {
-        if (!isset($this->data[self::SECTION_IPTC]['keywords'])) {
+        if (!isset($this->data[self::KEYWORDS])) {
             return false;
         }
 
-        return $this->data[self::SECTION_IPTC]['keywords'];
+        return $this->data[self::KEYWORDS];
     }
 
     /**
@@ -304,11 +317,11 @@ class Exif
      */
     public function getCamera()
     {
-        if (!isset($this->data['Model'])) {
+        if (!isset($this->data[self::CAMERA])) {
             return false;
         }
 
-        return $this->data['Model'];
+        return $this->data[self::CAMERA];
     }
 
     /**
@@ -318,12 +331,11 @@ class Exif
      */
     public function getHorizontalResolution()
     {
-        if (!isset($this->data['XResolution'])) {
+        if (!isset($this->data[self::HORIZONTAL_RESOLUTION])) {
             return false;
         }
 
-        $resolutionParts = explode('/', $this->data['XResolution']);
-        return (int)reset($resolutionParts);
+        return $this->data[self::HORIZONTAL_RESOLUTION];
     }
 
     /**
@@ -333,12 +345,11 @@ class Exif
      */
     public function getVerticalResolution()
     {
-        if (!isset($this->data['YResolution'])) {
+        if (!isset($this->data[self::VERTICAL_RESOLUTION])) {
             return false;
         }
 
-        $resolutionParts = explode('/', $this->data['YResolution']);
-        return (int)reset($resolutionParts);
+        return $this->data[self::VERTICAL_RESOLUTION];
     }
 
     /**
@@ -348,11 +359,11 @@ class Exif
      */
     public function getSoftware()
     {
-        if (!isset($this->data['Software'])) {
+        if (!isset($this->data[self::SOFTWARE])) {
             return false;
         }
 
-        return $this->data['Software'];
+        return $this->data[self::SOFTWARE];
     }
 
     /**
@@ -362,12 +373,11 @@ class Exif
      */
     public function getFocalLength()
     {
-        if (!isset($this->data['FocalLength'])) {
+        if (!isset($this->data[self::FOCAL_LENGTH])) {
             return false;
         }
 
-        $parts  = explode('/', $this->data['FocalLength']);
-        return (int)reset($parts) / (int)end($parts);
+        return $this->data[self::FOCAL_LENGTH];
     }
 
     /**
@@ -377,12 +387,10 @@ class Exif
      */
     public function getCreationDate()
     {
-        if (!isset($this->data['DateTimeOriginal'])) {
+        if (!isset($this->data[self::CREATION_DATE])) {
             return false;
         }
 
-        $dt = \DateTime::createFromFormat('Y:m:d H:i:s', $this->data['DateTimeOriginal']);
-
-        return $dt;
+        return $this->data[self::CREATION_DATE];
     }
 }
