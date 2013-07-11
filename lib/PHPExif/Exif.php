@@ -11,8 +11,6 @@
 
 namespace PHPExif;
 
-use \DateTime;
-
 /**
  * PHP Exif Reader
  *
