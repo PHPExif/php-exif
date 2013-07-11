@@ -11,6 +11,9 @@ class NativeTest extends \PHPUnit_Framework_TestCase
         $this->adapter = new \PHPExif\Reader\Adapter\Native();
     }
 
+    /**
+     * @group native
+     */
     public function testSetIncludeThumbnail()
     {
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'includeThumbnail');
@@ -23,6 +26,9 @@ class NativeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(\PHPExif\Reader\Adapter\Native::INCLUDE_THUMBNAIL, $reflProperty->getValue($this->adapter));
     }
 
+    /**
+     * @group native
+     */
     public function testGetRequiredSections()
     {
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'sections');
@@ -31,6 +37,9 @@ class NativeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($reflProperty->getValue($this->adapter), $this->adapter->getRequiredSections());
     }
 
+    /**
+     * @group native
+     */
     public function testSetRequiredSections()
     {
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'sections');
@@ -44,6 +53,9 @@ class NativeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->adapter, $returnValue);
     }
 
+    /**
+     * @group native
+     */
     public function testAddRequiredSection()
     {
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'sections');
@@ -59,6 +71,9 @@ class NativeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->adapter, $returnValue);
     }
 
+    /**
+     * @group native
+     */
     public function testGetExifFromFileNoData()
     {
         $file = PHPEXIF_TEST_ROOT . '/files/empty.jpg';
@@ -66,6 +81,9 @@ class NativeTest extends \PHPUnit_Framework_TestCase
         $result = $this->adapter->getExifFromFile($file);
     }
 
+    /**
+     * @group native
+     */
     public function testGetExifFromFileHasData()
     {
         $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';
@@ -73,6 +91,9 @@ class NativeTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\PHPExif\Exif', $result);
     }
 
+    /**
+     * @group native
+     */
     public function testGetIptcData()
     {
         $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';
