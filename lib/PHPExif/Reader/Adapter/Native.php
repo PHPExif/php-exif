@@ -13,6 +13,7 @@ namespace PHPExif\Reader\Adapter;
 
 use PHPExif\Reader\AdapterAbstract;
 use PHPExif\Exif;
+use \DateTime;
 
 /**
  * PHP Exif Native Reader Adapter
@@ -29,6 +30,15 @@ class Native extends AdapterAbstract
 
     const SECTIONS_AS_ARRAYS    = true;
     const SECTIONS_FLAT         = false;
+    
+    const SECTION_FILE      = 'FILE';
+    const SECTION_COMPUTED  = 'COMPUTED';
+    const SECTION_IFD0      = 'IFD0';
+    const SECTION_THUMBNAIL = 'THUMBNAIL';
+    const SECTION_COMMENT   = 'COMMENT';
+    const SECTION_EXIF      = 'EXIF';
+    const SECTION_ALL       = 'ANY_TAG';
+    const SECTION_IPTC      = 'IPTC';
 
     /**
      * List of EXIF sections
@@ -179,8 +189,9 @@ class Native extends AdapterAbstract
         }
 
         $xmpData = $this->getIptcData($file);
-        $data = array_merge($data, array(Exif::SECTION_IPTC => $xmpData));
-        $exif = new Exif($data);
+        $data = array_merge($data, array(self::SECTION_IPTC => $xmpData));
+        $mappedData = $this->mapData($data);
+        $exif = new Exif($mappedData);
 
         return $exif;
     }
@@ -212,5 +223,56 @@ class Native extends AdapterAbstract
         }
 
         return $arrData;
+    }
+    
+    /**
+     * Maps native data to Exif format
+     * 
+     * @param array $source
+     * @return array
+     */
+    public function mapData(array $source)
+    {
+        $focalLength = false;
+        if (isset($source['FocalLength'])) {
+            $parts  = explode('/', $source['FocalLength']);
+            $focalLength = (int)reset($parts) / (int)end($parts);
+        }
+        
+        $horResolution = false;
+        if (isset($source['XResolution'])) {
+            $resolutionParts = explode('/', $source['XResolution']);
+            $horResolution = (int)reset($resolutionParts);
+        }
+        
+        $vertResolution = false;
+        if (isset($source['YResolution'])) {
+            $resolutionParts = explode('/', $source['YResolution']);
+            $vertResolution = (int)reset($resolutionParts);
+        }
+        
+        return array(
+            Exif::APERTURE              => (!isset($source[self::SECTION_COMPUTED]['ApertureFNumber'])) ? false : $source[self::SECTION_COMPUTED]['ApertureFNumber'],
+            Exif::AUTHOR                => (!isset($source['Artist'])) ? false : $source['Artist'],
+            Exif::CAMERA                => (!isset($source['Model'])) ? false : $source['Model'],
+            Exif::CAPTION               => (!isset($source[self::SECTION_IPTC]['caption'])) ? false : $source[self::SECTION_IPTC]['caption'],
+            Exif::COPYRIGHT             => (!isset($source[self::SECTION_IPTC]['copyright'])) ? false : $source[self::SECTION_IPTC]['copyright'],
+            Exif::CREATION_DATE         => (!isset($source['DateTimeOriginal'])) ? false : DateTime::createFromFormat('Y:m:d H:i:s', $source['DateTimeOriginal']),
+            Exif::CREDIT                => (!isset($source[self::SECTION_IPTC]['credit'])) ? false : $source[self::SECTION_IPTC]['credit'],
+            Exif::EXPOSURE              => (!isset($source['ExposureTime'])) ? false : $source['ExposureTime'],
+            Exif::FOCAL_LENGTH          => $focalLength,
+            Exif::FOCAL_DISTANCE        => (!isset($source[self::SECTION_COMPUTED]['FocusDistance'])) ? false : $source[self::SECTION_COMPUTED]['FocusDistance'],
+            Exif::HEADLINE              => (!isset($source[self::SECTION_IPTC]['headline'])) ? false : $source[self::SECTION_IPTC]['headline'],
+            Exif::HEIGHT                => (!isset($source[self::SECTION_COMPUTED]['Height'])) ? false : $source[self::SECTION_COMPUTED]['Height'],
+            Exif::HORIZONTAL_RESOLUTION => $horResolution,
+            Exif::ISO                   => (!isset($source['ISOSpeedRatings'])) ? false : $source['ISOSpeedRatings'],
+            Exif::JOB_TITLE             => (!isset($source[self::SECTION_IPTC]['jobtitle'])) ? false : $source[self::SECTION_IPTC]['jobtitle'],
+            Exif::KEYWORDS              => (!isset($source[self::SECTION_IPTC]['keywords'])) ? false : $source[self::SECTION_IPTC]['keywords'],
+            Exif::SOFTWARE              => (!isset($source['Software'])) ? false : $source['Software'],
+            Exif::SOURCE                => (!isset($source[self::SECTION_IPTC]['source'])) ? false : $source[self::SECTION_IPTC]['source'],
+            Exif::TITLE                 => (!isset($source[self::SECTION_IPTC]['title'])) ? false : $source[self::SECTION_IPTC]['title'],
+            Exif::VERTICAL_RESOLUTION   => $vertResolution,
+            Exif::WIDTH                 => (!isset($source[self::SECTION_COMPUTED]['Width'])) ? false : $source[self::SECTION_COMPUTED]['Width'],
+        );
     }
 }
