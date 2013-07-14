@@ -25,7 +25,8 @@ use PHPExif\Reader\NoAdapterException;
  */
 class Reader
 {
-    const TYPE_NATIVE = 'native';
+    const TYPE_NATIVE   = 'native';
+    const TYPE_EXIFTOOL = 'exiftool';
     
     /**
      * The current adapter
@@ -88,6 +89,9 @@ class Reader
         switch ($type) {
             case self::TYPE_NATIVE:
                 $adapter = new Reader\Adapter\Native();
+                return new $classname($adapter);
+            case self::TYPE_EXIFTOOL:
+                $adapter = new Reader\Adapter\Exiftool();
                 return new $classname($adapter);
             default:
                 throw new \InvalidArgumentException(
