@@ -30,7 +30,7 @@ class Native extends AdapterAbstract
 
     const SECTIONS_AS_ARRAYS    = true;
     const SECTIONS_FLAT         = false;
-    
+
     const SECTION_FILE      = 'FILE';
     const SECTION_COMPUTED  = 'COMPUTED';
     const SECTION_IFD0      = 'IFD0';
@@ -128,10 +128,10 @@ class Native extends AdapterAbstract
 
         return $this;
     }
-    
+
     /**
      * Returns if the thumbnail should be included into the EXIF data or not
-     * 
+     *
      * @return boolean
      */
     public function getIncludeThumbnail()
@@ -147,21 +147,21 @@ class Native extends AdapterAbstract
      */
     public function setSectionsAsArray($value)
     {
-        $this->sectionsAsArrays = $value;
+        $this->sectionsAsArrays = (bool) $value;
 
         return $this;
     }
-    
+
     /**
      * Returns if the sections should be parsed as arrays
-     * 
+     *
      * @return boolean
      */
     public function getSectionsAsArray()
     {
         return $this->sectionsAsArrays;
     }
-    
+
     /**
      * Reads & parses the EXIF data from given file
      *
@@ -224,10 +224,10 @@ class Native extends AdapterAbstract
 
         return $arrData;
     }
-    
+
     /**
      * Maps native data to Exif format
-     * 
+     *
      * @param array $source
      * @return array
      */
@@ -238,19 +238,19 @@ class Native extends AdapterAbstract
             $parts  = explode('/', $source['FocalLength']);
             $focalLength = (int)reset($parts) / (int)end($parts);
         }
-        
+
         $horResolution = false;
         if (isset($source['XResolution'])) {
             $resolutionParts = explode('/', $source['XResolution']);
             $horResolution = (int)reset($resolutionParts);
         }
-        
+
         $vertResolution = false;
         if (isset($source['YResolution'])) {
             $resolutionParts = explode('/', $source['YResolution']);
             $vertResolution = (int)reset($resolutionParts);
         }
-        
+
         return array(
             Exif::APERTURE              => (!isset($source[self::SECTION_COMPUTED]['ApertureFNumber'])) ? false : $source[self::SECTION_COMPUTED]['ApertureFNumber'],
             Exif::AUTHOR                => (!isset($source['Artist'])) ? false : $source['Artist'],
