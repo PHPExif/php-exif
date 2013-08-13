@@ -125,4 +125,24 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(18, $result[\PHPExif\Exif::FOCAL_LENGTH]);
     }
+
+    /**
+     * @group exiftool
+     * @covers \PHPExif\Reader\Adapter\Exiftool::getCliOutput
+     */
+    public function testGetCliOutput()
+    {
+        $reflMethod = new \ReflectionMethod('\PHPExif\Reader\Adapter\Exiftool', 'getCliOutput');
+        $reflMethod->setAccessible(true);
+
+        $result = $reflMethod->invoke(
+            $this->adapter,
+            sprintf(
+                '%1$s -v',
+                PHP_BINARY
+            )
+        );
+
+        $this->assertInternalType('string', $result);
+    }
 }

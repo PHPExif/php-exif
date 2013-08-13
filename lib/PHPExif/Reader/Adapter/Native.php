@@ -45,7 +45,7 @@ class Native extends AdapterAbstract
      *
      * @var array
      */
-    protected $sections = array();
+    protected $requiredSections = array();
 
     /**
      * Include the thumbnail in the EXIF data?
@@ -85,7 +85,7 @@ class Native extends AdapterAbstract
      */
     public function getRequiredSections()
     {
-        return $this->sections;
+        return $this->requiredSections;
     }
 
     /**
@@ -96,7 +96,7 @@ class Native extends AdapterAbstract
      */
     public function setRequiredSections(array $sections)
     {
-        $this->sections = $sections;
+        $this->requiredSections = $sections;
 
         return $this;
     }
@@ -109,8 +109,8 @@ class Native extends AdapterAbstract
      */
     public function addRequiredSection($section)
     {
-        if (!in_array($section, $this->sections)) {
-            array_push($this->sections, $section);
+        if (!in_array($section, $this->requiredSections)) {
+            array_push($this->requiredSections, $section);
         }
 
         return $this;
@@ -145,7 +145,7 @@ class Native extends AdapterAbstract
      * @param boolean $value
      * @return \PHPExif\Reader Current instance for chaining
      */
-    public function setSectionsAsArray($value)
+    public function setSectionsAsArrays($value)
     {
         $this->sectionsAsArrays = (bool) $value;
 
@@ -157,7 +157,7 @@ class Native extends AdapterAbstract
      *
      * @return boolean
      */
-    public function getSectionsAsArray()
+    public function getSectionsAsArrays()
     {
         return $this->sectionsAsArrays;
     }
@@ -178,7 +178,7 @@ class Native extends AdapterAbstract
         $data = @exif_read_data(
             $file,
             $sections,
-            $this->getSectionsAsArray(),
+            $this->getSectionsAsArrays(),
             $this->getIncludeThumbnail()
         );
 

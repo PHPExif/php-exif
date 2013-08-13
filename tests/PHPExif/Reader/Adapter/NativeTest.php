@@ -55,7 +55,7 @@ class NativeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRequiredSections()
     {
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'sections');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'requiredSections');
         $reflProperty->setAccessible(true);
 
         $this->assertEquals($reflProperty->getValue($this->adapter), $this->adapter->getRequiredSections());
@@ -67,7 +67,7 @@ class NativeTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetRequiredSections()
     {
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'sections');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'requiredSections');
         $reflProperty->setAccessible(true);
 
         $testData = array('foo', 'bar', 'baz');
@@ -84,7 +84,7 @@ class NativeTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddRequiredSection()
     {
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'sections');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'requiredSections');
         $reflProperty->setAccessible(true);
 
         $testData = array('foo', 'bar', 'baz');
@@ -139,35 +139,35 @@ class NativeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group native
-     * @covers \PHPExif\Reader\Adapter\Native::setSectionsAsArray
+     * @covers \PHPExif\Reader\Adapter\Native::setSectionsAsArrays
      */
     public function testSetSectionsAsArrayInProperty()
     {
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'sectionsAsArrays');
         $reflProperty->setAccessible(true);
         $expected = \PHPExif\Reader\Adapter\Native::SECTIONS_AS_ARRAYS;
-        $this->adapter->setSectionsAsArray($expected);
+        $this->adapter->setSectionsAsArrays($expected);
         $actual = $reflProperty->getValue($this->adapter);
         $this->assertEquals($expected, $actual);
     }
 
     /**
      * @group native
-     * @covers \PHPExif\Reader\Adapter\Native::setSectionsAsArray
+     * @covers \PHPExif\Reader\Adapter\Native::setSectionsAsArrays
      */
     public function testSetSectionsAsArrayConvertsToBoolean()
     {
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', 'sectionsAsArrays');
         $reflProperty->setAccessible(true);
         $expected = \PHPExif\Reader\Adapter\Native::SECTIONS_AS_ARRAYS;
-        $this->adapter->setSectionsAsArray('Foo');
+        $this->adapter->setSectionsAsArrays('Foo');
         $actual = $reflProperty->getValue($this->adapter);
         $this->assertEquals($expected, $actual);
     }
 
     /**
      * @group native
-     * @covers \PHPExif\Reader\Adapter\Native::getSectionsAsArray
+     * @covers \PHPExif\Reader\Adapter\Native::getSectionsAsArrays
      */
     public function testGetSectionsAsArrayFromProperty()
     {
@@ -175,7 +175,7 @@ class NativeTest extends \PHPUnit_Framework_TestCase
         $reflProperty->setAccessible(true);
         $reflProperty->setValue($this->adapter, \PHPExif\Reader\Adapter\Native::SECTIONS_AS_ARRAYS);
 
-        $this->assertEquals(\PHPExif\Reader\Adapter\Native::SECTIONS_AS_ARRAYS, $this->adapter->getSectionsAsArray());
+        $this->assertEquals(\PHPExif\Reader\Adapter\Native::SECTIONS_AS_ARRAYS, $this->adapter->getSectionsAsArrays());
     }
 
     /**

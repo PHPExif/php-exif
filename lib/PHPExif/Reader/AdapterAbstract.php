@@ -90,7 +90,7 @@ abstract class AdapterAbstract implements AdapterInterface
         $type = strtoupper($type) . '_';
         foreach ($constants as $key => $value) {
             if (strpos($key, $type) === 0) {
-                $list[] = $value;
+                $list[$key] = $value;
             }
         }
         return $list;
