@@ -34,7 +34,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Exiftool', 'toolPath');
         $reflProperty->setAccessible(true);
 
-        $expected = PHP_BINARY;
+        $expected = '/tmp';
         $this->adapter->setToolPath($expected);
 
         $this->assertEquals($expected, $reflProperty->getValue($this->adapter));
@@ -138,8 +138,8 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
         $result = $reflMethod->invoke(
             $this->adapter,
             sprintf(
-                '%1$s -v',
-                PHP_BINARY
+                '%1$s',
+                'pwd'
             )
         );
 

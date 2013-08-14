@@ -27,17 +27,17 @@ class Reader
 {
     const TYPE_NATIVE   = 'native';
     const TYPE_EXIFTOOL = 'exiftool';
-    
+
     /**
      * The current adapter
      *
      * @var \PHPExif\Reader\AdapterInterface
      */
     protected $adapter;
-    
+
     /**
      * Reader constructor
-     * 
+     *
      * @param \PHPExif\Reader\AdapterInterface $adapter
      */
     public function __construct(AdapterInterface $adapter = null)
@@ -46,23 +46,23 @@ class Reader
             $this->setAdapter($adapter);
         }
     }
-    
+
     /**
      * Setter for the reader adapter
-     * 
+     *
      * @param \PHPExif\Reader\AdapterInterface $adapter
      * @return \PHPExif\Reader Current instance for chaining
      */
     public function setAdapter(AdapterInterface $adapter)
     {
         $this->adapter = $adapter;
-        
+
         return $this;
     }
-    
+
     /**
      * Getter for the reader adapter
-     * 
+     *
      * @return \PHPExif\Reader\AdapterInterface
      * @throws NoAdapterException When no adapter is set
      */
@@ -71,13 +71,13 @@ class Reader
         if (empty($this->adapter)) {
             throw new NoAdapterException('No adapter set in the reader');
         }
-        
+
         return $this->adapter;
     }
-    
+
     /**
      * Factory for the reader
-     * 
+     *
      * @param string $type
      * @return \PHPExif\Reader
      * @throws \InvalidArgumentException When given type is invalid
@@ -85,22 +85,24 @@ class Reader
     public static function factory($type)
     {
         $classname = get_called_class();
-        
+
+        $adapter = null;
         switch ($type) {
             case self::TYPE_NATIVE:
                 $adapter = new Reader\Adapter\Native();
-                return new $classname($adapter);
+                break;
             case self::TYPE_EXIFTOOL:
                 $adapter = new Reader\Adapter\Exiftool();
-                return new $classname($adapter);
+                break;
             default:
                 throw new \InvalidArgumentException(
                     sprintf('Unknown type "%1$s"', $type)
                 );
                 break;
         }
+        return new $classname($adapter);
     }
-    
+
     /**
      * Reads & parses the EXIF data from given file
      *
