@@ -7,7 +7,7 @@ PHPExif serves as a wrapper around some native or CLI tools which access this EX
 ## Supported tools
 
 * Native PHP functionality (exif_read_data, iptcparse)
-* [Exiftool](http://google.com) adapter (wrapper for the exiftool binary)
+* [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool/‎) adapter (wrapper for the exiftool binary)
 
 ## Installation (composer)
 
@@ -39,7 +39,7 @@ echo 'Title: ' . $exif->getTitle() . PHP_EOL;
 <?php
 $adapter = new \PHPExif\Reader\Adapter\Exiftool(
     array(
-        'toolPath'  => '/path/to/exiftool,
+        'toolPath'  => '/path/to/exiftool',
     )
 );
 $reader = new \PHPExif\Reader($adapter);
@@ -53,7 +53,7 @@ echo 'Title: ' . $exif->getTitle() . PHP_EOL;
 
 Please submit all pull requests against the correct branch. The release branch for the next version is a branch with the same name as the next version. Bugfixes should go in the master branch, unless they are for code in a new release branch.
 
-PHPExif is written according the PSR-0/1/2 standards. When submitting code, please make sure it is conform these standards.
+PHPExif is written according the [PSR-0/1/2 standards](http://www.php-fig.org/‎). When submitting code, please make sure it is conform these standards.
 
 All contributions are welcomed and greatly appreciated.
 
