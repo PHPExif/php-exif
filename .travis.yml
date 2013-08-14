@@ -8,3 +8,10 @@ script: phpunit
 
 before_script:
   - composer install --dev --prefer-source
+
+before_install:
+  - composer self-update
+  - wget http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.32.tar.gz
+  - tar -zxvf Image-ExifTool-9.32.tar.gz
+  - cd Image-ExifTool-9.32 && perl Makefile.PL && make test && sudo make install
+  - cd .. && rm -rf Image-ExifTool-9.32
