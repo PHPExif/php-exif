@@ -63,4 +63,4 @@ Have a bug or a feature request? [Please open a new issue](https://github.com/Mi
 
 ## License
 
-[MIT License](http://github.com/Miljar/php-exif/LICENSE)
+[MIT License](http://github.com/Miljar/php-exif/blob/master/LICENSE)
