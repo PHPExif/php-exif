@@ -15,6 +15,7 @@ use PHPExif\Reader\AdapterAbstract;
 use PHPExif\Exif;
 use \InvalidArgumentException;
 use \RuntimeException;
+use \DateTime;
 
 /**
  * PHP Exif Exiftool Reader Adapter
@@ -91,9 +92,11 @@ class Exiftool extends AdapterAbstract
             )
         );
         
-        $data = json_decode($result);
-        var_dump($data);
-        die();
+        $data = json_decode($result, true);
+        $mappedData = $this->mapData(reset($data));
+        $exif = new Exif($mappedData);
+
+        return $exif;
     }
     
     /**
@@ -127,5 +130,44 @@ class Exiftool extends AdapterAbstract
         proc_close($process);
         
         return $result;
+    }
+    
+    /**
+     * Maps native data to Exif format
+     * 
+     * @param array $source
+     * @return array
+     */
+    public function mapData(array $source)
+    {
+        $focalLength = false;
+        if (isset($source['FocalLength'])) {
+            $focalLengthParts = explode(' ', $source['FocalLength']);
+            $focalLength = (int) reset($focalLengthParts);
+        }
+        
+        return array(
+            Exif::APERTURE              => (!isset($source['Aperture'])) ? false : sprintf('f/%01.1f', $source['Aperture']),
+            Exif::AUTHOR                => false,
+            Exif::CAMERA                => (!isset($source['Model'])) ? false : $source['Model'],
+            Exif::CAPTION               => false,
+            Exif::COPYRIGHT             => false,
+            Exif::CREATION_DATE         => (!isset($source['CreateDate'])) ? false : DateTime::createFromFormat('Y:m:d H:i:s', $source['CreateDate']),
+            Exif::CREDIT                => false,
+            Exif::EXPOSURE              => (!isset($source['ShutterSpeed'])) ? false : $source['ShutterSpeed'],
+            Exif::FOCAL_LENGTH          => $focalLength,
+            Exif::FOCAL_DISTANCE        => (!isset($source['ApproximateFocusDistance'])) ? false : sprintf('%1$sm', $source['ApproximateFocusDistance']),
+            Exif::HEADLINE              => false,
+            Exif::HEIGHT                => (!isset($source['ImageHeight'])) ? false : $source['ImageHeight'],
+            Exif::HORIZONTAL_RESOLUTION => (!isset($source['XResolution'])) ? false : $source['XResolution'],
+            Exif::ISO                   => (!isset($source['ISO'])) ? false : $source['ISO'],
+            Exif::JOB_TITLE             => false,
+            Exif::KEYWORDS              => (!isset($source['Keywords'])) ? false : $source['Keywords'],
+            Exif::SOFTWARE              => (!isset($source['Software'])) ? false : $source['Software'],
+            Exif::SOURCE                => false,
+            Exif::TITLE                 => (!isset($source['Title'])) ? false : $source['Title'],
+            Exif::VERTICAL_RESOLUTION   => (!isset($source['YResolution'])) ? false : $source['YResolution'],
+            Exif::WIDTH                 => (!isset($source['ImageWidth'])) ? false : $source['ImageWidth'],
+        );
     }
 }

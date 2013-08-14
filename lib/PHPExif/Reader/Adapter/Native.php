@@ -30,7 +30,7 @@ class Native extends AdapterAbstract
 
     const SECTIONS_AS_ARRAYS    = true;
     const SECTIONS_FLAT         = false;
-    
+
     const SECTION_FILE      = 'FILE';
     const SECTION_COMPUTED  = 'COMPUTED';
     const SECTION_IFD0      = 'IFD0';
@@ -45,7 +45,7 @@ class Native extends AdapterAbstract
      *
      * @var array
      */
-    protected $sections = array();
+    protected $requiredSections = array();
 
     /**
      * Include the thumbnail in the EXIF data?
@@ -85,7 +85,7 @@ class Native extends AdapterAbstract
      */
     public function getRequiredSections()
     {
-        return $this->sections;
+        return $this->requiredSections;
     }
 
     /**
@@ -96,7 +96,7 @@ class Native extends AdapterAbstract
      */
     public function setRequiredSections(array $sections)
     {
-        $this->sections = $sections;
+        $this->requiredSections = $sections;
 
         return $this;
     }
@@ -109,8 +109,8 @@ class Native extends AdapterAbstract
      */
     public function addRequiredSection($section)
     {
-        if (!in_array($section, $this->sections)) {
-            array_push($this->sections, $section);
+        if (!in_array($section, $this->requiredSections)) {
+            array_push($this->requiredSections, $section);
         }
 
         return $this;
@@ -128,10 +128,10 @@ class Native extends AdapterAbstract
 
         return $this;
     }
-    
+
     /**
      * Returns if the thumbnail should be included into the EXIF data or not
-     * 
+     *
      * @return boolean
      */
     public function getIncludeThumbnail()
@@ -145,23 +145,23 @@ class Native extends AdapterAbstract
      * @param boolean $value
      * @return \PHPExif\Reader Current instance for chaining
      */
-    public function setSectionsAsArray($value)
+    public function setSectionsAsArrays($value)
     {
-        $this->sectionsAsArrays = $value;
+        $this->sectionsAsArrays = (bool) $value;
 
         return $this;
     }
-    
+
     /**
      * Returns if the sections should be parsed as arrays
-     * 
+     *
      * @return boolean
      */
-    public function getSectionsAsArray()
+    public function getSectionsAsArrays()
     {
         return $this->sectionsAsArrays;
     }
-    
+
     /**
      * Reads & parses the EXIF data from given file
      *
@@ -178,7 +178,7 @@ class Native extends AdapterAbstract
         $data = @exif_read_data(
             $file,
             $sections,
-            $this->getSectionsAsArray(),
+            $this->getSectionsAsArrays(),
             $this->getIncludeThumbnail()
         );
 
@@ -224,10 +224,10 @@ class Native extends AdapterAbstract
 
         return $arrData;
     }
-    
+
     /**
      * Maps native data to Exif format
-     * 
+     *
      * @param array $source
      * @return array
      */
@@ -238,19 +238,19 @@ class Native extends AdapterAbstract
             $parts  = explode('/', $source['FocalLength']);
             $focalLength = (int)reset($parts) / (int)end($parts);
         }
-        
+
         $horResolution = false;
         if (isset($source['XResolution'])) {
             $resolutionParts = explode('/', $source['XResolution']);
             $horResolution = (int)reset($resolutionParts);
         }
-        
+
         $vertResolution = false;
         if (isset($source['YResolution'])) {
             $resolutionParts = explode('/', $source['YResolution']);
             $vertResolution = (int)reset($resolutionParts);
         }
-        
+
         return array(
             Exif::APERTURE              => (!isset($source[self::SECTION_COMPUTED]['ApertureFNumber'])) ? false : $source[self::SECTION_COMPUTED]['ApertureFNumber'],
             Exif::AUTHOR                => (!isset($source['Artist'])) ? false : $source['Artist'],
