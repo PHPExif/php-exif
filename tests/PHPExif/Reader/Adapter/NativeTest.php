@@ -191,6 +191,42 @@ class NativeTest extends \PHPUnit_Framework_TestCase
      * @group native
      * @covers \PHPExif\Reader\Adapter\Native::mapData
      */
+    public function testMapDataMapsFirstLevel()
+    {
+        $result = $this->adapter->mapData(
+            array(
+                'Software'  => 'Foo',
+            )
+        );
+        $this->assertEquals(
+            'Foo',
+            $result[\PHPExif\Exif::SOFTWARE]
+        );
+    }
+
+    /**
+     * @group native
+     * @covers \PHPExif\Reader\Adapter\Native::mapData
+     */
+    public function testMapDataMapsSecondLevel()
+    {
+        $result = $this->adapter->mapData(
+            array(
+                \PHPExif\Reader\Adapter\Native::SECTION_COMPUTED => array(
+                    'Height'    => '1500'
+                )
+            )
+        );
+        $this->assertEquals(
+            1500,
+            $result[\PHPExif\Exif::HEIGHT]
+        );
+    }
+
+    /**
+     * @group native
+     * @covers \PHPExif\Reader\Adapter\Native::mapData
+     */
     public function testMapDataReturnsArrayFalseValuesIfUndefined()
     {
         $result = $this->adapter->mapData(array());
@@ -265,5 +301,20 @@ class NativeTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(240, $result[\PHPExif\Exif::VERTICAL_RESOLUTION]);
+    }
+
+    /**
+     * @group native-curr
+     * @covers \PHPExif\Reader\Adapter\Native::mapData
+     */
+    public function testMapDataCreationDateIsConvertedToDatetime()
+    {
+        $result = $this->adapter->mapData(
+            array(
+                'DateTimeOriginal' => '2013:06:30 12:34:56',
+            )
+        );
+
+        $this->assertInstanceOf('DateTime', $result[\PHPExif\Exif::CREATION_DATE]);
     }
 }
