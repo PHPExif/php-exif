@@ -1,4 +1,4 @@
-# [PHPExif v0.2](http://github.com/Miljar/php-exif) [![Build Status](https://travis-ci.org/Miljar/php-exif.png?branch=master)](https://travis-ci.org/Miljar/php-exif) [![Coverage Status](https://coveralls.io/repos/Miljar/php-exif/badge.png)](https://coveralls.io/r/Miljar/php-exif)
+# [PHPExif v0.2.1](http://github.com/Miljar/php-exif) [![Build Status](https://travis-ci.org/Miljar/php-exif.png?branch=master)](https://travis-ci.org/Miljar/php-exif) [![Coverage Status](https://coveralls.io/repos/Miljar/php-exif/badge.png)](https://coveralls.io/r/Miljar/php-exif)
 
 PHPExif is a library which gives you easy access to the EXIF meta-data of an image.
 
