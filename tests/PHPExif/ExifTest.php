@@ -349,4 +349,40 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $this->exif->setRawData($data);
         $this->assertEquals($expected, $this->exif->getJobtitle());
     }
+    
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getColorSpace
+     */
+    public function testGetColorSpace()
+    {
+        $expected = 'RGB';
+        $data[\PHPExif\Exif::COLORSPACE] = $expected;
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getColorSpace());
+    }
+    
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getMimeType
+     */
+    public function testGetMimeType()
+    {
+        $expected = 'image/jpeg';
+        $data[\PHPExif\Exif::MIMETYPE] = $expected;
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getMimeType());
+    }
+    
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getFileSize
+     */
+    public function testGetFileSize()
+    {
+        $expected = '27852365';
+        $data[\PHPExif\Exif::FILESIZE] = $expected;
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getFileSize());
+    }
 }

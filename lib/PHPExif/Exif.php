@@ -26,10 +26,12 @@ class Exif
     const AUTHOR                = 'author';
     const CAMERA                = 'camera';
     const CAPTION               = 'caption';
+    const COLORSPACE            = 'ColorSpace';
     const COPYRIGHT             = 'copyright';
     const CREATION_DATE         = 'creationdate';
     const CREDIT                = 'credit';
     const EXPOSURE              = 'exposure';
+    const FILESIZE              = 'FileSize';
     const FOCAL_LENGTH          = 'focalLength';
     const FOCAL_DISTANCE        = 'focalDistance';
     const HEADLINE              = 'headline';
@@ -38,6 +40,7 @@ class Exif
     const ISO                   = 'iso';
     const JOB_TITLE             = 'jobTitle';
     const KEYWORDS              = 'keywords';
+    const MIMETYPE              = 'MimeType';
     const SOFTWARE              = 'software';
     const SOURCE                = 'source';
     const TITLE                 = 'title';
@@ -392,5 +395,47 @@ class Exif
         }
 
         return $this->data[self::CREATION_DATE];
+    }
+    
+    /**
+     * Returns the colorspace, if it exists
+     *
+     * @return string
+     */
+    public function getColorSpace()
+    {
+        if (!isset($this->data[self::COLORSPACE])) {
+            return false;
+        }
+        
+        return $this->data[self::COLORSPACE];
+    }
+    
+    /**
+     * Returns the mimetype, if it exists
+     *
+     * @return string
+     */
+    public function getMimeType()
+    {
+        if (!isset($this->data[self::MIMETYPE])) {
+            return false;
+        }
+        
+        return $this->data[self::MIMETYPE];
+    }
+    
+    /**
+     * Returns the filesize, if it exists
+     * 
+     * @return integer
+     */
+    public function getFileSize()
+    {
+        if (!isset($this->data[self::FILESIZE])) {
+            return false;
+        }
+        
+        return $this->data[self::FILESIZE];
     }
 }
