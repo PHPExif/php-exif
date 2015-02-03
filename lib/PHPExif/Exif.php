@@ -286,6 +286,20 @@ class Exif
     }
 
     /**
+     * Returns the description, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getDescription()
+    {
+        if (!isset($this->data['ImageDescription'])) {
+            return false;
+        }
+
+        return $this->data['ImageDescription'];
+    }
+
+    /**
      * Returns the copyright, if it exists
      *
      * @return string|boolean
