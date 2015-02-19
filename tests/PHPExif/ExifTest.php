@@ -385,4 +385,46 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $this->exif->setRawData($data);
         $this->assertEquals($expected, $this->exif->getFileSize());
     }
+
+    public function testGetOrientation()
+    {
+        $expected = 1;
+        $data[\PHPExif\Exif::ORIENTATION] = $expected;
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getOrientation());
+
+        // test normalization of exiftool strings to raw integer values
+        $expected = 1;
+        $data[\PHPExif\Exif::ORIENTATION] = 'Horizontal (normal)';
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getOrientation());
+        $expected = 2;
+        $data[\PHPExif\Exif::ORIENTATION] = 'Mirror horizontal';
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getOrientation());
+        $expected = 3;
+        $data[\PHPExif\Exif::ORIENTATION] = 'Rotate 180';
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getOrientation());
+        $expected = 4;
+        $data[\PHPExif\Exif::ORIENTATION] = 'Mirror vertical';
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getOrientation());
+        $expected = 5;
+        $data[\PHPExif\Exif::ORIENTATION] = 'Mirror horizontal and rotate 270 CW';
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getOrientation());
+        $expected = 6;
+        $data[\PHPExif\Exif::ORIENTATION] = 'Rotate 90 CW';
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getOrientation());
+        $expected = 7;
+        $data[\PHPExif\Exif::ORIENTATION] = 'Mirror horizontal and rotate 90 CW';
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getOrientation());
+        $expected = 8;
+        $data[\PHPExif\Exif::ORIENTATION] = 'Rotate 270 CW';
+        $this->exif->setRawData($data);
+        $this->assertEquals($expected, $this->exif->getOrientation());
+    }
 }

@@ -166,6 +166,7 @@ class Exiftool extends AdapterAbstract
             Exif::JOB_TITLE             => false,
             Exif::KEYWORDS              => (!isset($source['Keywords'])) ? false : $source['Keywords'],
             Exif::MIMETYPE              => false,
+            Exif::ORIENTATION           => (!isset($source['Orientation'])) ? false : $source['Orientation'],
             Exif::SOFTWARE              => (!isset($source['Software'])) ? false : $source['Software'],
             Exif::SOURCE                => false,
             Exif::TITLE                 => (!isset($source['Title'])) ? false : $source['Title'],

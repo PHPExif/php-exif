@@ -41,6 +41,7 @@ class Exif
     const JOB_TITLE             = 'jobTitle';
     const KEYWORDS              = 'keywords';
     const MIMETYPE              = 'MimeType';
+    const ORIENTATION           = 'Orientation';
     const SOFTWARE              = 'software';
     const SOURCE                = 'source';
     const TITLE                 = 'title';
@@ -437,5 +438,41 @@ class Exif
         }
         
         return $this->data[self::FILESIZE];
+    }
+
+    /**
+     * Returns the orientation, if it exists
+     *
+     * @return integer
+     */
+    public function getOrientation()
+    {
+        if (!isset($this->data[self::ORIENTATION])) {
+            return false;
+        }
+
+        $value = $this->data[self::ORIENTATION];
+
+        // normalize exiftool strings to raw integer values
+        switch ($value) {
+            case 'Horizontal (normal)':
+                return 1;
+            case 'Mirror horizontal':
+                return 2;
+            case 'Rotate 180':
+                return 3;
+            case 'Mirror vertical':
+                return 4;
+            case 'Mirror horizontal and rotate 270 CW':
+                return 5;
+            case 'Rotate 90 CW':
+                return 6;
+            case 'Mirror horizontal and rotate 90 CW':
+                return 7;
+            case 'Rotate 270 CW':
+                return 8;
+            default:
+                return $value;
+        }
     }
 }
