@@ -28,13 +28,18 @@ use \DateTime;
 class Exiftool extends AdapterAbstract
 {
     const TOOL_NAME = 'exiftool';
-    
+
     /**
      * Path to the exiftool binary
      *
      * @var string
      */
     protected $toolPath;
+
+    /**
+     * @var boolean
+     */
+    protected $numeric = true;
 
     /**
      * Setter for the exiftool binary path
@@ -57,6 +62,14 @@ class Exiftool extends AdapterAbstract
         $this->toolPath = $path;
         
         return $this;
+    }
+
+    /**
+     * @param boolean $numeric
+     */
+    public function setNumeric($numeric)
+    {
+        $this->numeric = $numeric;
     }
     
     /**
@@ -86,9 +99,10 @@ class Exiftool extends AdapterAbstract
     {
         $result = $this->getCliOutput(
             sprintf(
-                '%1$s -j %2$s',
+                '%1$s%3$s -j %2$s',
                 $this->getToolPath(),
-                $file
+                $file,
+                $this->numeric ? ' -n' : ''
             )
         );
         
@@ -145,6 +159,13 @@ class Exiftool extends AdapterAbstract
             $focalLengthParts = explode(' ', $source['FocalLength']);
             $focalLength = (int) reset($focalLengthParts);
         }
+
+        $exposureTime = false;
+        if (isset($source['ExposureTime'])) {
+            $exposureTime = '1/' . round(1 / $source['ExposureTime']);
+        }
+
+        //var_dump($source);
         
         return array(
             Exif::APERTURE              => (!isset($source['Aperture'])) ? false : sprintf('f/%01.1f', $source['Aperture']),
@@ -155,7 +176,7 @@ class Exiftool extends AdapterAbstract
             Exif::COPYRIGHT             => false,
             Exif::CREATION_DATE         => (!isset($source['CreateDate'])) ? false : DateTime::createFromFormat('Y:m:d H:i:s', $source['CreateDate']),
             Exif::CREDIT                => false,
-            Exif::EXPOSURE              => (!isset($source['ShutterSpeed'])) ? false : $source['ShutterSpeed'],
+            Exif::EXPOSURE              => $exposureTime,
             Exif::FILESIZE              => false,
             Exif::FOCAL_LENGTH          => $focalLength,
             Exif::FOCAL_DISTANCE        => (!isset($source['ApproximateFocusDistance'])) ? false : sprintf('%1$sm', $source['ApproximateFocusDistance']),
@@ -165,7 +186,7 @@ class Exiftool extends AdapterAbstract
             Exif::ISO                   => (!isset($source['ISO'])) ? false : $source['ISO'],
             Exif::JOB_TITLE             => false,
             Exif::KEYWORDS              => (!isset($source['Keywords'])) ? false : $source['Keywords'],
-            Exif::MIMETYPE              => false,
+            Exif::MIMETYPE              => (!isset($source['MIMEType'])) ? false : $source['MIMEType'],
             Exif::ORIENTATION           => (!isset($source['Orientation'])) ? false : $source['Orientation'],
             Exif::SOFTWARE              => (!isset($source['Software'])) ? false : $source['Software'],
             Exif::SOURCE                => false,
