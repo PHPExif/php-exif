@@ -271,6 +271,7 @@ class Native extends AdapterAbstract
             Exif::JOB_TITLE             => (!isset($source[self::SECTION_IPTC]['jobtitle'])) ? false : $source[self::SECTION_IPTC]['jobtitle'],
             Exif::KEYWORDS              => (!isset($source[self::SECTION_IPTC]['keywords'])) ? false : $source[self::SECTION_IPTC]['keywords'],
             Exif::MIMETYPE              => (!isset($source[Exif::MIMETYPE]) ? false : $source[Exif::MIMETYPE]),
+            Exif::ORIENTATION           => (!isset($source[Exif::ORIENTATION]) ? false : $source[Exif::ORIENTATION]),
             Exif::SOFTWARE              => (!isset($source['Software'])) ? false : $source['Software'],
             Exif::SOURCE                => (!isset($source[self::SECTION_IPTC]['source'])) ? false : $source[self::SECTION_IPTC]['source'],
             Exif::TITLE                 => (!isset($source[self::SECTION_IPTC]['title'])) ? false : $source[self::SECTION_IPTC]['title'],
