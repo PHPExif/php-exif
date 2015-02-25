@@ -165,31 +165,36 @@ class Exiftool extends AdapterAbstract
             $exposureTime = '1/' . round(1 / $source['ExposureTime']);
         }
 
-        //var_dump($source);
+        $caption = false;
+        if (isset($source['Caption'])) {
+            $caption = $source['Caption'];
+        } elseif (isset($source['Caption-Abstract'])) {
+            $caption = $source['Caption-Abstract'];
+        }
         
         return array(
             Exif::APERTURE              => (!isset($source['Aperture'])) ? false : sprintf('f/%01.1f', $source['Aperture']),
-            Exif::AUTHOR                => false,
+            Exif::AUTHOR                => (!isset($source['Artist'])) ? false : $source['Artist'],
             Exif::CAMERA                => (!isset($source['Model'])) ? false : $source['Model'],
-            Exif::CAPTION               => false,
+            Exif::CAPTION               => $caption,
             Exif::COLORSPACE            => (!isset($source[Exif::COLORSPACE]) ? false : $source[Exif::COLORSPACE]),
-            Exif::COPYRIGHT             => false,
+            Exif::COPYRIGHT             => (!isset($source['Copyright'])) ? false : $source['Copyright'],
             Exif::CREATION_DATE         => (!isset($source['CreateDate'])) ? false : DateTime::createFromFormat('Y:m:d H:i:s', $source['CreateDate']),
-            Exif::CREDIT                => false,
+            Exif::CREDIT                => (!isset($source['Credit'])) ? false : $source['Credit'],
             Exif::EXPOSURE              => $exposureTime,
-            Exif::FILESIZE              => false,
+            Exif::FILESIZE              => (!isset($source[Exif::FILESIZE]) ? false : $source[Exif::FILESIZE]),
             Exif::FOCAL_LENGTH          => $focalLength,
             Exif::FOCAL_DISTANCE        => (!isset($source['ApproximateFocusDistance'])) ? false : sprintf('%1$sm', $source['ApproximateFocusDistance']),
-            Exif::HEADLINE              => false,
+            Exif::HEADLINE              => (!isset($source['Headline'])) ? false : $source['Headline'],
             Exif::HEIGHT                => (!isset($source['ImageHeight'])) ? false : $source['ImageHeight'],
             Exif::HORIZONTAL_RESOLUTION => (!isset($source['XResolution'])) ? false : $source['XResolution'],
             Exif::ISO                   => (!isset($source['ISO'])) ? false : $source['ISO'],
-            Exif::JOB_TITLE             => false,
+            Exif::JOB_TITLE             => (!isset($source['JobTitle'])) ? false : $source['JobTitle'],
             Exif::KEYWORDS              => (!isset($source['Keywords'])) ? false : $source['Keywords'],
             Exif::MIMETYPE              => (!isset($source['MIMEType'])) ? false : $source['MIMEType'],
             Exif::ORIENTATION           => (!isset($source['Orientation'])) ? false : $source['Orientation'],
             Exif::SOFTWARE              => (!isset($source['Software'])) ? false : $source['Software'],
-            Exif::SOURCE                => false,
+            Exif::SOURCE                => (!isset($source['Source'])) ? false : $source['Source'],
             Exif::TITLE                 => (!isset($source['Title'])) ? false : $source['Title'],
             Exif::VERTICAL_RESOLUTION   => (!isset($source['YResolution'])) ? false : $source['YResolution'],
             Exif::WIDTH                 => (!isset($source['ImageWidth'])) ? false : $source['ImageWidth'],
