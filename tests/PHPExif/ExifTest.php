@@ -401,25 +401,30 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $reflClass = new \ReflectionClass('\PHPExif\Exif');
         $methods = $reflClass->getMethods(ReflectionMethod::IS_PUBLIC);
-        $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';
+        $testfiles = array(
+            PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg',
+            PHPEXIF_TEST_ROOT . '/files/dsc_5794.jpg'
+        );
 
         $adapter_exiftool = new \PHPExif\Reader\Adapter\Exiftool();
         $adapter_native = new \PHPExif\Reader\Adapter\Native();
 
-        $result_exiftool = $adapter_exiftool->getExifFromFile($file);
-        $result_native = $adapter_native->getExifFromFile($file);
+        foreach ($testfiles as $file) {
+            $result_exiftool = $adapter_exiftool->getExifFromFile($file);
+            $result_native = $adapter_native->getExifFromFile($file);
 
-        // find all Getter methods on the results and compare its output
-        foreach ($methods as $method) {
-            $name = $method->getName();
-            if (strpos($name, 'get') !== 0 || $name == 'getRawData') {
-                continue;
+            // find all Getter methods on the results and compare its output
+            foreach ($methods as $method) {
+                $name = $method->getName();
+                if (strpos($name, 'get') !== 0 || $name == 'getRawData') {
+                    continue;
+                }
+                $this->assertEquals(
+                    call_user_func(array($result_native, $name)),
+                    call_user_func(array($result_exiftool, $name)),
+                    'Adapter difference detected in method "' . $name . '" on image "' . basename($file) . '"'
+                );
             }
-            $this->assertEquals(
-                call_user_func(array($result_native, $name)),
-                call_user_func(array($result_exiftool, $name)),
-                'Adapter difference in method ' . $name
-            );
         }
     }
 }
