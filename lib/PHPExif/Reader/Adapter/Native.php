@@ -251,6 +251,17 @@ class Native extends AdapterAbstract
             $vertResolution = (int)reset($resolutionParts);
         }
 
+        $exposureTime = false;
+        if (isset($source['ExposureTime'])) {
+            // normalize ExposureTime
+            // on one test image, it reported "10/300" instead of "1/30"
+            list($counter, $denominator) = explode('/', $source['ExposureTime']);
+            if (intval($counter) !== 1) {
+                $denominator /= $counter;
+            }
+            $exposureTime = '1/' . round($denominator);
+        }
+
         return array(
             Exif::APERTURE              => (!isset($source[self::SECTION_COMPUTED]['ApertureFNumber'])) ? false : $source[self::SECTION_COMPUTED]['ApertureFNumber'],
             Exif::AUTHOR                => (!isset($source['Artist'])) ? false : $source['Artist'],
@@ -260,7 +271,7 @@ class Native extends AdapterAbstract
             Exif::COPYRIGHT             => (!isset($source[self::SECTION_IPTC]['copyright'])) ? false : $source[self::SECTION_IPTC]['copyright'],
             Exif::CREATION_DATE         => (!isset($source['DateTimeOriginal'])) ? false : DateTime::createFromFormat('Y:m:d H:i:s', $source['DateTimeOriginal']),
             Exif::CREDIT                => (!isset($source[self::SECTION_IPTC]['credit'])) ? false : $source[self::SECTION_IPTC]['credit'],
-            Exif::EXPOSURE              => (!isset($source['ExposureTime'])) ? false : $source['ExposureTime'],
+            Exif::EXPOSURE              => $exposureTime,
             Exif::FILESIZE              => (!isset($source[Exif::FILESIZE]) ? false : $source[Exif::FILESIZE]),
             Exif::FOCAL_LENGTH          => $focalLength,
             Exif::FOCAL_DISTANCE        => (!isset($source[self::SECTION_COMPUTED]['FocusDistance'])) ? false : $source[self::SECTION_COMPUTED]['FocusDistance'],
@@ -272,7 +283,7 @@ class Native extends AdapterAbstract
             Exif::KEYWORDS              => (!isset($source[self::SECTION_IPTC]['keywords'])) ? false : $source[self::SECTION_IPTC]['keywords'],
             Exif::MIMETYPE              => (!isset($source[Exif::MIMETYPE]) ? false : $source[Exif::MIMETYPE]),
             Exif::ORIENTATION           => (!isset($source[Exif::ORIENTATION]) ? false : $source[Exif::ORIENTATION]),
-            Exif::SOFTWARE              => (!isset($source['Software'])) ? false : $source['Software'],
+            Exif::SOFTWARE              => (!isset($source['Software'])) ? false : trim($source['Software']),
             Exif::SOURCE                => (!isset($source[self::SECTION_IPTC]['source'])) ? false : $source[self::SECTION_IPTC]['source'],
             Exif::TITLE                 => (!isset($source[self::SECTION_IPTC]['title'])) ? false : $source[self::SECTION_IPTC]['title'],
             Exif::VERTICAL_RESOLUTION   => $vertResolution,

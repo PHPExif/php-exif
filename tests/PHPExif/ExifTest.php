@@ -392,40 +392,6 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $data[\PHPExif\Exif::ORIENTATION] = $expected;
         $this->exif->setRawData($data);
         $this->assertEquals($expected, $this->exif->getOrientation());
-
-        // test normalization of exiftool strings to raw integer values
-        $expected = 1;
-        $data[\PHPExif\Exif::ORIENTATION] = 'Horizontal (normal)';
-        $this->exif->setRawData($data);
-        $this->assertEquals($expected, $this->exif->getOrientation());
-        $expected = 2;
-        $data[\PHPExif\Exif::ORIENTATION] = 'Mirror horizontal';
-        $this->exif->setRawData($data);
-        $this->assertEquals($expected, $this->exif->getOrientation());
-        $expected = 3;
-        $data[\PHPExif\Exif::ORIENTATION] = 'Rotate 180';
-        $this->exif->setRawData($data);
-        $this->assertEquals($expected, $this->exif->getOrientation());
-        $expected = 4;
-        $data[\PHPExif\Exif::ORIENTATION] = 'Mirror vertical';
-        $this->exif->setRawData($data);
-        $this->assertEquals($expected, $this->exif->getOrientation());
-        $expected = 5;
-        $data[\PHPExif\Exif::ORIENTATION] = 'Mirror horizontal and rotate 270 CW';
-        $this->exif->setRawData($data);
-        $this->assertEquals($expected, $this->exif->getOrientation());
-        $expected = 6;
-        $data[\PHPExif\Exif::ORIENTATION] = 'Rotate 90 CW';
-        $this->exif->setRawData($data);
-        $this->assertEquals($expected, $this->exif->getOrientation());
-        $expected = 7;
-        $data[\PHPExif\Exif::ORIENTATION] = 'Mirror horizontal and rotate 90 CW';
-        $this->exif->setRawData($data);
-        $this->assertEquals($expected, $this->exif->getOrientation());
-        $expected = 8;
-        $data[\PHPExif\Exif::ORIENTATION] = 'Rotate 270 CW';
-        $this->exif->setRawData($data);
-        $this->assertEquals($expected, $this->exif->getOrientation());
     }
 
     /**
@@ -435,25 +401,30 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $reflClass = new \ReflectionClass('\PHPExif\Exif');
         $methods = $reflClass->getMethods(ReflectionMethod::IS_PUBLIC);
-        $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';
+        $testfiles = array(
+            PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg',
+            PHPEXIF_TEST_ROOT . '/files/dsc_5794.jpg'
+        );
 
         $adapter_exiftool = new \PHPExif\Reader\Adapter\Exiftool();
         $adapter_native = new \PHPExif\Reader\Adapter\Native();
 
-        $result_exiftool = $adapter_exiftool->getExifFromFile($file);
-        $result_native = $adapter_native->getExifFromFile($file);
+        foreach ($testfiles as $file) {
+            $result_exiftool = $adapter_exiftool->getExifFromFile($file);
+            $result_native = $adapter_native->getExifFromFile($file);
 
-        // find all Getter methods on the results and compare its output
-        foreach ($methods as $method) {
-            $name = $method->getName();
-            if (strpos($name, 'get') !== 0 || $name == 'getRawData') {
-                continue;
+            // find all Getter methods on the results and compare its output
+            foreach ($methods as $method) {
+                $name = $method->getName();
+                if (strpos($name, 'get') !== 0 || $name == 'getRawData') {
+                    continue;
+                }
+                $this->assertEquals(
+                    call_user_func(array($result_native, $name)),
+                    call_user_func(array($result_exiftool, $name)),
+                    'Adapter difference detected in method "' . $name . '" on image "' . basename($file) . '"'
+                );
             }
-            $this->assertEquals(
-                call_user_func(array($result_native, $name)),
-                call_user_func(array($result_exiftool, $name)),
-                'Adapter difference in method ' . $name
-            );
         }
     }
 }
