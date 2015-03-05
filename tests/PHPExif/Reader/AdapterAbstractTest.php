@@ -14,7 +14,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\ReaderAbstract::determinePropertyGetter
+     * @covers \PHPExif\AdapterAbstract::determinePropertyGetter
      */
     public function testDeterminePropertyGetter()
     {
@@ -31,7 +31,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\ReaderAbstract::determinePropertySetter
+     * @covers \PHPExif\AdapterAbstract::determinePropertySetter
      */
     public function testDeterminePropertySetter()
     {
@@ -48,7 +48,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\ReaderAbstract::getClassConstantsOfType
+     * @covers \PHPExif\AdapterAbstract::getClassConstantsOfType
      */
     public function testGetClassConstantsOfTypeAlwaysReturnsArray()
     {
@@ -60,7 +60,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\ReaderAbstract::getClassConstantsOfType
+     * @covers \PHPExif\AdapterAbstract::getClassConstantsOfType
      */
     public function testGetClassConstantsOfTypeReturnsCorrectData()
     {
@@ -74,7 +74,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\ReaderAbstract::toArray
+     * @covers \PHPExif\AdapterAbstract::toArray
      */
     public function testToArrayReturnsPropertiesWithGetters()
     {
@@ -90,7 +90,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\ReaderAbstract::toArray
+     * @covers \PHPExif\AdapterAbstract::toArray
      */
     public function testToArrayOmmitsPropertiesWithoutGetters()
     {
@@ -105,7 +105,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\ReaderAbstract::setOptions
+     * @covers \PHPExif\AdapterAbstract::setOptions
      */
     public function testSetOptionsReturnsCurrentInstance()
     {
@@ -115,7 +115,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\ReaderAbstract::setOptions
+     * @covers \PHPExif\AdapterAbstract::setOptions
      */
     public function testSetOptionsCorrectlySetsProperties()
     {
@@ -135,7 +135,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\ReaderAbstract::setOptions
+     * @covers \PHPExif\AdapterAbstract::setOptions
      */
     public function testSetOptionsIgnoresPropertiesWithoutSetters()
     {
@@ -154,7 +154,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\ReaderAbstract::__construct
+     * @covers \PHPExif\AdapterAbstract::__construct
      */
     public function testConstructorSetsOptions()
     {
