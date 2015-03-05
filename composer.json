@@ -17,10 +17,12 @@
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
         "satooshi/php-coveralls": "~0.6",
-        "pdepend/pdepend": "dev-master",
-        "phpmd/phpmd": "dev-master",
+        "phpmd/phpmd": "~2.2",
         "sebastian/phpcpd": "1.4.*@stable",
         "squizlabs/php_codesniffer": "1.4.*@stable"
+    },
+    "suggest": {
+        "lib-exiftool": "Use perl lib exiftool as adapter"
     },
     "autoload": {
         "psr-0": {
