@@ -9,13 +9,12 @@
  * @package     Reader
  */
 
-namespace PHPExif\Reader\Adapter;
+namespace PHPExif\Adapter;
 
-use PHPExif\Reader\AdapterAbstract;
 use PHPExif\Exif;
-use \InvalidArgumentException;
-use \RuntimeException;
-use \DateTime;
+use InvalidArgumentException;
+use RuntimeException;
+use DateTime;
 
 /**
  * PHP Exif Exiftool Reader Adapter
@@ -45,7 +44,7 @@ class Exiftool extends AdapterAbstract
      * Setter for the exiftool binary path
      * 
      * @param string $path The path to the exiftool binary
-     * @return \PHPExif\Reader\Adapter\Exiftool Current instance
+     * @return \PHPExif\Adapter\Exiftool Current instance
      * @throws \InvalidArgumentException When path is invalid
      */
     public function setToolPath($path)

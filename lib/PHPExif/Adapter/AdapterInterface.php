@@ -9,9 +9,7 @@
  * @package     Reader
  */
 
-namespace PHPExif\Reader;
-
-use \Exception;
+namespace PHPExif\Adapter;
 
 /**
  * PHP Exif Reader Adapter
@@ -21,7 +19,14 @@ use \Exception;
  * @category    PHPExif
  * @package     Reader
  */
-class NoAdapterException extends Exception
+interface AdapterInterface
 {
-
+    /**
+     * Reads & parses the EXIF data from given file
+     *
+     * @param string $file
+     * @return \PHPExif\Exif Instance of Exif object with data
+     * @throws \RuntimeException If the EXIF data could not be read
+     */
+    public function getExifFromFile($file);
 }

@@ -9,10 +9,12 @@
  * @package     Reader
  */
 
-namespace PHPExif;
+namespace PHPExif\Reader;
 
-use PHPExif\Reader\AdapterInterface;
-use PHPExif\Reader\NoAdapterException;
+use PHPExif\Adapter\AdapterInterface;
+use PHPExif\Adapter\NoAdapterException;
+use PHPExif\Adapter\Exiftool as ExiftoolAdapter;
+use PHPExif\Adapter\Native as NativeAdapter;
 
 /**
  * PHP Exif Reader
@@ -23,7 +25,7 @@ use PHPExif\Reader\NoAdapterException;
  * @package     Reader
  * @
  */
-class Reader
+class Reader implements ReaderInterface
 {
     const TYPE_NATIVE   = 'native';
     const TYPE_EXIFTOOL = 'exiftool';
@@ -31,14 +33,14 @@ class Reader
     /**
      * The current adapter
      *
-     * @var \PHPExif\Reader\AdapterInterface
+     * @var \PHPExif\Adapter\AdapterInterface
      */
     protected $adapter;
 
     /**
      * Reader constructor
      *
-     * @param \PHPExif\Reader\AdapterInterface $adapter
+     * @param \PHPExif\Adapter\AdapterInterface $adapter
      */
     public function __construct(AdapterInterface $adapter = null)
     {
@@ -50,11 +52,15 @@ class Reader
     /**
      * Setter for the reader adapter
      *
-     * @param \PHPExif\Reader\AdapterInterface $adapter
-     * @return \PHPExif\Reader Current instance for chaining
+     * @param \PHPExif\Adapter\AdapterInterface $adapter
+     * @return $this Current instance for chaining
+     * @throws ImmutableException when adapter is already set
      */
     public function setAdapter(AdapterInterface $adapter)
     {
+        if (isset($this->adapter)) {
+            throw new ImmutableException('cannot override adapter');
+        }
         $this->adapter = $adapter;
 
         return $this;
@@ -63,7 +69,7 @@ class Reader
     /**
      * Getter for the reader adapter
      *
-     * @return \PHPExif\Reader\AdapterInterface
+     * @return \PHPExif\Adapter\AdapterInterface
      * @throws NoAdapterException When no adapter is set
      */
     public function getAdapter()
@@ -79,20 +85,22 @@ class Reader
      * Factory for the reader
      *
      * @param string $type
-     * @return \PHPExif\Reader
+     * @return $this
      * @throws \InvalidArgumentException When given type is invalid
      */
     public static function factory($type)
     {
+        /**
+         * @var $result $this
+         */
         $classname = get_called_class();
-
         $adapter = null;
         switch ($type) {
             case self::TYPE_NATIVE:
-                $adapter = new Reader\Adapter\Native();
+                $adapter = new NativeAdapter();
                 break;
             case self::TYPE_EXIFTOOL:
-                $adapter = new Reader\Adapter\Exiftool();
+                $adapter = new ExiftoolAdapter();
                 break;
             default:
                 throw new \InvalidArgumentException(
@@ -100,7 +108,10 @@ class Reader
                 );
                 break;
         }
-        return new $classname($adapter);
+        $result = new $classname();
+        $result->setAdapter($adapter);
+
+        return $result;
     }
 
     /**
@@ -109,7 +120,7 @@ class Reader
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function getExifFromFile($file)
+    public function read($file)
     {
         return $this->getAdapter()->getExifFromFile($file);
     }

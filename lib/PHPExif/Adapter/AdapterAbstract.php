@@ -9,7 +9,7 @@
  * @package     Reader
  */
 
-namespace PHPExif\Reader;
+namespace PHPExif\Adapter;
 
 /**
  * PHP Exif Reader Adapter Abstract

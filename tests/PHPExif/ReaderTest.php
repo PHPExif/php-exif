@@ -2,7 +2,7 @@
 class ReaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPExif\Reader
+     * @var \PHPExif\Reader\Reader
      */
     protected $reader;
 
@@ -11,7 +11,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->reader = new \PHPExif\Reader();
+        $this->reader = new \PHPExif\Reader\Reader();
     }
 
     /**
@@ -20,16 +20,13 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAdapterInProperty()
     {
-        $mock = $this->getMock('\PHPExif\Reader\AdapterInterface');
-
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader', 'adapter');
+        $adapter = $this->getMock('\PHPExif\Adapter\AdapterInterface');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
-
         $this->assertNull($reflProperty->getValue($this->reader));
+        $this->reader->setAdapter($adapter);
 
-        $this->reader->setAdapter($mock);
-
-        $this->assertSame($mock, $reflProperty->getValue($this->reader));
+        $this->assertSame($adapter, $reflProperty->getValue($this->reader));
     }
 
     /**
@@ -38,11 +35,11 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorWithAdapter()
     {
-        $mock = $this->getMock('\PHPExif\Reader\AdapterInterface');
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader', 'adapter');
+        $mock = $this->getMock('\PHPExif\Adapter\AdapterInterface');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
 
-        $reader = new \PHPExif\Reader($mock);
+        $reader = new \PHPExif\Reader\Reader($mock);
 
         $this->assertSame($mock, $reflProperty->getValue($reader));
     }
@@ -53,9 +50,9 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAdapterFromProperty()
     {
-        $mock = $this->getMock('\PHPExif\Reader\AdapterInterface');
+        $mock = $this->getMock('\PHPExif\Adapter\AdapterInterface');
 
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader', 'adapter');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
         $reflProperty->setValue($this->reader, $mock);
 
@@ -65,7 +62,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
     /**
      * @group reader
      * @covers \PHPExif\Reader::getAdapter
-     * @expectedException \PHPExif\Reader\NoAdapterException
+     * @expectedException \PHPExif\Adapter\NoAdapterException
      */
     public function testGetAdapterThrowsException()
     {
@@ -78,15 +75,15 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetExifPassedToAdapter()
     {
-        $mock = $this->getMock('\PHPExif\Reader\AdapterInterface');
+        $mock = $this->getMock('\PHPExif\Adapter\AdapterInterface');
         $mock->expects($this->once())
             ->method('getExifFromFile');
 
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader', 'adapter');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
         $reflProperty->setValue($this->reader, $mock);
 
-        $this->reader->getExifFromFile('/tmp/foo.bar');
+        $this->reader->read('/tmp/foo.bar');
     }
 
     /**
@@ -96,7 +93,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFactoryThrowsException()
     {
-        \PHPExif\Reader::factory('foo');
+        \PHPExif\Reader\Reader::factory('foo');
     }
 
     /**
@@ -105,9 +102,9 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFactoryReturnsCorrectType()
     {
-        $reader = \PHPExif\Reader::factory(\PHPExif\Reader::TYPE_NATIVE);
+        $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_NATIVE);
 
-        $this->assertInstanceOf('\PHPExif\Reader', $reader);
+        $this->assertInstanceOf('\PHPExif\Reader\Reader', $reader);
     }
 
     /**
@@ -116,13 +113,13 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFactoryAdapterTypeNative()
     {
-        $reader = \PHPExif\Reader::factory(\PHPExif\Reader::TYPE_NATIVE);
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader', 'adapter');
+        $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_NATIVE);
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
 
         $adapter = $reflProperty->getValue($reader);
 
-        $this->assertInstanceOf('\PHPExif\Reader\Adapter\Native', $adapter);
+        $this->assertInstanceOf('\PHPExif\Adapter\Native', $adapter);
     }
 
     /**
@@ -131,12 +128,24 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFactoryAdapterTypeExiftool()
     {
-        $reader = \PHPExif\Reader::factory(\PHPExif\Reader::TYPE_EXIFTOOL);
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader', 'adapter');
+        $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_EXIFTOOL);
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
 
         $adapter = $reflProperty->getValue($reader);
 
-        $this->assertInstanceOf('\PHPExif\Reader\Adapter\Exiftool', $adapter);
+        $this->assertInstanceOf('\PHPExif\Adapter\Exiftool', $adapter);
+    }
+
+    /**
+     * @group reader
+     * @covers \PHPExif\Reader::factory
+     */
+    public function testReaderIsImmutable()
+    {
+        $this->setExpectedException('\\PHPExif\\Reader\\ImmutableException');
+        $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_EXIFTOOL);
+        $adapter = $this->getMock('\PHPExif\Adapter\AdapterInterface');
+        $reader->setAdapter($adapter);
     }
 }
