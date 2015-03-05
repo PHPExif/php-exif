@@ -45,25 +45,8 @@ class Reader implements ReaderInterface
     public function __construct(AdapterInterface $adapter = null)
     {
         if (!is_null($adapter)) {
-            $this->setAdapter($adapter);
+            $this->adapter = $adapter;
         }
-    }
-
-    /**
-     * Setter for the reader adapter
-     *
-     * @param \PHPExif\Adapter\AdapterInterface $adapter
-     * @return $this Current instance for chaining
-     * @throws ImmutableException when adapter is already set
-     */
-    public function setAdapter(AdapterInterface $adapter)
-    {
-        if (isset($this->adapter)) {
-            throw new ImmutableException('cannot override adapter');
-        }
-        $this->adapter = $adapter;
-
-        return $this;
     }
 
     /**
@@ -108,10 +91,7 @@ class Reader implements ReaderInterface
                 );
                 break;
         }
-        $result = new $classname();
-        $result->setAdapter($adapter);
-
-        return $result;
+        return $classname($adapter);
     }
 
     /**
@@ -123,5 +103,16 @@ class Reader implements ReaderInterface
     public function read($file)
     {
         return $this->getAdapter()->getExifFromFile($file);
+    }
+
+    /**
+     * alias to read method
+     *
+     * @param string $file
+     * @return \PHPExif\Exif Instance of Exif object with data
+     */
+    public function getExifFromFile($file)
+    {
+        return $this->read($file);
     }
 }
