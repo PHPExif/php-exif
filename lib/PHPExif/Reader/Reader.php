@@ -91,7 +91,7 @@ class Reader implements ReaderInterface
                 );
                 break;
         }
-        return $classname($adapter);
+        return new $classname($adapter);
     }
 
     /**
