@@ -2,22 +2,22 @@
 class ExiftoolTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPExif\Reader\Adapter\Exiftool
+     * @var \PHPExif\Adapter\Exiftool
      */
     protected $adapter;
 
     public function setUp()
     {
-        $this->adapter = new \PHPExif\Reader\Adapter\Exiftool();
+        $this->adapter = new \PHPExif\Adapter\Exiftool();
     }
 
     /**
      * @group exiftool
-     * @covers \PHPExif\Reader\Adapter\Exiftool::getToolPath
+     * @covers \PHPExif\Adapter\Exiftool::getToolPath
      */
     public function testGetToolPathFromProperty()
     {
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Exiftool', 'toolPath');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Adapter\Exiftool', 'toolPath');
         $reflProperty->setAccessible(true);
         $expected = '/foo/bar/baz';
         $reflProperty->setValue($this->adapter, $expected);
@@ -27,11 +27,11 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
-     * @covers \PHPExif\Reader\Adapter\Exiftool::setToolPath
+     * @covers \PHPExif\Adapter\Exiftool::setToolPath
      */
     public function testSetToolPathInProperty()
     {
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Adapter\Exiftool', 'toolPath');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Adapter\Exiftool', 'toolPath');
         $reflProperty->setAccessible(true);
 
         $expected = '/tmp';
@@ -42,7 +42,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
-     * @covers \PHPExif\Reader\Adapter\Exiftool::setToolPath
+     * @covers \PHPExif\Adapter\Exiftool::setToolPath
      * @expectedException InvalidArgumentException
      */
     public function testSetToolPathThrowsException()
@@ -53,7 +53,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
-     * @covers \PHPExif\Reader\Adapter\Exiftool::getToolPath
+     * @covers \PHPExif\Adapter\Exiftool::getToolPath
      */
     public function testGetToolPathLazyLoadsPath()
     {
@@ -62,7 +62,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
-     * @covers \PHPExif\Reader\Adapter\Exiftool::getExifFromFile
+     * @covers \PHPExif\Adapter\Exiftool::getExifFromFile
      */
     public function testGetExifFromFile()
     {
@@ -73,7 +73,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
-     * @covers \PHPExif\Reader\Adapter\Exiftool::mapData
+     * @covers \PHPExif\Adapter\Exiftool::mapData
      */
     public function testMapDataReturnsArray()
     {
@@ -82,7 +82,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
-     * @covers \PHPExif\Reader\Adapter\Exiftool::mapData
+     * @covers \PHPExif\Adapter\Exiftool::mapData
      */
     public function testMapDataReturnsArrayFalseValuesIfUndefined()
     {
@@ -95,7 +95,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
-     * @covers \PHPExif\Reader\Adapter\Exiftool::mapData
+     * @covers \PHPExif\Adapter\Exiftool::mapData
      */
     public function testMapDataResultHasAllKeys()
     {
@@ -111,7 +111,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
-     * @covers \PHPExif\Reader\Adapter\Exiftool::mapData
+     * @covers \PHPExif\Adapter\Exiftool::mapData
      */
     public function testMapDataFocalLengthIsCalculated()
     {
@@ -128,11 +128,11 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
-     * @covers \PHPExif\Reader\Adapter\Exiftool::getCliOutput
+     * @covers \PHPExif\Adapter\Exiftool::getCliOutput
      */
     public function testGetCliOutput()
     {
-        $reflMethod = new \ReflectionMethod('\PHPExif\Reader\Adapter\Exiftool', 'getCliOutput');
+        $reflMethod = new \ReflectionMethod('\PHPExif\Adapter\Exiftool', 'getCliOutput');
         $reflMethod->setAccessible(true);
 
         $result = $reflMethod->invoke(

@@ -1,23 +1,24 @@
 <?php
+
 class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPExif\Reader\Adapter\Exiftool
+     * @var \PHPExif\Adapter\Exiftool|\PHPExif\Adapter\Native
      */
     protected $adapter;
 
     public function setUp()
     {
-        $this->adapter = new \PHPExif\Reader\Adapter\Native();
+        $this->adapter = new \PHPExif\Adapter\Native();
     }
 
     /**
      * @group adapter
-     * @covers \PHPExif\Reader\AdapterAbstract::determinePropertyGetter
+     * @covers \PHPExif\Adapter\AdapterAbstract::determinePropertyGetter
      */
     public function testDeterminePropertyGetter()
     {
-        $reflMethod = new \ReflectionMethod('\PHPExif\Reader\Adapter\Native', 'determinePropertyGetter');
+        $reflMethod = new \ReflectionMethod('\PHPExif\Adapter\Native', 'determinePropertyGetter');
         $reflMethod->setAccessible(true);
 
         $result = $reflMethod->invoke(
@@ -30,11 +31,11 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Reader\AdapterAbstract::determinePropertySetter
+     * @covers \PHPExif\Adapter\AdapterAbstract::determinePropertySetter
      */
     public function testDeterminePropertySetter()
     {
-        $reflMethod = new \ReflectionMethod('\PHPExif\Reader\Adapter\Native', 'determinePropertySetter');
+        $reflMethod = new \ReflectionMethod('\PHPExif\Adapter\Native', 'determinePropertySetter');
         $reflMethod->setAccessible(true);
 
         $result = $reflMethod->invoke(
@@ -47,7 +48,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Reader\AdapterAbstract::getClassConstantsOfType
+     * @covers \PHPExif\Adapter\AdapterAbstract::getClassConstantsOfType
      */
     public function testGetClassConstantsOfTypeAlwaysReturnsArray()
     {
@@ -59,13 +60,13 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Reader\AdapterAbstract::getClassConstantsOfType
+     * @covers \PHPExif\Adapter\AdapterAbstract::getClassConstantsOfType
      */
     public function testGetClassConstantsOfTypeReturnsCorrectData()
     {
         $expected = array(
-            'SECTIONS_AS_ARRAYS' => \PHPExif\Reader\Adapter\Native::SECTIONS_AS_ARRAYS,
-            'SECTIONS_FLAT' => \PHPExif\Reader\Adapter\Native::SECTIONS_FLAT,
+            'SECTIONS_AS_ARRAYS' => \PHPExif\Adapter\Native::SECTIONS_AS_ARRAYS,
+            'SECTIONS_FLAT' => \PHPExif\Adapter\Native::SECTIONS_FLAT,
         );
         $actual = $this->adapter->getClassConstantsOfType('sections');
         $this->assertEquals($expected, $actual);
@@ -73,7 +74,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Reader\AdapterAbstract::toArray
+     * @covers \PHPExif\Adapter\AdapterAbstract::toArray
      */
     public function testToArrayReturnsPropertiesWithGetters()
     {
@@ -89,7 +90,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Reader\AdapterAbstract::toArray
+     * @covers \PHPExif\Adapter\AdapterAbstract::toArray
      */
     public function testToArrayOmmitsPropertiesWithoutGetters()
     {
@@ -104,7 +105,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Reader\AdapterAbstract::setOptions
+     * @covers \PHPExif\Adapter\AdapterAbstract::setOptions
      */
     public function testSetOptionsReturnsCurrentInstance()
     {
@@ -114,19 +115,19 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Reader\AdapterAbstract::setOptions
+     * @covers \PHPExif\Adapter\AdapterAbstract::setOptions
      */
     public function testSetOptionsCorrectlySetsProperties()
     {
         $expected = array(
             'requiredSections'  => array('foo', 'bar', 'baz',),
-            'includeThumbnail' => \PHPExif\Reader\Adapter\Native::INCLUDE_THUMBNAIL,
-            'sectionsAsArrays' => \PHPExif\Reader\Adapter\Native::SECTIONS_AS_ARRAYS,
+            'includeThumbnail' => \PHPExif\Adapter\Native::INCLUDE_THUMBNAIL,
+            'sectionsAsArrays' => \PHPExif\Adapter\Native::SECTIONS_AS_ARRAYS,
         );
         $this->adapter->setOptions($expected);
 
         foreach ($expected as $key => $value) {
-            $reflProp = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', $key);
+            $reflProp = new \ReflectionProperty('\PHPExif\Adapter\Native', $key);
             $reflProp->setAccessible(true);
             $this->assertEquals($value, $reflProp->getValue($this->adapter));
         }
@@ -134,7 +135,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Reader\AdapterAbstract::setOptions
+     * @covers \PHPExif\Adapter\AdapterAbstract::setOptions
      */
     public function testSetOptionsIgnoresPropertiesWithoutSetters()
     {
@@ -144,7 +145,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
         $this->adapter->setOptions($expected);
 
         foreach ($expected as $key => $value) {
-            $reflProp = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', $key);
+            $reflProp = new \ReflectionProperty('\PHPExif\Adapter\Native', $key);
             $reflProp->setAccessible(true);
             $this->assertNotEquals($value, $reflProp->getValue($this->adapter));
         }
@@ -153,19 +154,19 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Reader\AdapterAbstract::__construct
+     * @covers \PHPExif\Adapter\AdapterAbstract::__construct
      */
     public function testConstructorSetsOptions()
     {
         $expected = array(
             'requiredSections'  => array('foo', 'bar', 'baz',),
-            'includeThumbnail' => \PHPExif\Reader\Adapter\Native::INCLUDE_THUMBNAIL,
-            'sectionsAsArrays' => \PHPExif\Reader\Adapter\Native::SECTIONS_AS_ARRAYS,
+            'includeThumbnail' => \PHPExif\Adapter\Native::INCLUDE_THUMBNAIL,
+            'sectionsAsArrays' => \PHPExif\Adapter\Native::SECTIONS_AS_ARRAYS,
         );
-        $adapter = new \PHPExif\Reader\Adapter\Native($expected);
+        $adapter = new \PHPExif\Adapter\Native($expected);
 
         foreach ($expected as $key => $value) {
-            $reflProp = new \ReflectionProperty('\PHPExif\Reader\Adapter\Native', $key);
+            $reflProp = new \ReflectionProperty('\PHPExif\Adapter\Native', $key);
             $reflProp->setAccessible(true);
             $this->assertEquals($value, $reflProp->getValue($adapter));
         }

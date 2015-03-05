@@ -1,4 +1,5 @@
 <?php
+
 class ExifTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -406,8 +407,8 @@ class ExifTest extends \PHPUnit_Framework_TestCase
             PHPEXIF_TEST_ROOT . '/files/dsc_5794.jpg'
         );
 
-        $adapter_exiftool = new \PHPExif\Reader\Adapter\Exiftool();
-        $adapter_native = new \PHPExif\Reader\Adapter\Native();
+        $adapter_exiftool = new \PHPExif\Adapter\Exiftool();
+        $adapter_native = new \PHPExif\Adapter\Native();
 
         foreach ($testfiles as $file) {
             $result_exiftool = $adapter_exiftool->getExifFromFile($file);

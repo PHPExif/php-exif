@@ -9,11 +9,10 @@
  * @package     Reader
  */
 
-namespace PHPExif\Reader\Adapter;
+namespace PHPExif\Adapter;
 
-use PHPExif\Reader\AdapterAbstract;
 use PHPExif\Exif;
-use \DateTime;
+use DateTime;
 
 /**
  * PHP Exif Native Reader Adapter
