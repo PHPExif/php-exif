@@ -11,7 +11,8 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->reader = new \PHPExif\Reader\Reader();
+        $adapter = $this->getMock('\PHPExif\Adapter\AdapterInterface');
+        $this->reader = new \PHPExif\Reader\Reader($adapter);
     }
 
     /**
@@ -42,16 +43,6 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
         $reflProperty->setValue($this->reader, $mock);
 
         $this->assertSame($mock, $this->reader->getAdapter());
-    }
-
-    /**
-     * @group reader
-     * @covers \PHPExif\Reader\Reader::getAdapter
-     * @expectedException \PHPExif\Adapter\NoAdapterException
-     */
-    public function testGetAdapterThrowsException()
-    {
-        $this->reader->getAdapter();
     }
 
     /**

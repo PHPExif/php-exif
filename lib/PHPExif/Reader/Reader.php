@@ -42,11 +42,9 @@ class Reader implements ReaderInterface
      *
      * @param \PHPExif\Adapter\AdapterInterface $adapter
      */
-    public function __construct(AdapterInterface $adapter = null)
+    public function __construct(AdapterInterface $adapter)
     {
-        if (!is_null($adapter)) {
-            $this->adapter = $adapter;
-        }
+        $this->adapter = $adapter;
     }
 
     /**
