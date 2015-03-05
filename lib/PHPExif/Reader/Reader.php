@@ -71,9 +71,6 @@ class Reader implements ReaderInterface
      */
     public static function factory($type)
     {
-        /**
-         * @var $result $this
-         */
         $classname = get_called_class();
         $adapter = null;
         switch ($type) {

@@ -7,47 +7,20 @@ PHPExif serves as a wrapper around some native or CLI tools which access this EX
 ## Supported tools
 
 * Native PHP functionality (exif_read_data, iptcparse)
-* [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool/‎) adapter (wrapper for the exiftool binary)
+* [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool‎) adapter (wrapper for the exiftool binary)
 
 ## Installation (composer)
 
 ```json
-"miljar/php-exif": "0.*"
+"miljar/php-exif": "~0.2"
 ```
 
 
 ## Usage
 
-### Using factory method
+[Before v0.2.2](Resources/doc/usage_0.2.1.md)
 
-```php
-<?php
-// reader with Native adapter
-$reader = \PHPExif\Reader::factory(\PHPExif\Reader::TYPE_NATIVE);
-
-// reader with Exiftool adapter
-//$reader = \PHPExif\Reader::factory(\PHPExif\Reader::TYPE_EXIFTOOL);
-
-$exif = $reader->read('/path/to/file');
-
-echo 'Title: ' . $exif->getTitle() . PHP_EOL;
-```
-
-### Using custom options
-
-```php
-<?php
-$adapter = new \PHPExif\Reader\Adapter\Exiftool(
-    array(
-        'toolPath'  => '/path/to/exiftool',
-    )
-);
-$reader = new \PHPExif\Reader($adapter);
-
-$exif = $reader->read('/path/to/file');
-
-echo 'Title: ' . $exif->getTitle() . PHP_EOL;
-```
+[v0.2.2+](Resources/doc/usage.md)
 
 ## Contributing
 
