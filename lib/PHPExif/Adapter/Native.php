@@ -191,6 +191,7 @@ class Native extends AdapterAbstract
         $data = array_merge($data, array(self::SECTION_IPTC => $xmpData));
         $mappedData = $this->mapData($data);
         $exif = new Exif($mappedData);
+        $exif->setRawData($data);
 
         return $exif;
     }
@@ -262,31 +263,44 @@ class Native extends AdapterAbstract
         }
 
         return array(
-            Exif::APERTURE              => (!isset($source[self::SECTION_COMPUTED]['ApertureFNumber'])) ? false : $source[self::SECTION_COMPUTED]['ApertureFNumber'],
+            Exif::APERTURE              => (!isset($source[self::SECTION_COMPUTED]['ApertureFNumber'])) ?
+                false : $source[self::SECTION_COMPUTED]['ApertureFNumber'],
             Exif::AUTHOR                => (!isset($source['Artist'])) ? false : $source['Artist'],
             Exif::CAMERA                => (!isset($source['Model'])) ? false : $source['Model'],
-            Exif::CAPTION               => (!isset($source[self::SECTION_IPTC]['caption'])) ? false : $source[self::SECTION_IPTC]['caption'],
+            Exif::CAPTION               => (!isset($source[self::SECTION_IPTC]['caption'])) ?
+                false : $source[self::SECTION_IPTC]['caption'],
             Exif::COLORSPACE            => (!isset($source[Exif::COLORSPACE]) ? false : $source[Exif::COLORSPACE]),
-            Exif::COPYRIGHT             => (!isset($source[self::SECTION_IPTC]['copyright'])) ? false : $source[self::SECTION_IPTC]['copyright'],
-            Exif::CREATION_DATE         => (!isset($source['DateTimeOriginal'])) ? false : DateTime::createFromFormat('Y:m:d H:i:s', $source['DateTimeOriginal']),
-            Exif::CREDIT                => (!isset($source[self::SECTION_IPTC]['credit'])) ? false : $source[self::SECTION_IPTC]['credit'],
+            Exif::COPYRIGHT             => (!isset($source[self::SECTION_IPTC]['copyright'])) ?
+                false : $source[self::SECTION_IPTC]['copyright'],
+            Exif::CREATION_DATE         => (!isset($source['DateTimeOriginal'])) ?
+                false : DateTime::createFromFormat('Y:m:d H:i:s', $source['DateTimeOriginal']),
+            Exif::CREDIT                => (!isset($source[self::SECTION_IPTC]['credit'])) ?
+                false : $source[self::SECTION_IPTC]['credit'],
             Exif::EXPOSURE              => $exposureTime,
             Exif::FILESIZE              => (!isset($source[Exif::FILESIZE]) ? false : $source[Exif::FILESIZE]),
             Exif::FOCAL_LENGTH          => $focalLength,
-            Exif::FOCAL_DISTANCE        => (!isset($source[self::SECTION_COMPUTED]['FocusDistance'])) ? false : $source[self::SECTION_COMPUTED]['FocusDistance'],
-            Exif::HEADLINE              => (!isset($source[self::SECTION_IPTC]['headline'])) ? false : $source[self::SECTION_IPTC]['headline'],
-            Exif::HEIGHT                => (!isset($source[self::SECTION_COMPUTED]['Height'])) ? false : $source[self::SECTION_COMPUTED]['Height'],
+            Exif::FOCAL_DISTANCE        => (!isset($source[self::SECTION_COMPUTED]['FocusDistance'])) ?
+                false : $source[self::SECTION_COMPUTED]['FocusDistance'],
+            Exif::HEADLINE              => (!isset($source[self::SECTION_IPTC]['headline'])) ?
+                false : $source[self::SECTION_IPTC]['headline'],
+            Exif::HEIGHT                => (!isset($source[self::SECTION_COMPUTED]['Height'])) ?
+                false : $source[self::SECTION_COMPUTED]['Height'],
             Exif::HORIZONTAL_RESOLUTION => $horResolution,
             Exif::ISO                   => (!isset($source['ISOSpeedRatings'])) ? false : $source['ISOSpeedRatings'],
-            Exif::JOB_TITLE             => (!isset($source[self::SECTION_IPTC]['jobtitle'])) ? false : $source[self::SECTION_IPTC]['jobtitle'],
-            Exif::KEYWORDS              => (!isset($source[self::SECTION_IPTC]['keywords'])) ? false : $source[self::SECTION_IPTC]['keywords'],
+            Exif::JOB_TITLE             => (!isset($source[self::SECTION_IPTC]['jobtitle'])) ?
+                false : $source[self::SECTION_IPTC]['jobtitle'],
+            Exif::KEYWORDS              => (!isset($source[self::SECTION_IPTC]['keywords'])) ?
+                false : $source[self::SECTION_IPTC]['keywords'],
             Exif::MIMETYPE              => (!isset($source[Exif::MIMETYPE]) ? false : $source[Exif::MIMETYPE]),
             Exif::ORIENTATION           => (!isset($source[Exif::ORIENTATION]) ? false : $source[Exif::ORIENTATION]),
             Exif::SOFTWARE              => (!isset($source['Software'])) ? false : trim($source['Software']),
-            Exif::SOURCE                => (!isset($source[self::SECTION_IPTC]['source'])) ? false : $source[self::SECTION_IPTC]['source'],
-            Exif::TITLE                 => (!isset($source[self::SECTION_IPTC]['title'])) ? false : $source[self::SECTION_IPTC]['title'],
+            Exif::SOURCE                => (!isset($source[self::SECTION_IPTC]['source'])) ?
+                false : $source[self::SECTION_IPTC]['source'],
+            Exif::TITLE                 => (!isset($source[self::SECTION_IPTC]['title'])) ?
+                false : $source[self::SECTION_IPTC]['title'],
             Exif::VERTICAL_RESOLUTION   => $vertResolution,
-            Exif::WIDTH                 => (!isset($source[self::SECTION_COMPUTED]['Width'])) ? false : $source[self::SECTION_COMPUTED]['Width'],
+            Exif::WIDTH                 => (!isset($source[self::SECTION_COMPUTED]['Width'])) ?
+                false : $source[self::SECTION_COMPUTED]['Width'],
         );
 
         $arrMapping = array(

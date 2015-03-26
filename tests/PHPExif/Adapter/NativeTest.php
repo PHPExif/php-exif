@@ -117,6 +117,8 @@ class NativeTest extends \PHPUnit_Framework_TestCase
         $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';
         $result = $this->adapter->getExifFromFile($file);
         $this->assertInstanceOf('\PHPExif\Exif', $result);
+        $this->assertInternalType('array', $result->getRawData());
+        $this->assertNotEmpty($result->getRawData());
     }
 
     /**
@@ -206,7 +208,7 @@ class NativeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group native
-     * @covers \PHPExif\Reader\Adapter\Native::mapData
+     * @covers \PHPExif\Adapter\Native::mapData
      */
     public function testMapDataMapsSecondLevel()
     {
@@ -225,7 +227,7 @@ class NativeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group native
-     * @covers \PHPExif\Reader\Adapter\Native::mapData
+     * @covers \PHPExif\Adapter\Native::mapData
      */
     public function testMapDataReturnsArrayFalseValuesIfUndefined()
     {
@@ -305,7 +307,7 @@ class NativeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group native-curr
-     * @covers \PHPExif\Reader\Adapter\Native::mapData
+     * @covers \PHPExif\Adapter\Native::mapData
      */
     public function testMapDataCreationDateIsConvertedToDatetime()
     {

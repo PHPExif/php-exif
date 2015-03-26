@@ -49,11 +49,18 @@ class Exif
     const WIDTH                 = 'width';
 
     /**
-     * The EXIF data
+     * The mapped EXIF data
      *
      * @var array
      */
     protected $data = array();
+
+    /**
+     * The raw EXIF data
+     *
+     * @var array
+     */
+    protected $rawData = array();
 
     /**
      * Class constructor
@@ -62,18 +69,18 @@ class Exif
      */
     public function __construct(array $data = array())
     {
-        $this->setRawData($data);
+        $this->setData($data);
     }
 
     /**
-     * Sets the EXIF data
+     * Sets the raw EXIF data
      *
      * @param array $data The data to set
      * @return \PHPExif\Exif Current instance for chaining
      */
     public function setRawData(array $data)
     {
-        $this->data = $data;
+        $this->rawData = $data;
 
         return $this;
     }
@@ -84,6 +91,29 @@ class Exif
      * @return array
      */
     public function getRawData()
+    {
+        return $this->rawData;
+    }
+
+    /**
+     * Sets the mapped EXIF data
+     *
+     * @param array $data The data to set
+     * @return \PHPExif\Exif Current instance for chaining
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Returns the mapped EXIF data
+     *
+     * @return array
+     */
+    public function getData()
     {
         return $this->data;
     }
