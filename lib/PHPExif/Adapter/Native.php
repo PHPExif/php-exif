@@ -191,6 +191,7 @@ class Native extends AdapterAbstract
         $data = array_merge($data, array(self::SECTION_IPTC => $xmpData));
         $mappedData = $this->mapData($data);
         $exif = new Exif($mappedData);
+        $exif->setRawData($data);
 
         return $exif;
     }

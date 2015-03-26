@@ -69,6 +69,8 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
         $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';
         $result = $this->adapter->getExifFromFile($file);
         $this->assertInstanceOf('\PHPExif\Exif', $result);
+        $this->assertInternalType('array', $result->getRawData());
+        $this->assertNotEmpty($result->getRawData());
     }
 
     /**
