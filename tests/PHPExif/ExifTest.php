@@ -18,6 +18,31 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     /**
      * @group exif
      */
+    public function testConstructorCallsSetData()
+    {
+        $input = array();
+
+        // Get mock, without the constructor being called
+        $mock = $this->getMockBuilder('\\PHPExif\\Exif')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        // set expectations for constructor calls
+        $mock->expects($this->once())
+            ->method('setData')
+            ->with(
+                $this->equalTo($input)
+            );
+
+        // now call the constructor
+        $reflectedClass = new ReflectionClass('\\PHPExif\\Exif');
+        $constructor = $reflectedClass->getConstructor();
+        $constructor->invoke($mock, $input);
+    }
+
+    /**
+     * @group exif
+     */
     public function testGetRawData()
     {
         $reflProperty = new \ReflectionProperty('\PHPExif\Exif', 'rawData');
