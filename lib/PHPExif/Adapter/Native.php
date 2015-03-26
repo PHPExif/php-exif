@@ -205,7 +205,7 @@ class Native extends AdapterAbstract
     {
         $size = getimagesize($file, $info);
         $arrData = array();
-        if(isset($info['APP13'])) {
+        if (isset($info['APP13'])) {
             $iptc = iptcparse($info['APP13']);
 
             foreach ($this->iptcMapping as $name => $field) {
@@ -288,5 +288,47 @@ class Native extends AdapterAbstract
             Exif::VERTICAL_RESOLUTION   => $vertResolution,
             Exif::WIDTH                 => (!isset($source[self::SECTION_COMPUTED]['Width'])) ? false : $source[self::SECTION_COMPUTED]['Width'],
         );
+
+        $arrMapping = array(
+            array(
+                Exif::AUTHOR => 'Artist',
+                Exif::CAMERA => 'Model',
+                Exif::EXPOSURE => 'ExposureTime',
+                Exif::ISO => 'ISOSpeedRatings',
+                Exif::SOFTWARE => 'Software',
+            ),
+            self::SECTION_COMPUTED => array(
+                Exif::APERTURE => 'ApertureFNumber',
+                Exif::FOCAL_DISTANCE => 'FocusDistance',
+                Exif::HEIGHT => 'Height',
+                Exif::WIDTH => 'Width',
+            ),
+            self::SECTION_IPTC => array(
+                Exif::CAPTION => 'caption',
+                Exif::COPYRIGHT => 'copyright',
+                Exif::CREDIT => 'credit',
+                Exif::HEADLINE => 'headline',
+                Exif::JOB_TITLE => 'jobtitle',
+                Exif::KEYWORDS => 'keywords',
+                Exif::SOURCE => 'source',
+                Exif::TITLE => 'title',
+            ),
+        );
+
+        foreach ($arrMapping as $key => $arrFields) {
+            if (array_key_exists($key, $source)) {
+                $arrSource = $source[$key];
+            } else {
+                $arrSource = $source;
+            }
+
+            foreach ($arrFields as $mappedField => $field) {
+                if (isset($arrSource[$field])) {
+                    $mappedData[$mappedField] = $arrSource[$field];
+                }
+            }
+        }
+
+        return $mappedData;
     }
 }

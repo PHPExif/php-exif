@@ -1,3 +1,4 @@
 phpunit.xml
 tests/log
 vendor
+composer.phar
