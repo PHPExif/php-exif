@@ -108,6 +108,7 @@ class Exiftool extends AdapterAbstract
         $data = json_decode($result, true);
         $mappedData = $this->mapData(reset($data));
         $exif = new Exif($mappedData);
+        $exif->setRawData(reset($data));
 
         return $exif;
     }
