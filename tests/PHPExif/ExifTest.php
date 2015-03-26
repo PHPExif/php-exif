@@ -42,6 +42,32 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group exif
+     */
+    public function testGetData()
+    {
+        $reflProperty = new \ReflectionProperty('\PHPExif\Exif', 'data');
+        $reflProperty->setAccessible(true);
+
+        $this->assertEquals($reflProperty->getValue($this->exif), $this->exif->getData());
+    }
+
+    /**
+     * @group exif
+     */
+    public function testSetData()
+    {
+        $testData = array('foo', 'bar', 'baz');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Exif', 'data');
+        $reflProperty->setAccessible(true);
+
+        $result = $this->exif->setData($testData);
+
+        $this->assertEquals($testData, $reflProperty->getValue($this->exif));
+        $this->assertEquals($this->exif, $result);
+    }
+
+    /**
      *
      * @dataProvider providerUndefinedPropertiesReturnFalse
      * @param string $accessor
