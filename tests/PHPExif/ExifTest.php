@@ -20,7 +20,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRawData()
     {
-        $reflProperty = new \ReflectionProperty('\PHPExif\Exif', 'data');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Exif', 'rawData');
         $reflProperty->setAccessible(true);
 
         $this->assertEquals($reflProperty->getValue($this->exif), $this->exif->getRawData());
@@ -32,7 +32,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     public function testSetRawData()
     {
         $testData = array('foo', 'bar', 'baz');
-        $reflProperty = new \ReflectionProperty('\PHPExif\Exif', 'data');
+        $reflProperty = new \ReflectionProperty('\PHPExif\Exif', 'rawData');
         $reflProperty->setAccessible(true);
 
         $result = $this->exif->setRawData($testData);
@@ -93,7 +93,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'f/8.0';
         $data[\PHPExif\Exif::APERTURE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
 
         $this->assertEquals($expected, $this->exif->getAperture());
     }
@@ -106,7 +106,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 200;
         $data[\PHPExif\Exif::ISO] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getIso());
     }
 
@@ -118,7 +118,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = '1/320';
         $data[\PHPExif\Exif::EXPOSURE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getExposure());
     }
 
@@ -130,7 +130,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 1/320;
         $data[\PHPExif\Exif::EXPOSURE] = '1/320';
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getExposureMilliseconds());
     }
 
@@ -142,7 +142,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = '7.94m';
         $data[\PHPExif\Exif::FOCAL_DISTANCE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getFocusDistance());
     }
 
@@ -154,7 +154,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 500;
         $data[\PHPExif\Exif::WIDTH] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getWidth());
     }
 
@@ -166,7 +166,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 332;
         $data[\PHPExif\Exif::HEIGHT] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getHeight());
     }
 
@@ -178,7 +178,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'Morning Glory Pool';
         $data[\PHPExif\Exif::TITLE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getTitle());
     }
 
@@ -190,7 +190,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'Foo Bar Baz';
         $data[\PHPExif\Exif::CAPTION] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getCaption());
     }
 
@@ -202,7 +202,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'Miljar';
         $data[\PHPExif\Exif::COPYRIGHT] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getCopyright());
     }
 
@@ -214,7 +214,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = array('18-200', 'D90', 'USA', 'Wyoming', 'Yellowstone');
         $data[\PHPExif\Exif::KEYWORDS] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getKeywords());
     }
 
@@ -226,7 +226,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'NIKON D90';
         $data[\PHPExif\Exif::CAMERA] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getCamera());
     }
 
@@ -238,7 +238,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 240;
         $data[\PHPExif\Exif::HORIZONTAL_RESOLUTION] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getHorizontalResolution());
     }
 
@@ -250,7 +250,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 240;
         $data[\PHPExif\Exif::VERTICAL_RESOLUTION] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getVerticalResolution());
     }
 
@@ -262,7 +262,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'Adobe Photoshop Lightroom';
         $data[\PHPExif\Exif::SOFTWARE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getSoftware());
     }
 
@@ -274,7 +274,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 18;
         $data[\PHPExif\Exif::FOCAL_LENGTH] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getFocalLength());
     }
 
@@ -287,7 +287,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $expected = '2011-06-07 20:01:50';
         $input = \DateTime::createFromFormat('Y-m-d H:i:s', $expected);
         $data[\PHPExif\Exif::CREATION_DATE] = $input;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getCreationDate()->format('Y-m-d H:i:s'));
     }
 
@@ -299,7 +299,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'John Smith';
         $data[\PHPExif\Exif::AUTHOR] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getAuthor());
     }
 
@@ -311,7 +311,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'Foobar Baz';
         $data[\PHPExif\Exif::HEADLINE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getHeadline());
     }
 
@@ -323,7 +323,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'john.smith@example.com';
         $data[\PHPExif\Exif::CREDIT] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getCredit());
     }
 
@@ -335,7 +335,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'FBB NEWS';
         $data[\PHPExif\Exif::SOURCE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getSource());
     }
 
@@ -347,7 +347,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'Yellowstone\'s geysers and pools';
         $data[\PHPExif\Exif::JOB_TITLE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getJobtitle());
     }
     
@@ -359,7 +359,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'RGB';
         $data[\PHPExif\Exif::COLORSPACE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getColorSpace());
     }
     
@@ -371,7 +371,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'image/jpeg';
         $data[\PHPExif\Exif::MIMETYPE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getMimeType());
     }
     
@@ -383,7 +383,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = '27852365';
         $data[\PHPExif\Exif::FILESIZE] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getFileSize());
     }
 
@@ -391,7 +391,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 1;
         $data[\PHPExif\Exif::ORIENTATION] = $expected;
-        $this->exif->setRawData($data);
+        $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getOrientation());
     }
 
