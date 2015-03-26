@@ -206,7 +206,7 @@ class NativeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group native
-     * @covers \PHPExif\Reader\Adapter\Native::mapData
+     * @covers \PHPExif\Adapter\Native::mapData
      */
     public function testMapDataMapsSecondLevel()
     {
@@ -225,7 +225,7 @@ class NativeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group native
-     * @covers \PHPExif\Reader\Adapter\Native::mapData
+     * @covers \PHPExif\Adapter\Native::mapData
      */
     public function testMapDataReturnsArrayFalseValuesIfUndefined()
     {
@@ -305,7 +305,7 @@ class NativeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group native-curr
-     * @covers \PHPExif\Reader\Adapter\Native::mapData
+     * @covers \PHPExif\Adapter\Native::mapData
      */
     public function testMapDataCreationDateIsConvertedToDatetime()
     {
