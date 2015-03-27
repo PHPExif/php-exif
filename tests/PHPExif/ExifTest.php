@@ -401,7 +401,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getJobtitle());
     }
-    
+
     /**
      * @group exif
      * @covers \PHPExif\Exif::getColorSpace
@@ -413,7 +413,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getColorSpace());
     }
-    
+
     /**
      * @group exif
      * @covers \PHPExif\Exif::getMimeType
@@ -425,7 +425,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getMimeType());
     }
-    
+
     /**
      * @group exif
      * @covers \PHPExif\Exif::getFileSize
@@ -444,6 +444,32 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $data[\PHPExif\Exif::ORIENTATION] = $expected;
         $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getOrientation());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getGPS
+     * @covers \PHPExif\Exif::getGPSDegMinSec
+     * @covers \PHPExif\Exif::getGPSDecMinutes
+     * @covers \PHPExif\Exif::getGPSDecDegrees
+     * @expectedException InvalidArgumentException
+     */
+    public function testGetGPS()
+    {
+        $expected = array(
+            'latitude'  => array(40, 20, 10, 'N'),
+            'longitude' => array(10, 5, 1, 'W'),
+            'altitude'  => array(0, 0),
+        );
+        $data[\PHPExif\Exif::GPS] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getGPS());
+
+        $this->assertEquals('40° 20\' 10" N, 10° 5\' 1" W', $this->exif->getGPSDegMinSec());
+        $this->assertEquals('40° 0.336111\' N, 10° 0.083611\' W', $this->exif->getGPSDecMinutes());
+        $this->assertEquals('40.336111, -10.083611', $this->exif->getGPSDecDegrees());
+
+        $this->exif->getFormattedGPS('unknown_format');
     }
 
     /**

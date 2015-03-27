@@ -319,4 +319,30 @@ class NativeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('DateTime', $result[\PHPExif\Exif::CREATION_DATE]);
     }
+
+    /**
+     * @group native
+     * @covers \PHPExif\Adapter\Native::mapData
+     */
+    public function testMapDataCreationGPSIsCalculated()
+    {
+        $result = $this->adapter->mapData(
+            array(
+                'GPSLatitudeRef'  => 'N',
+                'GPSLatitude'     => array('40/1', '20/1', '15/35'),
+                'GPSLongitudeRef' => 'W',
+                'GPSLongitude'    => array('20/1', '10/1', '35/15'),
+                'GPSAltitudeRef'  => '\000',
+                'GPSAltitude'     => '1'
+            )
+        );
+
+        $expected = array(
+            'latitude'  => array(40, 20, 0.42857142857143, 'N'),
+            'longitude' => array(20, 10, 2.3333333333333, 'W'),
+            'altitude'  => array(1, 0),
+        );
+
+        $this->assertEquals($expected, $result[\PHPExif\Exif::GPS]);
+    }
 }

@@ -96,12 +96,15 @@ class Exiftool extends AdapterAbstract
      */
     public function getExifFromFile($file)
     {
+        $gpsFormat = '%d deg %d\' %.4f\"';
+
         $result = $this->getCliOutput(
             sprintf(
-                '%1$s%3$s -j %2$s',
+                '%1$s%3$s -j -c "%4$s" %2$s',
                 $this->getToolPath(),
                 $file,
-                $this->numeric ? ' -n' : ''
+                $this->numeric ? ' -n' : '',
+                $gpsFormat
             )
         );
 
@@ -172,6 +175,33 @@ class Exiftool extends AdapterAbstract
             $caption = $source['Caption-Abstract'];
         }
 
+        $gpsLocation = false;
+        if (isset($source['GPSLatitudeRef']) && isset($source['GPSLongitudeRef'])) {
+            $latitude  = $this->extractGPSCoordinates($source['GPSLatitude']);
+            $longitude = $this->extractGPSCoordinates($source['GPSLongitude']);
+
+            if ($latitude !== false && $longitude !== false) {
+                $gpsLocation = array();
+
+                $gpsLocation['latitude'] = array_merge(
+                    $latitude,
+                    array(strtoupper($source['GPSLatitudeRef'][0]))
+                );
+                $gpsLocation['longitude'] = array_merge(
+                    $longitude,
+                    array(strtoupper($source['GPSLongitudeRef'][0]))
+                );
+
+                if (isset($source['GPSAltitudeRef'])
+                    && preg_match('!^([0-9]+) m!', $source['GPSAltitude'], $matches)) {
+                    $gpsLocation['altitude'] = array(
+                        $matches[1],
+                        preg_match('!^Above!', $source['GPSAltitudeRef']) ? 0 : -1,
+                    );
+                }
+            }
+        }
+
         return array(
             Exif::APERTURE              => (!isset($source['Aperture'])) ?
                 false : sprintf('f/%01.1f', $source['Aperture']),
@@ -201,6 +231,37 @@ class Exiftool extends AdapterAbstract
             Exif::TITLE                 => (!isset($source['Title'])) ? false : $source['Title'],
             Exif::VERTICAL_RESOLUTION   => (!isset($source['YResolution'])) ? false : $source['YResolution'],
             Exif::WIDTH                 => (!isset($source['ImageWidth'])) ? false : $source['ImageWidth'],
+            Exif::GPS                   => $gpsLocation,
         );
+    }
+
+    /**
+     * Extract GPS coordinates from formattedstring
+     *
+     * @param string $coordinates
+     * @return array
+     */
+    protected function extractGPSCoordinates($coordinates)
+    {
+        if ($this->numeric === true) {
+            $coordinates *= (int) $coordinates < 0 ? -1 : 1;
+
+            $degrees = (int) $coordinates;
+            $decimalMinutes = ($coordinates - $degrees) * 60;
+            $minutes = (int) $decimalMinutes;
+            $seconds = round(($decimalMinutes - $minutes) * 60, 6);
+
+            return array(
+                $degrees,
+                $minutes,
+                $seconds,
+            );
+        } else {
+            if (!preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches)) {
+                return false;
+            }
+
+            return array_slice($matches, 1);
+        }
     }
 }

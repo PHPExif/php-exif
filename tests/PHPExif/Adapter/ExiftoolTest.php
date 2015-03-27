@@ -130,6 +130,59 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
+     * @covers \PHPExif\Adapter\Exiftool::mapData
+     */
+    public function testMapDataCreationDegGPSIsCalculated()
+    {
+        $this->adapter->setNumeric(false);
+        $result = $this->adapter->mapData(
+            array(
+                'GPSLatitudeRef'  => 'North',
+                'GPSLatitude'     => '40 deg 20\' 0.42857" N',
+                'GPSLongitudeRef' => 'West',
+                'GPSLongitude'    => '20 deg 10\' 2.33333" W',
+                'GPSAltitudeRef'  => 'Above Sea Level',
+                'GPSAltitude'     => '1 m Above Sea Level'
+            )
+        );
+
+        $expected = array(
+            'latitude'  => array(40, 20, 0.42857, 'N'),
+            'longitude' => array(20, 10, 2.33333, 'W'),
+            'altitude'  => array(1, 0),
+        );
+
+        $this->assertEquals($expected, $result[\PHPExif\Exif::GPS]);
+    }
+
+    /**
+     * @group exiftool
+     * @covers \PHPExif\Adapter\Exiftool::mapData
+     */
+    public function testMapDataCreationNumericGPSIsCalculated()
+    {
+        $result = $this->adapter->mapData(
+            array(
+                'GPSLatitudeRef'  => 'North',
+                'GPSLatitude'     => '40.333452381',
+                'GPSLongitudeRef' => 'West',
+                'GPSLongitude'    => '20.167314814',
+                'GPSAltitudeRef'  => 'Below Sea Level',
+                'GPSAltitude'     => '1 m Above Sea Level'
+            )
+        );
+
+        $expected = array(
+            'latitude'  => array(40, 20, 0.428572, 'N'),
+            'longitude' => array(20, 10, 2.33333, 'W'),
+            'altitude'  => array(1, -1),
+        );
+
+        $this->assertEquals($expected, $result[\PHPExif\Exif::GPS]);
+    }
+
+    /**
+     * @group exiftool
      * @covers \PHPExif\Adapter\Exiftool::getCliOutput
      */
     public function testGetCliOutput()

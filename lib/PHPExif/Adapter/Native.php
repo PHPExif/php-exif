@@ -262,6 +262,26 @@ class Native extends AdapterAbstract
             $exposureTime = '1/' . round($denominator);
         }
 
+        $gpsLocation = false;
+        if (isset($source['GPSLatitudeRef']) && isset($source['GPSLongitudeRef'])) {
+            $gpsLocation = array();
+
+            $gpsLocation['latitude'] = array_merge(
+                $this->normalizeGPSCoordinate($source['GPSLatitude']),
+                array(strtoupper($source['GPSLatitudeRef']))
+            );
+            $gpsLocation['longitude'] = array_merge(
+                $this->normalizeGPSCoordinate($source['GPSLongitude']),
+                array(strtoupper($source['GPSLongitudeRef']))
+            );
+
+            if (isset($source['GPSAltitudeRef'])) {
+                $altitude = $this->normalizeGPSCoordinate(array($source['GPSAltitude']));
+
+                $gpsLocation['altitude'] = array($altitude[0], (int) $source['GPSAltitudeRef']);
+            }
+        }
+
         return array(
             Exif::APERTURE              => (!isset($source[self::SECTION_COMPUTED]['ApertureFNumber'])) ?
                 false : $source[self::SECTION_COMPUTED]['ApertureFNumber'],
@@ -301,6 +321,7 @@ class Native extends AdapterAbstract
             Exif::VERTICAL_RESOLUTION   => $vertResolution,
             Exif::WIDTH                 => (!isset($source[self::SECTION_COMPUTED]['Width'])) ?
                 false : $source[self::SECTION_COMPUTED]['Width'],
+            Exif::GPS                   => $gpsLocation,
         );
 
         $arrMapping = array(
@@ -344,5 +365,22 @@ class Native extends AdapterAbstract
         }
 
         return $mappedData;
+    }
+
+    /**
+     * Normalize array GPS coordinates
+     *
+     * @param array $coordinates
+     * @return array
+     */
+    protected function normalizeGPSCoordinate(array $coordinates)
+    {
+        return array_map(
+            function ($component) {
+                $parts  = explode('/', $component);
+                return count($parts) === 1 ? $parts[0] : (int) reset($parts) / (int) end($parts);
+            },
+            $coordinates
+        );
     }
 }
