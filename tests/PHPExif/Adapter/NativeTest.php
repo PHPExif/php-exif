@@ -328,21 +328,14 @@ class NativeTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->adapter->mapData(
             array(
-                'GPSLatitudeRef'  => 'N',
                 'GPSLatitude'     => array('40/1', '20/1', '15/35'),
-                'GPSLongitudeRef' => 'W',
+                'GPSLatitudeRef'  => 'N',
                 'GPSLongitude'    => array('20/1', '10/1', '35/15'),
-                'GPSAltitudeRef'  => '\000',
-                'GPSAltitude'     => '1'
+                'GPSLongitudeRef' => 'W',
             )
         );
 
-        $expected = array(
-            'latitude'  => array(40, 20, 0.42857142857143, 'N'),
-            'longitude' => array(20, 10, 2.3333333333333, 'W'),
-            'altitude'  => array(1, 0),
-        );
-
+        $expected = '40.333452380952,-20.167314814815';
         $this->assertEquals($expected, $result[\PHPExif\Exif::GPS]);
     }
 }

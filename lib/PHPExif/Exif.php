@@ -486,7 +486,7 @@ class Exif
     }
 
     /**
-     * Returns raw GPS coordinates, if it exists
+     * Returns GPS coordinates, if it exists
      *
      * @return array|boolean
      */
@@ -497,107 +497,5 @@ class Exif
         }
 
         return $this->data[self::GPS];
-    }
-
-    /**
-     * Returns GPS in degrees, minutes and seconds, if it exists
-     *
-     * @return string|boolean
-     */
-    public function getGPSDegMinSec()
-    {
-        return $this->getFormattedGPS('degrees_minutes_seconds');
-    }
-
-    /**
-     * Returns GPS in degrees, and decimal minutes, if it exists
-     *
-     * @return string|boolean
-     */
-    public function getGPSDecMinutes()
-    {
-        return $this->getFormattedGPS('decimal_minutes');
-    }
-
-    /**
-     * Returns GPS in decimal degrees, if it exists
-     *
-     * @return string|boolean
-     */
-    public function getGPSDecDegrees()
-    {
-        return $this->getFormattedGPS('decimal_degrees');
-    }
-
-    /**
-     * Returns formatted GPS coordinates, if it exists
-     *
-     * @param string $format
-     * @return string|boolean
-     */
-    public function getFormattedGPS($format = 'decimal_minutes')
-    {
-        if (!isset($this->data[self::GPS]) || $this->data[self::GPS] === false) {
-            return false;
-        }
-
-        if ($format === 'degrees_minutes_seconds') {
-            $gps = $this->data[self::GPS];
-
-            return sprintf(
-                '%d° %d\' %s" %s, %d° %d\' %s" %s',
-                $gps['latitude'][0],
-                $gps['latitude'][1],
-                $gps['latitude'][2],
-                $gps['latitude'][3],
-                $gps['longitude'][0],
-                $gps['longitude'][1],
-                $gps['longitude'][2],
-                $gps['longitude'][3]
-            );
-        }
-
-        return $this->getGPSDecimal($format);
-    }
-
-    /**
-     * Returns decimal formatted GPS coordinates, if it exists
-     *
-     * @param string $format
-     * @return string
-     * @throws \InvalidArgumentException If the the format is not valid
-     */
-    protected function getGPSDecimal($format)
-    {
-        $gps = $this->data[self::GPS];
-
-        $latMinutes = $gps['latitude'][1] / 60 + $gps['latitude'][2] / 3600;
-        $lonMinutes = $gps['longitude'][1] / 60 + $gps['longitude'][2] / 3600;
-
-        switch ($format) {
-            case 'decimal_minutes':
-                return sprintf(
-                    '%d° %f\' %s, %d° %f\' %s',
-                    $gps['latitude'][0],
-                    $latMinutes,
-                    $gps['latitude'][3],
-                    $gps['longitude'][0],
-                    $lonMinutes,
-                    $gps['longitude'][3]
-                );
-                break;
-
-            case 'decimal_degrees':
-                return sprintf(
-                    '%f, %f',
-                    ($gps['latitude'][3] === 'S' ? -1 : 1) * ($gps['latitude'][0] + $latMinutes),
-                    ($gps['longitude'][3] === 'W' ? -1 : 1) * ($gps['longitude'][0] + $lonMinutes)
-                );
-                break;
-
-            default:
-                throw new \InvalidArgumentException(sprintf('GPS format "%s" is not valid', $format));
-                break;
-        }
     }
 }

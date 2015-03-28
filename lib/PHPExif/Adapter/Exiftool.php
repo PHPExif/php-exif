@@ -181,24 +181,11 @@ class Exiftool extends AdapterAbstract
             $longitude = $this->extractGPSCoordinates($source['GPSLongitude']);
 
             if ($latitude !== false && $longitude !== false) {
-                $gpsLocation = array();
-
-                $gpsLocation['latitude'] = array_merge(
-                    $latitude,
-                    array(strtoupper($source['GPSLatitudeRef'][0]))
+                $gpsLocation = sprintf(
+                    '%s,%s',
+                    (strtoupper($source['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $latitude,
+                    (strtoupper($source['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $longitude
                 );
-                $gpsLocation['longitude'] = array_merge(
-                    $longitude,
-                    array(strtoupper($source['GPSLongitudeRef'][0]))
-                );
-
-                if (isset($source['GPSAltitudeRef'])
-                    && preg_match('!^([0-9]+) m!', $source['GPSAltitude'], $matches)) {
-                    $gpsLocation['altitude'] = array(
-                        $matches[1],
-                        preg_match('!^Above!', $source['GPSAltitudeRef']) ? 0 : -1,
-                    );
-                }
             }
         }
 
@@ -236,7 +223,7 @@ class Exiftool extends AdapterAbstract
     }
 
     /**
-     * Extract GPS coordinates from formattedstring
+     * Extract GPS coordinates from formatted string
      *
      * @param string $coordinates
      * @return array
@@ -244,24 +231,13 @@ class Exiftool extends AdapterAbstract
     protected function extractGPSCoordinates($coordinates)
     {
         if ($this->numeric === true) {
-            $coordinates *= (int) $coordinates < 0 ? -1 : 1;
-
-            $degrees = (int) $coordinates;
-            $decimalMinutes = ($coordinates - $degrees) * 60;
-            $minutes = (int) $decimalMinutes;
-            $seconds = round(($decimalMinutes - $minutes) * 60, 6);
-
-            return array(
-                $degrees,
-                $minutes,
-                $seconds,
-            );
+            return abs((float) $coordinates);
         } else {
             if (!preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches)) {
                 return false;
             }
 
-            return array_slice($matches, 1);
+            return intval($matches[1]) + (intval($matches[2]) / 60) + (floatval($matches[3]) / 3600);
         }
     }
 }

@@ -264,22 +264,14 @@ class Native extends AdapterAbstract
 
         $gpsLocation = false;
         if (isset($source['GPSLatitudeRef']) && isset($source['GPSLongitudeRef'])) {
-            $gpsLocation = array();
+            $latitude  = $this->extractGPSCoordinate($source['GPSLatitude']);
+            $longitude = $this->extractGPSCoordinate($source['GPSLongitude']);
 
-            $gpsLocation['latitude'] = array_merge(
-                $this->normalizeGPSCoordinate($source['GPSLatitude']),
-                array(strtoupper($source['GPSLatitudeRef']))
+            $gpsLocation = sprintf(
+                '%s,%s',
+                (strtoupper($source['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $latitude,
+                (strtoupper($source['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $longitude
             );
-            $gpsLocation['longitude'] = array_merge(
-                $this->normalizeGPSCoordinate($source['GPSLongitude']),
-                array(strtoupper($source['GPSLongitudeRef']))
-            );
-
-            if (isset($source['GPSAltitudeRef'])) {
-                $altitude = $this->normalizeGPSCoordinate(array($source['GPSAltitude']));
-
-                $gpsLocation['altitude'] = array($altitude[0], (int) $source['GPSAltitudeRef']);
-            }
         }
 
         return array(
@@ -368,19 +360,28 @@ class Native extends AdapterAbstract
     }
 
     /**
-     * Normalize array GPS coordinates
+     * Extract GPS coordinates from components array
      *
-     * @param array $coordinates
-     * @return array
+     * @param array $components
+     * @return float
      */
-    protected function normalizeGPSCoordinate(array $coordinates)
+    protected function extractGPSCoordinate(array $components)
     {
-        return array_map(
-            function ($component) {
-                $parts  = explode('/', $component);
-                return count($parts) === 1 ? $parts[0] : (int) reset($parts) / (int) end($parts);
-            },
-            $coordinates
-        );
+        $components = array_map(array($this, 'normalizeGPSComponent'), $components);
+
+        return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
+    }
+
+    /**
+     * Normalize GPS coordinates components
+     *
+     * @param mixed $component
+     * @return int|float
+     */
+    protected function normalizeGPSComponent($component)
+    {
+        $parts  = explode('/', $component);
+
+        return count($parts) === 1 ? $parts[0] : (int) reset($parts) / (int) end($parts);
     }
 }
