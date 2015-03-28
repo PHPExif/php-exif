@@ -204,7 +204,7 @@ class Native extends AdapterAbstract
      */
     public function getIptcData($file)
     {
-        $size = getimagesize($file, $info);
+        getimagesize($file, $info);
         $arrData = array();
         if (isset($info['APP13'])) {
             $iptc = iptcparse($info['APP13']);
