@@ -31,7 +31,7 @@ class Exiftool implements MapperInterface
     const CAPTIONABSTRACT = 'Caption-Abstract';
     const COLORSPACE = 'ColorSpace';
     const COPYRIGHT = 'Copyright';
-    const CREATIONDATE = 'CreationDate';
+    const CREATEDATE = 'CreateDate';
     const CREDIT = 'Credit';
     const EXPOSURETIME = 'ExposureTime';
     const FILESIZE = 'FileSize';
@@ -65,7 +65,7 @@ class Exiftool implements MapperInterface
         self::CAPTIONABSTRACT => Exif::CAPTION,
         self::COLORSPACE => Exif::COLORSPACE,
         self::COPYRIGHT => Exif::COPYRIGHT,
-        self::CREATIONDATE => Exif::CREATION_DATE,
+        self::CREATEDATE => Exif::CREATION_DATE,
         self::CREDIT => Exif::CREDIT,
         self::EXPOSURETIME => Exif::EXPOSURE,
         self::FILESIZE => Exif::FILESIZE,
@@ -112,7 +112,7 @@ class Exiftool implements MapperInterface
                 case self::APPROXIMATEFOCUSDISTANCE:
                     $value = sprintf('%1$sm', $value);
                     break;
-                case self::CREATIONDATE:
+                case self::CREATEDATE:
                     $value = DateTime::createFromFormat('Y:m:d H:i:s', $value);
                     break;
                 case self::EXPOSURETIME:

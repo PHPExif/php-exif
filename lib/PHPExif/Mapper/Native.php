@@ -40,7 +40,7 @@ class Native implements MapperInterface
     const ISOSPEEDRATINGS = 'ISOSpeedRatings';
     const JOBTITLE = 'jobtitle';
     const KEYWORDS = 'keywords';
-    const MIMETYPE = 'MIMEType';
+    const MIMETYPE = 'MimeType';
     const MODEL = 'Model';
     const ORIENTATION = 'Orientation';
     const SOFTWARE = 'Software';
@@ -58,6 +58,22 @@ class Native implements MapperInterface
     const SECTION_EXIF      = 'EXIF';
     const SECTION_ALL       = 'ANY_TAG';
     const SECTION_IPTC      = 'IPTC';
+
+    /**
+     * A list of section names
+     *
+     * @var array
+     */
+    protected $sections = array(
+        self::SECTION_FILE,
+        self::SECTION_COMPUTED,
+        self::SECTION_IFD0,
+        self::SECTION_THUMBNAIL,
+        self::SECTION_COMMENT,
+        self::SECTION_EXIF,
+        self::SECTION_ALL,
+        self::SECTION_IPTC,
+    );
 
     /**
      * Maps the ExifTool fields to the fields of
@@ -108,7 +124,7 @@ class Native implements MapperInterface
     {
         $mappedData = array();
         foreach ($data as $field => $value) {
-            if (is_string($field) && is_array($value)) {
+            if ($this->isSection($field) && is_array($value)) {
                 $subData = $this->mapRawData($value);
 
                 $mappedData = array_merge($mappedData, $subData);
@@ -152,6 +168,17 @@ class Native implements MapperInterface
         }
 
         return $mappedData;
+    }
+
+    /**
+     * Determines if given field is a section
+     *
+     * @param string $field
+     * @return bool
+     */
+    protected function isSection($field)
+    {
+        return (in_array($field, $this->sections));
     }
 }
 
