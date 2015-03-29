@@ -30,4 +30,3 @@ interface HydratorInterface
      */
     public function hydrate($object, array $data);
 }
-

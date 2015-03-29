@@ -181,4 +181,3 @@ class Native implements MapperInterface
         return (in_array($field, $this->sections));
     }
 }
-

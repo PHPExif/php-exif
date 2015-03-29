@@ -809,4 +809,3 @@ class Exif
         return $this;
     }
 }
-

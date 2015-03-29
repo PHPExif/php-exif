@@ -157,4 +157,3 @@ class Exiftool extends AdapterAbstract
         return $result;
     }
 }
-

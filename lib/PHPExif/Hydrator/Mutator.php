@@ -53,4 +53,3 @@ class Mutator implements HydratorInterface
         return $method;
     }
 }
-

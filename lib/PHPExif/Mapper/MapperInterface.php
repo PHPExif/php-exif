@@ -30,4 +30,3 @@ interface MapperInterface
      */
     public function mapRawData(array $data);
 }
-

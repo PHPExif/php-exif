@@ -237,4 +237,3 @@ class Native extends AdapterAbstract
         return $arrData;
     }
 }
-

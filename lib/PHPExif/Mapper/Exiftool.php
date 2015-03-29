@@ -131,4 +131,3 @@ class Exiftool implements MapperInterface
         return $mappedData;
     }
 }
-
