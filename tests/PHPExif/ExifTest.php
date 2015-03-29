@@ -460,6 +460,8 @@ class ExifTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that the values returned by both adapters are equal
+     *
+     * @group consistency
      */
     public function testAdapterConsistency()
     {
@@ -480,7 +482,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
             // find all Getter methods on the results and compare its output
             foreach ($methods as $method) {
                 $name = $method->getName();
-                if (strpos($name, 'get') !== 0 || $name == 'getRawData') {
+                if (strpos($name, 'get') !== 0 || $name == 'getRawData' || $name == 'getData') {
                     continue;
                 }
                 $this->assertEquals(
