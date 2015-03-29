@@ -130,6 +130,48 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
+     * @covers \PHPExif\Adapter\Exiftool::setNumeric
+     * @covers \PHPExif\Adapter\Exiftool::mapData
+     * @covers \PHPExif\Adapter\Exiftool::extractGPSCoordinates
+     */
+    public function testMapDataCreationDegGPSIsCalculated()
+    {
+        $this->adapter->setNumeric(false);
+        $result = $this->adapter->mapData(
+            array(
+                'GPSLatitude'     => '40 deg 20\' 0.42857" N',
+                'GPSLatitudeRef'  => 'North',
+                'GPSLongitude'    => '20 deg 10\' 2.33333" W',
+                'GPSLongitudeRef' => 'West',
+            )
+        );
+
+        $expected = '40.333452380556,-20.167314813889';
+        $this->assertEquals($expected, $result[\PHPExif\Exif::GPS]);
+    }
+
+    /**
+     * @group exiftool
+     * @covers \PHPExif\Adapter\Exiftool::mapData
+     * @covers \PHPExif\Adapter\Exiftool::extractGPSCoordinates
+     */
+    public function testMapDataCreationNumericGPSIsCalculated()
+    {
+        $result = $this->adapter->mapData(
+            array(
+                'GPSLatitude'     => '40.333452381',
+                'GPSLatitudeRef'  => 'North',
+                'GPSLongitude'    => '20.167314814',
+                'GPSLongitudeRef' => 'West',
+            )
+        );
+
+        $expected = '40.333452381,-20.167314814';
+        $this->assertEquals($expected, $result[\PHPExif\Exif::GPS]);
+    }
+
+    /**
+     * @group exiftool
      * @covers \PHPExif\Adapter\Exiftool::getCliOutput
      */
     public function testGetCliOutput()

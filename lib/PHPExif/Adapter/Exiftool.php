@@ -96,12 +96,15 @@ class Exiftool extends AdapterAbstract
      */
     public function getExifFromFile($file)
     {
+        $gpsFormat = '%d deg %d\' %.4f\"';
+
         $result = $this->getCliOutput(
             sprintf(
-                '%1$s%3$s -j %2$s',
+                '%1$s%3$s -j -c "%4$s" %2$s',
                 $this->getToolPath(),
                 $file,
-                $this->numeric ? ' -n' : ''
+                $this->numeric ? ' -n' : '',
+                $gpsFormat
             )
         );
 
@@ -172,6 +175,20 @@ class Exiftool extends AdapterAbstract
             $caption = $source['Caption-Abstract'];
         }
 
+        $gpsLocation = false;
+        if (isset($source['GPSLatitudeRef']) && isset($source['GPSLongitudeRef'])) {
+            $latitude  = $this->extractGPSCoordinates($source['GPSLatitude']);
+            $longitude = $this->extractGPSCoordinates($source['GPSLongitude']);
+
+            if ($latitude !== false && $longitude !== false) {
+                $gpsLocation = sprintf(
+                    '%s,%s',
+                    (strtoupper($source['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $latitude,
+                    (strtoupper($source['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $longitude
+                );
+            }
+        }
+
         return array(
             Exif::APERTURE              => (!isset($source['Aperture'])) ?
                 false : sprintf('f/%01.1f', $source['Aperture']),
@@ -201,6 +218,26 @@ class Exiftool extends AdapterAbstract
             Exif::TITLE                 => (!isset($source['Title'])) ? false : $source['Title'],
             Exif::VERTICAL_RESOLUTION   => (!isset($source['YResolution'])) ? false : $source['YResolution'],
             Exif::WIDTH                 => (!isset($source['ImageWidth'])) ? false : $source['ImageWidth'],
+            Exif::GPS                   => $gpsLocation,
         );
+    }
+
+    /**
+     * Extract GPS coordinates from formatted string
+     *
+     * @param string $coordinates
+     * @return array
+     */
+    protected function extractGPSCoordinates($coordinates)
+    {
+        if ($this->numeric === true) {
+            return abs((float) $coordinates);
+        } else {
+            if (!preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches)) {
+                return false;
+            }
+
+            return intval($matches[1]) + (intval($matches[2]) / 60) + (floatval($matches[3]) / 3600);
+        }
     }
 }

@@ -401,7 +401,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getJobtitle());
     }
-    
+
     /**
      * @group exif
      * @covers \PHPExif\Exif::getColorSpace
@@ -413,7 +413,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getColorSpace());
     }
-    
+
     /**
      * @group exif
      * @covers \PHPExif\Exif::getMimeType
@@ -425,7 +425,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getMimeType());
     }
-    
+
     /**
      * @group exif
      * @covers \PHPExif\Exif::getFileSize
@@ -444,6 +444,18 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $data[\PHPExif\Exif::ORIENTATION] = $expected;
         $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getOrientation());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getGPS
+     */
+    public function testGetGPS()
+    {
+        $expected = '40.333452380556,-20.167314813889';
+        $data[\PHPExif\Exif::GPS] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getGPS());
     }
 
     /**

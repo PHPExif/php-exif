@@ -204,7 +204,7 @@ class Native extends AdapterAbstract
      */
     public function getIptcData($file)
     {
-        $size = getimagesize($file, $info);
+        getimagesize($file, $info);
         $arrData = array();
         if (isset($info['APP13'])) {
             $iptc = iptcparse($info['APP13']);
@@ -262,6 +262,18 @@ class Native extends AdapterAbstract
             $exposureTime = '1/' . round($denominator);
         }
 
+        $gpsLocation = false;
+        if (isset($source['GPSLatitudeRef']) && isset($source['GPSLongitudeRef'])) {
+            $latitude  = $this->extractGPSCoordinate($source['GPSLatitude']);
+            $longitude = $this->extractGPSCoordinate($source['GPSLongitude']);
+
+            $gpsLocation = sprintf(
+                '%s,%s',
+                (strtoupper($source['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $latitude,
+                (strtoupper($source['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $longitude
+            );
+        }
+
         return array(
             Exif::APERTURE              => (!isset($source[self::SECTION_COMPUTED]['ApertureFNumber'])) ?
                 false : $source[self::SECTION_COMPUTED]['ApertureFNumber'],
@@ -301,6 +313,7 @@ class Native extends AdapterAbstract
             Exif::VERTICAL_RESOLUTION   => $vertResolution,
             Exif::WIDTH                 => (!isset($source[self::SECTION_COMPUTED]['Width'])) ?
                 false : $source[self::SECTION_COMPUTED]['Width'],
+            Exif::GPS                   => $gpsLocation,
         );
 
         $arrMapping = array(
@@ -344,5 +357,31 @@ class Native extends AdapterAbstract
         }
 
         return $mappedData;
+    }
+
+    /**
+     * Extract GPS coordinates from components array
+     *
+     * @param array $components
+     * @return float
+     */
+    protected function extractGPSCoordinate(array $components)
+    {
+        $components = array_map(array($this, 'normalizeGPSComponent'), $components);
+
+        return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
+    }
+
+    /**
+     * Normalize GPS coordinates components
+     *
+     * @param mixed $component
+     * @return int|float
+     */
+    protected function normalizeGPSComponent($component)
+    {
+        $parts  = explode('/', $component);
+
+        return count($parts) === 1 ? $parts[0] : (int) reset($parts) / (int) end($parts);
     }
 }

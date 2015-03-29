@@ -47,6 +47,7 @@ class Exif
     const TITLE                 = 'title';
     const VERTICAL_RESOLUTION   = 'verticalResolution';
     const WIDTH                 = 'width';
+    const GPS                   = 'gps';
 
     /**
      * The mapped EXIF data
@@ -427,7 +428,7 @@ class Exif
 
         return $this->data[self::CREATION_DATE];
     }
-    
+
     /**
      * Returns the colorspace, if it exists
      *
@@ -438,10 +439,10 @@ class Exif
         if (!isset($this->data[self::COLORSPACE])) {
             return false;
         }
-        
+
         return $this->data[self::COLORSPACE];
     }
-    
+
     /**
      * Returns the mimetype, if it exists
      *
@@ -452,13 +453,13 @@ class Exif
         if (!isset($this->data[self::MIMETYPE])) {
             return false;
         }
-        
+
         return $this->data[self::MIMETYPE];
     }
-    
+
     /**
      * Returns the filesize, if it exists
-     * 
+     *
      * @return integer
      */
     public function getFileSize()
@@ -466,7 +467,7 @@ class Exif
         if (!isset($this->data[self::FILESIZE])) {
             return false;
         }
-        
+
         return $this->data[self::FILESIZE];
     }
 
@@ -482,5 +483,19 @@ class Exif
         }
 
         return $this->data[self::ORIENTATION];
+    }
+
+    /**
+     * Returns GPS coordinates, if it exists
+     *
+     * @return array|boolean
+     */
+    public function getGPS()
+    {
+        if (!isset($this->data[self::GPS])) {
+            return false;
+        }
+
+        return $this->data[self::GPS];
     }
 }
