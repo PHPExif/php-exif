@@ -14,97 +14,6 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AdapterAbstract::determinePropertyGetter
-     */
-    public function testDeterminePropertyGetter()
-    {
-        $reflMethod = new \ReflectionMethod('\PHPExif\Adapter\Native', 'determinePropertyGetter');
-        $reflMethod->setAccessible(true);
-
-        $result = $reflMethod->invoke(
-            $this->adapter,
-            'foo'
-        );
-
-        $this->assertEquals('getFoo', $result);
-    }
-
-    /**
-     * @group adapter
-     * @covers \PHPExif\Adapter\AdapterAbstract::determinePropertySetter
-     */
-    public function testDeterminePropertySetter()
-    {
-        $reflMethod = new \ReflectionMethod('\PHPExif\Adapter\Native', 'determinePropertySetter');
-        $reflMethod->setAccessible(true);
-
-        $result = $reflMethod->invoke(
-            $this->adapter,
-            'foo'
-        );
-
-        $this->assertEquals('setFoo', $result);
-    }
-
-    /**
-     * @group adapter
-     * @covers \PHPExif\Adapter\AdapterAbstract::getClassConstantsOfType
-     */
-    public function testGetClassConstantsOfTypeAlwaysReturnsArray()
-    {
-        $result = $this->adapter->getClassConstantsOfType('sections');
-        $this->assertInternalType('array', $result);
-        $result = $this->adapter->getClassConstantsOfType('foo');
-        $this->assertInternalType('array', $result);
-    }
-
-    /**
-     * @group adapter
-     * @covers \PHPExif\Adapter\AdapterAbstract::getClassConstantsOfType
-     */
-    public function testGetClassConstantsOfTypeReturnsCorrectData()
-    {
-        $expected = array(
-            'SECTIONS_AS_ARRAYS' => \PHPExif\Adapter\Native::SECTIONS_AS_ARRAYS,
-            'SECTIONS_FLAT' => \PHPExif\Adapter\Native::SECTIONS_FLAT,
-        );
-        $actual = $this->adapter->getClassConstantsOfType('sections');
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @group adapter
-     * @covers \PHPExif\Adapter\AdapterAbstract::toArray
-     */
-    public function testToArrayReturnsPropertiesWithGetters()
-    {
-        $expected = array(
-            'requiredSections',
-            'includeThumbnail',
-            'sectionsAsArrays',
-        );
-        $result = $this->adapter->toArray();
-        $actual = array_keys($result);
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @group adapter
-     * @covers \PHPExif\Adapter\AdapterAbstract::toArray
-     */
-    public function testToArrayOmmitsPropertiesWithoutGetters()
-    {
-        $expected = array(
-            'iptcMapping',
-        );
-        $result = $this->adapter->toArray();
-        $actual = array_keys($result);
-        $diff = array_diff($expected, $actual);
-        $this->assertEquals($expected, $diff);
-    }
-
-    /**
-     * @group adapter
      * @covers \PHPExif\Adapter\AdapterAbstract::setOptions
      */
     public function testSetOptionsReturnsCurrentInstance()
@@ -127,7 +36,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
         $this->adapter->setOptions($expected);
 
         foreach ($expected as $key => $value) {
-            $reflProp = new \ReflectionProperty('\PHPExif\Adapter\Native', $key);
+            $reflProp = new \ReflectionProperty('\\PHPExif\\Adapter\\Native', $key);
             $reflProp->setAccessible(true);
             $this->assertEquals($value, $reflProp->getValue($this->adapter));
         }
@@ -145,7 +54,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
         $this->adapter->setOptions($expected);
 
         foreach ($expected as $key => $value) {
-            $reflProp = new \ReflectionProperty('\PHPExif\Adapter\Native', $key);
+            $reflProp = new \ReflectionProperty('\\PHPExif\\Adapter\\Native', $key);
             $reflProp->setAccessible(true);
             $this->assertNotEquals($value, $reflProp->getValue($this->adapter));
         }
@@ -166,7 +75,7 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
         $adapter = new \PHPExif\Adapter\Native($expected);
 
         foreach ($expected as $key => $value) {
-            $reflProp = new \ReflectionProperty('\PHPExif\Adapter\Native', $key);
+            $reflProp = new \ReflectionProperty('\\PHPExif\\Adapter\\Native', $key);
             $reflProp->setAccessible(true);
             $this->assertEquals($value, $reflProp->getValue($adapter));
         }

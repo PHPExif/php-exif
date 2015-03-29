@@ -11,6 +11,9 @@
 
 namespace PHPExif\Adapter;
 
+use PHPExif\Mapper\MapperInterface;
+use PHPExif\Hydrator\HydratorInterface;
+
 /**
  * PHP Exif Reader Adapter Abstract
  *
@@ -21,6 +24,21 @@ namespace PHPExif\Adapter;
  */
 abstract class AdapterAbstract implements AdapterInterface
 {
+    /**
+     * @var string
+     */
+    protected $hydratorClass = '\\PHPExif\\Hydrator\\Mutator';
+
+    /**
+     * @var \PHPExif\Mapper\MapperInterface
+     */
+    protected $mapper;
+
+    /**
+     * @var \PHPExif\Hydrator\HydratorInterface
+     */
+    protected $hydrator;
+
     /**
      * Class constructor
      *
@@ -34,6 +52,66 @@ abstract class AdapterAbstract implements AdapterInterface
     }
 
     /**
+     * Mutator for the data mapper
+     *
+     * @param \PHPExif\Mapper\MapperInterface $mapper
+     * @return \PHPExif\Adapter\AdapterInterface;
+     */
+    public function setMapper(MapperInterface $mapper)
+    {
+        $this->mapper = $mapper;
+
+        return $this;
+    }
+
+    /**
+     * Accessor for the data mapper
+     *
+     * @return \PHPExif\Mapper\MapperInterface
+     */
+    public function getMapper()
+    {
+        if (null === $this->mapper) {
+            // lazy load one
+            $mapper = new $this->mapperClass;
+
+            $this->setMapper($mapper);
+        }
+
+        return $this->mapper;
+    }
+
+    /**
+     * Mutator for the hydrator
+     *
+     * @param \PHPExif\Hydrator\HydratorInterface $hydrator
+     * @return \PHPExif\Adapter\AdapterInterface;
+     */
+    public function setHydrator(HydratorInterface $hydrator)
+    {
+        $this->hydrator = $hydrator;
+
+        return $this;
+    }
+
+    /**
+     * Accessor for the data hydrator
+     *
+     * @return \PHPExif\Hydrator\HydratorInterface
+     */
+    public function getHydrator()
+    {
+        if (null === $this->hydrator) {
+            // lazy load one
+            $hydrator = new $this->hydratorClass;
+
+            $this->setHydrator($hydrator);
+        }
+
+        return $this->hydrator;
+    }
+
+    /**
      * Set array of options in the current object
      *
      * @param array $options
@@ -41,81 +119,9 @@ abstract class AdapterAbstract implements AdapterInterface
      */
     public function setOptions(array $options)
     {
-        foreach ($options as $property => $value) {
-            $setter = $this->determinePropertySetter($property);
-            if (method_exists($this, $setter)) {
-                $this->$setter($value);
-            }
-        }
+        $hydrator = $this->getHydrator();
+        $hydrator->hydrate($this, $options);
 
         return $this;
-    }
-
-    /**
-     * Detemines the name of the getter method for given property name
-     *
-     * @param string $property  The property to determine the getter for
-     * @return string   The name of the getter method
-     */
-    protected function determinePropertyGetter($property)
-    {
-        $method = 'get' . ucfirst($property);
-        return $method;
-    }
-
-    /**
-     * Detemines the name of the setter method for given property name
-     *
-     * @param string $property  The property to determine the setter for
-     * @return string   The name of the setter method
-     */
-    protected function determinePropertySetter($property)
-    {
-        $method = 'set' . ucfirst($property);
-        return $method;
-    }
-
-    /**
-     * Get a list of the class constants prefixed with given $type
-     *
-     * @param string $type
-     * @return array
-     */
-    public function getClassConstantsOfType($type)
-    {
-        $class = new \ReflectionClass(get_called_class());
-        $constants = $class->getConstants();
-
-        $list = array();
-        $type = strtoupper($type) . '_';
-        foreach ($constants as $key => $value) {
-            if (strpos($key, $type) === 0) {
-                $list[$key] = $value;
-            }
-        }
-        return $list;
-    }
-
-    /**
-     * Returns an array notation of current instance
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        $rc = new \ReflectionClass(get_class($this));
-        $properties = $rc->getProperties();
-        $arrResult = array();
-
-        foreach ($properties as $rp) {
-            /* @var $rp \ReflectionProperty */
-            $getter = $this->determinePropertyGetter($rp->getName());
-            if (!method_exists($this, $getter)) {
-                continue;
-            }
-            $arrResult[$rp->getName()] = $this->$getter();
-        }
-
-        return $arrResult;
     }
 }
