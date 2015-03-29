@@ -323,6 +323,8 @@ class NativeTest extends \PHPUnit_Framework_TestCase
     /**
      * @group native
      * @covers \PHPExif\Adapter\Native::mapData
+     * @covers \PHPExif\Adapter\Native::extractGPSCoordinate
+     * @covers \PHPExif\Adapter\Native::normalizeGPSComponent
      */
     public function testMapDataCreationGPSIsCalculated()
     {

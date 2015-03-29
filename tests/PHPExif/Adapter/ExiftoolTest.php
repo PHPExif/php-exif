@@ -130,7 +130,9 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
+     * @covers \PHPExif\Adapter\Exiftool::setNumeric
      * @covers \PHPExif\Adapter\Exiftool::mapData
+     * @covers \PHPExif\Adapter\Exiftool::extractGPSCoordinates
      */
     public function testMapDataCreationDegGPSIsCalculated()
     {
@@ -151,6 +153,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
     /**
      * @group exiftool
      * @covers \PHPExif\Adapter\Exiftool::mapData
+     * @covers \PHPExif\Adapter\Exiftool::extractGPSCoordinates
      */
     public function testMapDataCreationNumericGPSIsCalculated()
     {
