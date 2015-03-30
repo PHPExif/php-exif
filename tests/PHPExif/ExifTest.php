@@ -133,6 +133,8 @@ class ExifTest extends \PHPUnit_Framework_TestCase
             array('getCredit'),
             array('getSource'),
             array('getJobtitle'),
+            array('getMimeType'),
+            array('getFileSize'),
         );
     }
 
@@ -494,3 +496,4 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         }
     }
 }
+
