@@ -1,4 +1,7 @@
 <?php
+/**
+ * @covers \PHPExif\Adapter\Exiftool::<!public>
+ */
 class ExiftoolTest extends \PHPUnit_Framework_TestCase
 {
     /**

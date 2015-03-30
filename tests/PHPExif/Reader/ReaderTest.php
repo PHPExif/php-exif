@@ -1,4 +1,7 @@
 <?php
+/**
+ * @covers \PHPExif\Reader\Reader::<!public>
+ */
 class ReaderTest extends \PHPUnit_Framework_TestCase
 {
     /**

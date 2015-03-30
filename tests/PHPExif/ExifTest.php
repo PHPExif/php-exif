@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @covers \PHPExif\Exif::<!public>
+ */
 class ExifTest extends \PHPUnit_Framework_TestCase
 {
     /**

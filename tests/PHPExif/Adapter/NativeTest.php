@@ -1,4 +1,7 @@
 <?php
+/**
+ * @covers \PHPExif\Adapter\Native::<!public>
+ */
 class NativeTest extends \PHPUnit_Framework_TestCase
 {
     /**
