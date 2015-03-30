@@ -13,7 +13,7 @@ matrix:
 script:
   - mkdir -p build/logs
   - php vendor/bin/phpunit -c phpunit.xml.dist
-  - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml --strict-coverage
+  - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
   - ./vendor/bin/phpcs --standard=PSR2 ./lib/
 
 before_script:
