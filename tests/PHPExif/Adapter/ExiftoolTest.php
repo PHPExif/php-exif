@@ -62,6 +62,21 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
+     * @covers \PHPExif\Adapter\Exiftool::setNumeric
+     */
+    public function testSetNumericInProperty()
+    {
+        $reflProperty = new \ReflectionProperty('\PHPExif\Adapter\Exiftool', 'numeric');
+        $reflProperty->setAccessible(true);
+
+        $expected = true;
+        $this->adapter->setNumeric($expected);
+
+        $this->assertEquals($expected, $reflProperty->getValue($this->adapter));
+    }
+
+    /**
+     * @group exiftool
      * @covers \PHPExif\Adapter\Exiftool::getExifFromFile
      */
     public function testGetExifFromFile()
