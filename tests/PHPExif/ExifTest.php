@@ -19,6 +19,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exif
+     * @covers \PHPExif\Exif::__construct
      */
     public function testConstructorCallsSetData()
     {
@@ -44,6 +45,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exif
+     * @covers \PHPExif\Exif::getRawData
      */
     public function testGetRawData()
     {
@@ -55,6 +57,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exif
+     * @covers \PHPExif\Exif::setRawData
      */
     public function testSetRawData()
     {
@@ -70,6 +73,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exif
+     * @covers \PHPExif\Exif::getData
      */
     public function testGetData()
     {
@@ -81,6 +85,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exif
+     * @covers \PHPExif\Exif::setData
      */
     public function testSetData()
     {
@@ -97,6 +102,29 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     /**
      *
      * @dataProvider providerUndefinedPropertiesReturnFalse
+     * @covers \PHPExif\Exif::getAperture
+     * @covers \PHPExif\Exif::getIso
+     * @covers \PHPExif\Exif::getExposure
+     * @covers \PHPExif\Exif::getExposureMilliseconds
+     * @covers \PHPExif\Exif::getFocusDistance
+     * @covers \PHPExif\Exif::getWidth
+     * @covers \PHPExif\Exif::getHeight
+     * @covers \PHPExif\Exif::getTitle
+     * @covers \PHPExif\Exif::getCaption
+     * @covers \PHPExif\Exif::getCopyright
+     * @covers \PHPExif\Exif::getKeywords
+     * @covers \PHPExif\Exif::getCamera
+     * @covers \PHPExif\Exif::getHorizontalResolution
+     * @covers \PHPExif\Exif::getVerticalResolution
+     * @covers \PHPExif\Exif::getSoftware
+     * @covers \PHPExif\Exif::getFocalLength
+     * @covers \PHPExif\Exif::getCreationDate
+     * @covers \PHPExif\Exif::getAuthor
+     * @covers \PHPExif\Exif::getCredit
+     * @covers \PHPExif\Exif::getSource
+     * @covers \PHPExif\Exif::getJobtitle
+     * @covers \PHPExif\Exif::getMimeType
+     * @covers \PHPExif\Exif::getFileSize
      * @param string $accessor
      */
     public function testUndefinedPropertiesReturnFalse($accessor)
@@ -442,6 +470,10 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->exif->getFileSize());
     }
 
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getOrientation
+     */
     public function testGetOrientation()
     {
         $expected = 1;
@@ -466,6 +498,29 @@ class ExifTest extends \PHPUnit_Framework_TestCase
      * Test that the values returned by both adapters are equal
      *
      * @group consistency
+     * @covers \PHPExif\Exif::getAperture
+     * @covers \PHPExif\Exif::getIso
+     * @covers \PHPExif\Exif::getExposure
+     * @covers \PHPExif\Exif::getExposureMilliseconds
+     * @covers \PHPExif\Exif::getFocusDistance
+     * @covers \PHPExif\Exif::getWidth
+     * @covers \PHPExif\Exif::getHeight
+     * @covers \PHPExif\Exif::getTitle
+     * @covers \PHPExif\Exif::getCaption
+     * @covers \PHPExif\Exif::getCopyright
+     * @covers \PHPExif\Exif::getKeywords
+     * @covers \PHPExif\Exif::getCamera
+     * @covers \PHPExif\Exif::getHorizontalResolution
+     * @covers \PHPExif\Exif::getVerticalResolution
+     * @covers \PHPExif\Exif::getSoftware
+     * @covers \PHPExif\Exif::getFocalLength
+     * @covers \PHPExif\Exif::getCreationDate
+     * @covers \PHPExif\Exif::getAuthor
+     * @covers \PHPExif\Exif::getCredit
+     * @covers \PHPExif\Exif::getSource
+     * @covers \PHPExif\Exif::getJobtitle
+     * @covers \PHPExif\Exif::getMimeType
+     * @covers \PHPExif\Exif::getFileSize
      */
     public function testAdapterConsistency()
     {
