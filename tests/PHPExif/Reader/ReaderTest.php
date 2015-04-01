@@ -1,8 +1,8 @@
 <?php
 /**
  * @covers \PHPExif\Reader\Reader::<!public>
- * @covers \PHPExif\Reader\ReaderInterface::<public>
- * @covers \PHPExif\Adapter\NoAdapterException::<public>
+ * @covers \PHPExif\Reader\ReaderInterface
+ * @covers \PHPExif\Adapter\NoAdapterException
  */
 class ReaderTest extends \PHPUnit_Framework_TestCase
 {

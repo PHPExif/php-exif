@@ -1,7 +1,7 @@
 <?php
 /**
  * @covers \PHPExif\Adapter\AdapterAbstract::<!public>
- * @covers \PHPExif\Adapter\AdapterInterface::<public>
+ * @covers \PHPExif\Adapter\AdapterInterface
  */
 class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
 {
