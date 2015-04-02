@@ -55,7 +55,7 @@ abstract class AdapterAbstract implements AdapterInterface
      * Mutator for the data mapper
      *
      * @param \PHPExif\Mapper\MapperInterface $mapper
-     * @return \PHPExif\Adapter\AdapterInterface;
+     * @return \PHPExif\Adapter\AdapterInterface
      */
     public function setMapper(MapperInterface $mapper)
     {
@@ -85,7 +85,7 @@ abstract class AdapterAbstract implements AdapterInterface
      * Mutator for the hydrator
      *
      * @param \PHPExif\Hydrator\HydratorInterface $hydrator
-     * @return \PHPExif\Adapter\AdapterInterface;
+     * @return \PHPExif\Adapter\AdapterInterface
      */
     public function setHydrator(HydratorInterface $hydrator)
     {
