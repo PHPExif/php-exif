@@ -72,7 +72,6 @@ class Reader implements ReaderInterface
     public static function factory($type)
     {
         $classname = get_called_class();
-        $adapter = null;
         switch ($type) {
             case self::TYPE_NATIVE:
                 $adapter = new NativeAdapter();
@@ -84,7 +83,6 @@ class Reader implements ReaderInterface
                 throw new \InvalidArgumentException(
                     sprintf('Unknown type "%1$s"', $type)
                 );
-                break;
         }
         return new $classname($adapter);
     }
