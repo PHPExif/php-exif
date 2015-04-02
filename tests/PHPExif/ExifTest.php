@@ -495,6 +495,62 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group exif
+     * @covers \PHPExif\Exif::setAperture
+     * @covers \PHPExif\Exif::setIso
+     * @covers \PHPExif\Exif::setExposure
+     * @covers \PHPExif\Exif::setExposureMilliseconds
+     * @covers \PHPExif\Exif::setFocusDistance
+     * @covers \PHPExif\Exif::setWidth
+     * @covers \PHPExif\Exif::setHeight
+     * @covers \PHPExif\Exif::setTitle
+     * @covers \PHPExif\Exif::setCaption
+     * @covers \PHPExif\Exif::setCopyright
+     * @covers \PHPExif\Exif::setKeywords
+     * @covers \PHPExif\Exif::setCamera
+     * @covers \PHPExif\Exif::setHorizontalResolution
+     * @covers \PHPExif\Exif::setVerticalResolution
+     * @covers \PHPExif\Exif::setSoftware
+     * @covers \PHPExif\Exif::setFocalLength
+     * @covers \PHPExif\Exif::setCreationDate
+     * @covers \PHPExif\Exif::setAuthor
+     * @covers \PHPExif\Exif::setCredit
+     * @covers \PHPExif\Exif::setSource
+     * @covers \PHPExif\Exif::setJobtitle
+     * @covers \PHPExif\Exif::setMimeType
+     * @covers \PHPExif\Exif::setFileSize
+     */
+    public function testMutatorMethodsSetInProperty()
+    {
+        $reflClass = new \ReflectionClass(get_class($this->exif));
+        $constants = $reflClass->getConstants();
+
+        $reflProp = new \ReflectionProperty(get_class($this->exif), 'data');
+        $reflProp->setAccessible(true);
+
+        $expected = 'foo';
+        foreach ($constants as $name => $value) {
+            $setter = 'set' . ucfirst($value);
+
+            switch ($value) {
+                case 'creationdate':
+                    $now = new \DateTime();
+                    $this->exif->$setter($now);
+                    $propertyValue = $reflProp->getValue($this->exif);
+                    $this->assertSame($now, $propertyValue[$value]);
+                    break;
+                case 'focalDistance':
+                    $setter = 'setFocusDistance';
+                default:
+                    $this->exif->$setter($expected);
+                    $propertyValue = $reflProp->getValue($this->exif);
+                    $this->assertEquals($expected, $propertyValue[$value]);
+                    break;
+            }
+        }
+    }
+
+    /**
      * Test that the values returned by both adapters are equal
      *
      * @group consistency

@@ -704,7 +704,7 @@ class Exif
     /**
      * Returns the colorspace, if it exists
      *
-     * @return string
+     * @return string|boolean
      */
     public function getColorSpace()
     {
@@ -731,7 +731,7 @@ class Exif
     /**
      * Returns the mimetype, if it exists
      *
-     * @return string
+     * @return string|boolean
      */
     public function getMimeType()
     {
@@ -758,7 +758,7 @@ class Exif
     /**
      * Returns the filesize, if it exists
      * 
-     * @return int
+     * @return int|boolean
      */
     public function getFileSize()
     {
@@ -785,7 +785,7 @@ class Exif
     /**
      * Returns the orientation, if it exists
      *
-     * @return int
+     * @return int|boolean
      */
     public function getOrientation()
     {
