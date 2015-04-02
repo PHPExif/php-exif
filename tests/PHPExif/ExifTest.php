@@ -125,6 +125,9 @@ class ExifTest extends \PHPUnit_Framework_TestCase
      * @covers \PHPExif\Exif::getJobtitle
      * @covers \PHPExif\Exif::getMimeType
      * @covers \PHPExif\Exif::getFileSize
+     * @covers \PHPExif\Exif::getHeadline
+     * @covers \PHPExif\Exif::getColorSpace
+     * @covers \PHPExif\Exif::getOrientation
      * @param string $accessor
      */
     public function testUndefinedPropertiesReturnFalse($accessor)
@@ -165,6 +168,9 @@ class ExifTest extends \PHPUnit_Framework_TestCase
             array('getJobtitle'),
             array('getMimeType'),
             array('getFileSize'),
+            array('getHeadline'),
+            array('getColorSpace'),
+            array('getOrientation'),
         );
     }
 
@@ -499,7 +505,6 @@ class ExifTest extends \PHPUnit_Framework_TestCase
      * @covers \PHPExif\Exif::setAperture
      * @covers \PHPExif\Exif::setIso
      * @covers \PHPExif\Exif::setExposure
-     * @covers \PHPExif\Exif::setExposureMilliseconds
      * @covers \PHPExif\Exif::setFocusDistance
      * @covers \PHPExif\Exif::setWidth
      * @covers \PHPExif\Exif::setHeight
@@ -519,6 +524,9 @@ class ExifTest extends \PHPUnit_Framework_TestCase
      * @covers \PHPExif\Exif::setJobtitle
      * @covers \PHPExif\Exif::setMimeType
      * @covers \PHPExif\Exif::setFileSize
+     * @covers \PHPExif\Exif::setHeadline
+     * @covers \PHPExif\Exif::setColorSpace
+     * @covers \PHPExif\Exif::setOrientation
      */
     public function testMutatorMethodsSetInProperty()
     {
