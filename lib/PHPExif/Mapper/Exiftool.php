@@ -91,7 +91,7 @@ class Exiftool implements MapperInterface
      * fields for the \PHPExif\Exif class
      *
      * @param array $data
-     * @return void
+     * @return array
      */
     public function mapRawData(array $data)
     {
