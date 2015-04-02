@@ -13,7 +13,6 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\Exiftool::__construct
      */
     public function testMapRawDataImplementsCorrectInterface()
     {
