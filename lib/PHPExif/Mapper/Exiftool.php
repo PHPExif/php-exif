@@ -62,7 +62,6 @@ class Exiftool implements MapperInterface
         self::ARTIST => Exif::AUTHOR,
         self::MODEL => Exif::CAMERA,
         self::CAPTION => Exif::CAPTION,
-        self::CAPTIONABSTRACT => Exif::CAPTION,
         self::COLORSPACE => Exif::COLORSPACE,
         self::COPYRIGHT => Exif::COPYRIGHT,
         self::CREATEDATE => Exif::CREATION_DATE,
@@ -84,6 +83,7 @@ class Exiftool implements MapperInterface
         self::TITLE => Exif::TITLE,
         self::YRESOLUTION => Exif::VERTICAL_RESOLUTION,
         self::IMAGEWIDTH => Exif::WIDTH,
+        self::CAPTIONABSTRACT => Exif::CAPTION,
     );
 
     /**
