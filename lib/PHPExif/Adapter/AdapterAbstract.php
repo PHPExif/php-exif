@@ -42,7 +42,7 @@ abstract class AdapterAbstract implements AdapterInterface
     /**
      * Class constructor
      *
-     * @param array $data Optional array of data to initialize the object with
+     * @param array $options Optional array of data to initialize the object with
      */
     public function __construct(array $options = array())
     {
