@@ -47,6 +47,8 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
         unset($map[\PHPExif\Mapper\Exiftool::CREATEDATE]);
         unset($map[\PHPExif\Mapper\Exiftool::EXPOSURETIME]);
         unset($map[\PHPExif\Mapper\Exiftool::FOCALLENGTH]);
+        unset($map[\PHPExif\Mapper\Exiftool::GPSLATITUDEREF]);
+        unset($map[\PHPExif\Mapper\Exiftool::GPSLONGITUDEREF]);
 
         // create raw data
         $keys = array_keys($map);

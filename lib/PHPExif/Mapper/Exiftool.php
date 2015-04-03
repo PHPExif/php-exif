@@ -50,6 +50,8 @@ class Exiftool implements MapperInterface
     const TITLE = 'Title';
     const XRESOLUTION = 'XResolution';
     const YRESOLUTION = 'YResolution';
+    const GPSLATITUDEREF = 'GPSLatitudeRef';
+    const GPSLONGITUDEREF = 'GPSLongitudeRef';
 
     /**
      * Maps the ExifTool fields to the fields of
@@ -84,7 +86,27 @@ class Exiftool implements MapperInterface
         self::YRESOLUTION => Exif::VERTICAL_RESOLUTION,
         self::IMAGEWIDTH => Exif::WIDTH,
         self::CAPTIONABSTRACT => Exif::CAPTION,
+        self::GPSLATITUDEREF => Exif::GPS,
+        self::GPSLONGITUDEREF => Exif::GPS,
     );
+
+    /**
+     * @var bool
+     */
+    protected $numeric = true;
+
+    /**
+     * Mutator method for the numeric property
+     *
+     * @param bool $numeric
+     * @return \PHPExif\Mapper\Exiftool
+     */
+    public function setNumeric($numeric)
+    {
+        $this->numeric = (bool)$numeric;
+
+        return $this;
+    }
 
     /**
      * Maps the array of raw source data to the correct
@@ -96,6 +118,7 @@ class Exiftool implements MapperInterface
     public function mapRawData(array $data)
     {
         $mappedData = array();
+        $gpsData = array();
         foreach ($data as $field => $value) {
             if (!array_key_exists($field, $this->map)) {
                 // silently ignore unknown fields
@@ -122,12 +145,55 @@ class Exiftool implements MapperInterface
                     $focalLengthParts = explode(' ', $value);
                     $value = (int) reset($focalLengthParts);
                     break;
+                case self::GPSLATITUDEREF:
+                    $gpsData['lat']  = $this->extractGPSCoordinates($value);
+                    break;
+                case self::GPSLONGITUDEREF:
+                    $gpsData['lon']  = $this->extractGPSCoordinates($value);
+                    break;
             }
 
             // set end result
             $mappedData[$key] = $value;
         }
 
+        // add GPS coordinates, if available
+        if (count($gpsData) === 2) {
+            $latitude = $gpsData['lat'];
+            $longitude = $gpsData['lon'];
+
+            if ($latitude !== false && $longitude !== false) {
+                $gpsLocation = sprintf(
+                    '%s,%s',
+                    (strtoupper($data[self::GPSLATITUDEREF][0]) === 'S' ? -1 : 1) * $latitude,
+                    (strtoupper($data[self::GPSLONGITUDEREF][0]) === 'W' ? -1 : 1) * $longitude
+                );
+
+                $key = $this->map[self::GPSLATITUDEREF];
+
+                $mappedData[$key] = $gpsLocation;
+            }
+        }
+
         return $mappedData;
+    }
+
+    /**
+     * Extract GPS coordinates from formatted string
+     *
+     * @param string $coordinates
+     * @return array
+     */
+    protected function extractGPSCoordinates($coordinates)
+    {
+        if ($this->numeric === true) {
+            return abs((float) $coordinates);
+        } else {
+            if (!preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches)) {
+                return false;
+            }
+
+            return intval($matches[1]) + (intval($matches[2]) / 60) + (floatval($matches[3]) / 3600);
+        }
     }
 }

@@ -49,6 +49,8 @@ class Native implements MapperInterface
     const WIDTH = 'Width';
     const XRESOLUTION = 'XResolution';
     const YRESOLUTION = 'YResolution';
+    const GPSLATITUDEREF = 'GPSLatitudeRef';
+    const GPSLONGITUDEREF = 'GPSLongitudeRef';
 
     const SECTION_FILE      = 'FILE';
     const SECTION_COMPUTED  = 'COMPUTED';
@@ -107,6 +109,8 @@ class Native implements MapperInterface
         self::SOFTWARE => Exif::SOFTWARE,
         self::XRESOLUTION => Exif::HORIZONTAL_RESOLUTION,
         self::YRESOLUTION => Exif::VERTICAL_RESOLUTION,
+        self::GPSLATITUDEREF => Exif::GPS,
+        self::GPSLONGITUDEREF => Exif::GPS,
     );
 
     /**
@@ -119,6 +123,7 @@ class Native implements MapperInterface
     public function mapRawData(array $data)
     {
         $mappedData = array();
+        $gpsData = array();
         foreach ($data as $field => $value) {
             if ($this->isSection($field) && is_array($value)) {
                 $subData = $this->mapRawData($value);
@@ -157,10 +162,25 @@ class Native implements MapperInterface
                     $resolutionParts = explode('/', $value);
                     $value = (int)reset($resolutionParts);
                     break;
+                case self::GPSLATITUDEREF:
+                    $gpsData['lat'] = $this->extractGPSCoordinate($value);
+                    break;
+                case self::GPSLONGITUDEREF:
+                    $gpsData['lon'] = $this->extractGPSCoordinate($value);
+                    break;
             }
 
             // set end result
             $mappedData[$key] = $value;
+        }
+
+        if (count($gpsData) === 2) {
+            $gpsLocation = sprintf(
+                '%s,%s',
+                (strtoupper($data[self::GPSLATITUDEREF][0]) === 'S' ? -1 : 1) * $gpsData['lat'],
+                (strtoupper($data[self::GPSLONGITUDEREF][0]) === 'W' ? -1 : 1) * $gpsData['lon']
+            );
+            $mappedData[Exif::GPS] = $gpsLocation;
         }
 
         return $mappedData;
@@ -175,5 +195,31 @@ class Native implements MapperInterface
     protected function isSection($field)
     {
         return (in_array($field, $this->sections));
+    }
+
+    /**
+     * Extract GPS coordinates from components array
+     *
+     * @param array $components
+     * @return float
+     */
+    protected function extractGPSCoordinate(array $components)
+    {
+        $components = array_map(array($this, 'normalizeGPSComponent'), $components);
+
+        return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
+    }
+
+    /**
+     * Normalize GPS coordinates components
+     *
+     * @param mixed $component
+     * @return int|float
+     */
+    protected function normalizeGPSComponent($component)
+    {
+        $parts  = explode('/', $component);
+
+        return count($parts) === 1 ? $parts[0] : (int) reset($parts) / (int) end($parts);
     }
 }

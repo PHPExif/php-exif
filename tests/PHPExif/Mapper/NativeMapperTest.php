@@ -47,6 +47,8 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
         unset($map[\PHPExif\Mapper\Native::FOCALLENGTH]);
         unset($map[\PHPExif\Mapper\Native::XRESOLUTION]);
         unset($map[\PHPExif\Mapper\Native::YRESOLUTION]);
+        unset($map[\PHPExif\Mapper\Native::GPSLATITUDEREF]);
+        unset($map[\PHPExif\Mapper\Native::GPSLONGITUDEREF]);
 
         // create raw data
         $keys = array_keys($map);

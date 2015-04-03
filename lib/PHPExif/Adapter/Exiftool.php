@@ -100,12 +100,15 @@ class Exiftool extends AdapterAbstract
      */
     public function getExifFromFile($file)
     {
+        $gpsFormat = '%d deg %d\' %.4f\"';
+
         $result = $this->getCliOutput(
             sprintf(
-                '%1$s%3$s -j %2$s',
+                '%1$s%3$s -j -c "%4$s" %2$s',
                 $this->getToolPath(),
                 $file,
-                $this->numeric ? ' -n' : ''
+                $this->numeric ? ' -n' : '',
+                $gpsFormat
             )
         );
 
@@ -113,6 +116,7 @@ class Exiftool extends AdapterAbstract
 
         // map the data:
         $mapper = $this->getMapper();
+        $mapper->setNumeric($this->numeric);
         $mappedData = $mapper->mapRawData(reset($data));
 
         // hydrate a new Exif object

@@ -47,6 +47,7 @@ class Exif
     const TITLE                 = 'title';
     const VERTICAL_RESOLUTION   = 'verticalResolution';
     const WIDTH                 = 'width';
+    const GPS                   = 'gps';
 
     /**
      * The mapped EXIF data
@@ -805,6 +806,33 @@ class Exif
     public function setOrientation($value)
     {
         $this->data[self::ORIENTATION] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns GPS coordinates, if it exists
+     *
+     * @return array|boolean
+     */
+    public function getGPS()
+    {
+        if (!isset($this->data[self::GPS])) {
+            return false;
+        }
+
+        return $this->data[self::GPS];
+    }
+
+    /**
+     * Sets the GPS coordinates
+     *
+     * @param array $value
+     * @return \PHPExif\Exif
+     */
+    public function setGPS(array $value)
+    {
+        $this->data[self::GPS] = $value;
 
         return $this;
     }
