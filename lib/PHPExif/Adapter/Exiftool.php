@@ -14,7 +14,6 @@ namespace PHPExif\Adapter;
 use PHPExif\Exif;
 use InvalidArgumentException;
 use RuntimeException;
-use DateTime;
 
 /**
  * PHP Exif Exiftool Reader Adapter
@@ -39,6 +38,11 @@ class Exiftool extends AdapterAbstract
      * @var boolean
      */
     protected $numeric = true;
+
+    /**
+     * @var string
+     */
+    protected $mapperClass = '\\PHPExif\\Mapper\\Exiftool';
 
     /**
      * Setter for the exiftool binary path
@@ -109,8 +113,16 @@ class Exiftool extends AdapterAbstract
         );
 
         $data = json_decode($result, true);
-        $mappedData = $this->mapData(reset($data));
-        $exif = new Exif($mappedData);
+
+        // map the data:
+        $mapper = $this->getMapper();
+        $mapper->setNumeric($this->numeric);
+        $mappedData = $mapper->mapRawData(reset($data));
+
+        // hydrate a new Exif object
+        $exif = new Exif();
+        $hydrator = $this->getHydrator();
+        $hydrator->hydrate($exif, $mappedData);
         $exif->setRawData(reset($data));
 
         return $exif;
@@ -147,97 +159,5 @@ class Exiftool extends AdapterAbstract
         proc_close($process);
 
         return $result;
-    }
-
-    /**
-     * Maps native data to Exif format
-     *
-     * @param array $source
-     * @return array
-     */
-    public function mapData(array $source)
-    {
-        $focalLength = false;
-        if (isset($source['FocalLength'])) {
-            $focalLengthParts = explode(' ', $source['FocalLength']);
-            $focalLength = (int) reset($focalLengthParts);
-        }
-
-        $exposureTime = false;
-        if (isset($source['ExposureTime'])) {
-            $exposureTime = '1/' . round(1 / $source['ExposureTime']);
-        }
-
-        $caption = false;
-        if (isset($source['Caption'])) {
-            $caption = $source['Caption'];
-        } elseif (isset($source['Caption-Abstract'])) {
-            $caption = $source['Caption-Abstract'];
-        }
-
-        $gpsLocation = false;
-        if (isset($source['GPSLatitudeRef']) && isset($source['GPSLongitudeRef'])) {
-            $latitude  = $this->extractGPSCoordinates($source['GPSLatitude']);
-            $longitude = $this->extractGPSCoordinates($source['GPSLongitude']);
-
-            if ($latitude !== false && $longitude !== false) {
-                $gpsLocation = sprintf(
-                    '%s,%s',
-                    (strtoupper($source['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $latitude,
-                    (strtoupper($source['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $longitude
-                );
-            }
-        }
-
-        return array(
-            Exif::APERTURE              => (!isset($source['Aperture'])) ?
-                false : sprintf('f/%01.1f', $source['Aperture']),
-            Exif::AUTHOR                => (!isset($source['Artist'])) ? false : $source['Artist'],
-            Exif::CAMERA                => (!isset($source['Model'])) ? false : $source['Model'],
-            Exif::CAPTION               => $caption,
-            Exif::COLORSPACE            => (!isset($source[Exif::COLORSPACE]) ? false : $source[Exif::COLORSPACE]),
-            Exif::COPYRIGHT             => (!isset($source['Copyright'])) ? false : $source['Copyright'],
-            Exif::CREATION_DATE         => (!isset($source['CreateDate'])) ?
-                false : DateTime::createFromFormat('Y:m:d H:i:s', $source['CreateDate']),
-            Exif::CREDIT                => (!isset($source['Credit'])) ? false : $source['Credit'],
-            Exif::EXPOSURE              => $exposureTime,
-            Exif::FILESIZE              => (!isset($source[Exif::FILESIZE]) ? false : $source[Exif::FILESIZE]),
-            Exif::FOCAL_LENGTH          => $focalLength,
-            Exif::FOCAL_DISTANCE        => (!isset($source['ApproximateFocusDistance'])) ?
-                false : sprintf('%1$sm', $source['ApproximateFocusDistance']),
-            Exif::HEADLINE              => (!isset($source['Headline'])) ? false : $source['Headline'],
-            Exif::HEIGHT                => (!isset($source['ImageHeight'])) ? false : $source['ImageHeight'],
-            Exif::HORIZONTAL_RESOLUTION => (!isset($source['XResolution'])) ? false : $source['XResolution'],
-            Exif::ISO                   => (!isset($source['ISO'])) ? false : $source['ISO'],
-            Exif::JOB_TITLE             => (!isset($source['JobTitle'])) ? false : $source['JobTitle'],
-            Exif::KEYWORDS              => (!isset($source['Keywords'])) ? false : $source['Keywords'],
-            Exif::MIMETYPE              => (!isset($source['MIMEType'])) ? false : $source['MIMEType'],
-            Exif::ORIENTATION           => (!isset($source['Orientation'])) ? false : $source['Orientation'],
-            Exif::SOFTWARE              => (!isset($source['Software'])) ? false : $source['Software'],
-            Exif::SOURCE                => (!isset($source['Source'])) ? false : $source['Source'],
-            Exif::TITLE                 => (!isset($source['Title'])) ? false : $source['Title'],
-            Exif::VERTICAL_RESOLUTION   => (!isset($source['YResolution'])) ? false : $source['YResolution'],
-            Exif::WIDTH                 => (!isset($source['ImageWidth'])) ? false : $source['ImageWidth'],
-            Exif::GPS                   => $gpsLocation,
-        );
-    }
-
-    /**
-     * Extract GPS coordinates from formatted string
-     *
-     * @param string $coordinates
-     * @return array
-     */
-    protected function extractGPSCoordinates($coordinates)
-    {
-        if ($this->numeric === true) {
-            return abs((float) $coordinates);
-        } else {
-            if (!preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches)) {
-                return false;
-            }
-
-            return intval($matches[1]) + (intval($matches[2]) / 60) + (floatval($matches[3]) / 3600);
-        }
     }
 }

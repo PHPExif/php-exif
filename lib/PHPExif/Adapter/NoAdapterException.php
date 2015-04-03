@@ -7,6 +7,7 @@
  * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
  * @category    PHPExif
  * @package     Reader
+ * @codeCoverageIgnore
  */
 
 namespace PHPExif\Adapter;

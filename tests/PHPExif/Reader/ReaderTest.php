@@ -1,4 +1,9 @@
 <?php
+/**
+ * @covers \PHPExif\Reader\Reader::<!public>
+ * @covers \PHPExif\Reader\ReaderInterface
+ * @covers \PHPExif\Adapter\NoAdapterException
+ */
 class ReaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -43,6 +48,21 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
         $reflProperty->setValue($this->reader, $mock);
 
         $this->assertSame($mock, $this->reader->getAdapter());
+    }
+
+    /**
+     * @group reader
+     * @covers \PHPExif\Reader\Reader::getAdapter
+     * @covers \PHPExif\Adapter\NoAdapterException
+     * @expectedException \PHPExif\Adapter\NoAdapterException
+     */
+    public function testGetAdapterThrowsExceptionWhenNoAdapterIsSet()
+    {
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $reflProperty->setAccessible(true);
+        $reflProperty->setValue($this->reader, null);
+
+        $this->reader->getAdapter();
     }
 
     /**
@@ -112,4 +132,30 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\PHPExif\Adapter\Exiftool', $adapter);
     }
 
+    /**
+     * @group reader
+     * @covers \PHPExif\Reader\Reader::getExifFromFile
+     */
+    public function testGetExifFromFileCallsReadMethod()
+    {
+        $mock = $this->getMock(
+            '\\PHPExif\\Reader\\Reader',
+            array('read'),
+            array(),
+            '',
+            false
+        );
+
+        $expected = '/foo/bar/baz';
+        $expectedResult = 'test';
+
+        $mock->expects($this->once())
+            ->method('read')
+            ->with($this->equalTo($expected))
+            ->will($this->returnValue($expectedResult));
+
+        $result = $mock->getExifFromFile($expected);
+        $this->assertEquals($expectedResult, $result);
+    }
 }
+
