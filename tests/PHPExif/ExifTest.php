@@ -128,6 +128,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
      * @covers \PHPExif\Exif::getHeadline
      * @covers \PHPExif\Exif::getColorSpace
      * @covers \PHPExif\Exif::getOrientation
+     * @covers \PHPExif\Exif::getGPS
      * @param string $accessor
      */
     public function testUndefinedPropertiesReturnFalse($accessor)
@@ -171,6 +172,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
             array('getHeadline'),
             array('getColorSpace'),
             array('getOrientation'),
+            array('getGPS'),
         );
     }
 
@@ -527,6 +529,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
      * @covers \PHPExif\Exif::setHeadline
      * @covers \PHPExif\Exif::setColorSpace
      * @covers \PHPExif\Exif::setOrientation
+     * @covers \PHPExif\Exif::setGPS
      */
     public function testMutatorMethodsSetInProperty()
     {
@@ -547,10 +550,14 @@ class ExifTest extends \PHPUnit_Framework_TestCase
                     $propertyValue = $reflProp->getValue($this->exif);
                     $this->assertSame($now, $propertyValue[$value]);
                     break;
+                case 'gps':
+                    $coords = '40.333452380556,-20.167314813889';
+                    $this->exif->$setter($coords);
+                    $propertyValue = $reflProp->getValue($this->exif);
+                    $this->assertEquals($expected, $propertyValue[$value]);
+                    break;
                 case 'focalDistance':
                     $setter = 'setFocusDistance';
-                case 'gps':
-                    break;
                 default:
                     $this->exif->$setter($expected);
                     $propertyValue = $reflProp->getValue($this->exif);
