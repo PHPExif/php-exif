@@ -53,6 +53,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
     /**
      * @group reader
      * @covers \PHPExif\Reader\Reader::getAdapter
+     * @covers \PHPExif\Adapter\NoAdapterException
      * @expectedException \PHPExif\Adapter\NoAdapterException
      */
     public function testGetAdapterThrowsExceptionWhenNoAdapterIsSet()
