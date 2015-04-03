@@ -50,8 +50,8 @@ class Exiftool implements MapperInterface
     const TITLE = 'Title';
     const XRESOLUTION = 'XResolution';
     const YRESOLUTION = 'YResolution';
-    const GPSLATITUDEREF = 'GPSLatitudeRef';
-    const GPSLONGITUDEREF = 'GPSLongitudeRef';
+    const GPSLATITUDE = 'GPSLatitude';
+    const GPSLONGITUDE = 'GPSLongitude';
 
     /**
      * Maps the ExifTool fields to the fields of
@@ -86,8 +86,8 @@ class Exiftool implements MapperInterface
         self::YRESOLUTION => Exif::VERTICAL_RESOLUTION,
         self::IMAGEWIDTH => Exif::WIDTH,
         self::CAPTIONABSTRACT => Exif::CAPTION,
-        self::GPSLATITUDEREF => Exif::GPS,
-        self::GPSLONGITUDEREF => Exif::GPS,
+        self::GPSLATITUDE => Exif::GPS,
+        self::GPSLONGITUDE => Exif::GPS,
     );
 
     /**
@@ -145,10 +145,10 @@ class Exiftool implements MapperInterface
                     $focalLengthParts = explode(' ', $value);
                     $value = (int) reset($focalLengthParts);
                     break;
-                case self::GPSLATITUDEREF:
+                case self::GPSLATITUDE:
                     $gpsData['lat']  = $this->extractGPSCoordinates($value);
                     break;
-                case self::GPSLONGITUDEREF:
+                case self::GPSLONGITUDE:
                     $gpsData['lon']  = $this->extractGPSCoordinates($value);
                     break;
             }
@@ -165,11 +165,11 @@ class Exiftool implements MapperInterface
             if ($latitude !== false && $longitude !== false) {
                 $gpsLocation = sprintf(
                     '%s,%s',
-                    (strtoupper($data[self::GPSLATITUDEREF][0]) === 'S' ? -1 : 1) * $latitude,
-                    (strtoupper($data[self::GPSLONGITUDEREF][0]) === 'W' ? -1 : 1) * $longitude
+                    (strtoupper($data['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $latitude,
+                    (strtoupper($data['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $longitude
                 );
 
-                $key = $this->map[self::GPSLATITUDEREF];
+                $key = $this->map[self::GPSLATITUDE];
 
                 $mappedData[$key] = $gpsLocation;
             }

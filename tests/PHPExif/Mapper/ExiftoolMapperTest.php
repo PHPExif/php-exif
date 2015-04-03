@@ -47,8 +47,8 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
         unset($map[\PHPExif\Mapper\Exiftool::CREATEDATE]);
         unset($map[\PHPExif\Mapper\Exiftool::EXPOSURETIME]);
         unset($map[\PHPExif\Mapper\Exiftool::FOCALLENGTH]);
-        unset($map[\PHPExif\Mapper\Exiftool::GPSLATITUDEREF]);
-        unset($map[\PHPExif\Mapper\Exiftool::GPSLONGITUDEREF]);
+        unset($map[\PHPExif\Mapper\Exiftool::GPSLATITUDE]);
+        unset($map[\PHPExif\Mapper\Exiftool::GPSLONGITUDE]);
 
         // create raw data
         $keys = array_keys($map);
@@ -145,4 +145,46 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(15, reset($mapped));
     }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyFormatsGPSData()
+    {
+        $this->mapper->setNumeric(false);
+        $result = $this->mapper->mapRawData(
+            array(
+                'GPSLatitude'     => '40 deg 20\' 0.42857" N',
+                'GPSLatitudeRef'  => 'North',
+                'GPSLongitude'    => '20 deg 10\' 2.33333" W',
+                'GPSLongitudeRef' => 'West',
+            )
+        );
+
+        $expected = '40.333452380556,-20.167314813889';
+        $this->assertCount(1, $result);
+        $this->assertEquals($expected, reset($result));
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyFormatsNumericGPSData()
+    {
+        $result = $this->mapper->mapRawData(
+            array(
+                'GPSLatitude'     => '40.333452381',
+                'GPSLatitudeRef'  => 'North',
+                'GPSLongitude'    => '20.167314814',
+                'GPSLongitudeRef' => 'West',
+            )
+        );
+
+        $expected = '40.333452381,-20.167314814';
+        $this->assertCount(1, $result);
+        $this->assertEquals($expected, reset($result));
+    }
+    
 }

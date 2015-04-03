@@ -827,10 +827,10 @@ class Exif
     /**
      * Sets the GPS coordinates
      *
-     * @param array $value
+     * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setGPS(array $value)
+    public function setGPS($value)
     {
         $this->data[self::GPS] = $value;
 

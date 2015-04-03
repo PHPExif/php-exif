@@ -552,9 +552,10 @@ class ExifTest extends \PHPUnit_Framework_TestCase
                     break;
                 case 'gps':
                     $coords = '40.333452380556,-20.167314813889';
+                    $setter = 'setGPS';
                     $this->exif->$setter($coords);
                     $propertyValue = $reflProp->getValue($this->exif);
-                    $this->assertEquals($expected, $propertyValue[$value]);
+                    $this->assertEquals($coords, $propertyValue[$value]);
                     break;
                 case 'focalDistance':
                     $setter = 'setFocusDistance';

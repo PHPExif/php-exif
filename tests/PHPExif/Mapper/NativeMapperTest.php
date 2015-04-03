@@ -47,8 +47,8 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
         unset($map[\PHPExif\Mapper\Native::FOCALLENGTH]);
         unset($map[\PHPExif\Mapper\Native::XRESOLUTION]);
         unset($map[\PHPExif\Mapper\Native::YRESOLUTION]);
-        unset($map[\PHPExif\Mapper\Native::GPSLATITUDEREF]);
-        unset($map[\PHPExif\Mapper\Native::GPSLONGITUDEREF]);
+        unset($map[\PHPExif\Mapper\Native::GPSLATITUDE]);
+        unset($map[\PHPExif\Mapper\Native::GPSLONGITUDE]);
 
         // create raw data
         $keys = array_keys($map);
@@ -167,5 +167,24 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
             \PHPExif\Mapper\Native::HEADLINE
         );
         $this->assertEquals($expected, $keys);
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
+    public function testMapRawDataCorrectlyFormatsGPSData()
+    {
+        $result = $this->mapper->mapRawData(
+            array(
+                'GPSLatitude'     => array('40/1', '20/1', '15/35'),
+                'GPSLatitudeRef'  => 'N',
+                'GPSLongitude'    => array('20/1', '10/1', '35/15'),
+                'GPSLongitudeRef' => 'W',
+            )
+        );
+
+        $expected = '40.333452380952,-20.167314814815';
+        $this->assertEquals($expected, reset($result));
     }
 }

@@ -49,8 +49,8 @@ class Native implements MapperInterface
     const WIDTH = 'Width';
     const XRESOLUTION = 'XResolution';
     const YRESOLUTION = 'YResolution';
-    const GPSLATITUDEREF = 'GPSLatitudeRef';
-    const GPSLONGITUDEREF = 'GPSLongitudeRef';
+    const GPSLATITUDE = 'GPSLatitude';
+    const GPSLONGITUDE = 'GPSLongitude';
 
     const SECTION_FILE      = 'FILE';
     const SECTION_COMPUTED  = 'COMPUTED';
@@ -109,8 +109,8 @@ class Native implements MapperInterface
         self::SOFTWARE => Exif::SOFTWARE,
         self::XRESOLUTION => Exif::HORIZONTAL_RESOLUTION,
         self::YRESOLUTION => Exif::VERTICAL_RESOLUTION,
-        self::GPSLATITUDEREF => Exif::GPS,
-        self::GPSLONGITUDEREF => Exif::GPS,
+        self::GPSLATITUDE => Exif::GPS,
+        self::GPSLONGITUDE => Exif::GPS,
     );
 
     /**
@@ -162,10 +162,10 @@ class Native implements MapperInterface
                     $resolutionParts = explode('/', $value);
                     $value = (int)reset($resolutionParts);
                     break;
-                case self::GPSLATITUDEREF:
+                case self::GPSLATITUDE:
                     $gpsData['lat'] = $this->extractGPSCoordinate($value);
                     break;
-                case self::GPSLONGITUDEREF:
+                case self::GPSLONGITUDE:
                     $gpsData['lon'] = $this->extractGPSCoordinate($value);
                     break;
             }
@@ -177,8 +177,8 @@ class Native implements MapperInterface
         if (count($gpsData) === 2) {
             $gpsLocation = sprintf(
                 '%s,%s',
-                (strtoupper($data[self::GPSLATITUDEREF][0]) === 'S' ? -1 : 1) * $gpsData['lat'],
-                (strtoupper($data[self::GPSLONGITUDEREF][0]) === 'W' ? -1 : 1) * $gpsData['lon']
+                (strtoupper($data['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $gpsData['lat'],
+                (strtoupper($data['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $gpsData['lon']
             );
             $mappedData[Exif::GPS] = $gpsLocation;
         }
