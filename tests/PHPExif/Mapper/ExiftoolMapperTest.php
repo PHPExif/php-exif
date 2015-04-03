@@ -14,7 +14,7 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
     /**
      * @group mapper
      */
-    public function testMapRawDataImplementsCorrectInterface()
+    public function testClassImplementsCorrectInterface()
     {
         $this->assertInstanceOf('\\PHPExif\\Mapper\\MapperInterface', $this->mapper);
     }
