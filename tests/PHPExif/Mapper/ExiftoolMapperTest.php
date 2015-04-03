@@ -186,5 +186,54 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $result);
         $this->assertEquals($expected, reset($result));
     }
-    
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyIgnoresIncorrectGPSData()
+    {
+        $this->mapper->setNumeric(false);
+        $result = $this->mapper->mapRawData(
+            array(
+                'GPSLatitude'     => '40.333452381',
+                'GPSLatitudeRef'  => 'North',
+                'GPSLongitude'    => '20.167314814',
+                'GPSLongitudeRef' => 'West',
+            )
+        );
+
+        $this->assertCount(0, $result);
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyIgnoresIncompleteGPSData()
+    {
+        $result = $this->mapper->mapRawData(
+            array(
+                'GPSLatitude'     => '40.333452381',
+                'GPSLatitudeRef'  => 'North',
+            )
+        );
+
+        $this->assertCount(0, $result);
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::setNumeric
+     */
+    public function testSetNumericInProperty()
+    {
+        $reflProperty = new \ReflectionProperty(get_class($this->mapper), 'numeric');
+        $reflProperty->setAccessible(true);
+
+        $expected = true;
+        $this->mapper->setNumeric($expected);
+
+        $this->assertEquals($expected, $reflProperty->getValue($this->mapper));
+    }
 }

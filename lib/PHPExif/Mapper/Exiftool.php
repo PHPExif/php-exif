@@ -172,7 +172,11 @@ class Exiftool implements MapperInterface
                 $key = $this->map[self::GPSLATITUDE];
 
                 $mappedData[$key] = $gpsLocation;
+            } else {
+                unset($mappedData[$this->map[self::GPSLATITUDE]]);
             }
+        } else {
+            unset($mappedData[$this->map[self::GPSLATITUDE]]);
         }
 
         return $mappedData;
