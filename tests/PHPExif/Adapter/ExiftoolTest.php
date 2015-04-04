@@ -1,4 +1,7 @@
 <?php
+/**
+ * @covers \PHPExif\Adapter\Exiftool::<!public>
+ */
 class ExiftoolTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -62,6 +65,21 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exiftool
+     * @covers \PHPExif\Adapter\Exiftool::setNumeric
+     */
+    public function testSetNumericInProperty()
+    {
+        $reflProperty = new \ReflectionProperty('\PHPExif\Adapter\Exiftool', 'numeric');
+        $reflProperty->setAccessible(true);
+
+        $expected = true;
+        $this->adapter->setNumeric($expected);
+
+        $this->assertEquals($expected, $reflProperty->getValue($this->adapter));
+    }
+
+    /**
+     * @group exiftool
      * @covers \PHPExif\Adapter\Exiftool::getExifFromFile
      */
     public function testGetExifFromFile()
@@ -71,103 +89,6 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\PHPExif\Exif', $result);
         $this->assertInternalType('array', $result->getRawData());
         $this->assertNotEmpty($result->getRawData());
-    }
-
-    /**
-     * @group exiftool
-     * @covers \PHPExif\Adapter\Exiftool::mapData
-     */
-    public function testMapDataReturnsArray()
-    {
-        $this->assertInternalType('array', $this->adapter->mapData(array()));
-    }
-
-    /**
-     * @group exiftool
-     * @covers \PHPExif\Adapter\Exiftool::mapData
-     */
-    public function testMapDataReturnsArrayFalseValuesIfUndefined()
-    {
-        $result = $this->adapter->mapData(array());
-
-        foreach ($result as $value) {
-            $this->assertFalse($value);
-        }
-    }
-
-    /**
-     * @group exiftool
-     * @covers \PHPExif\Adapter\Exiftool::mapData
-     */
-    public function testMapDataResultHasAllKeys()
-    {
-        $reflClass = new \ReflectionClass('\PHPExif\Exif');
-        $constants = $reflClass->getConstants();
-        $result = $this->adapter->mapData(array());
-        $keys = array_keys($result);
-
-        $diff = array_diff($constants, $keys);
-
-        $this->assertEquals(0, count($diff));
-    }
-
-    /**
-     * @group exiftool
-     * @covers \PHPExif\Adapter\Exiftool::mapData
-     */
-    public function testMapDataFocalLengthIsCalculated()
-    {
-        $focalLength =  '18 mm.';
-
-        $result = $this->adapter->mapData(
-            array(
-                'FocalLength' => $focalLength,
-            )
-        );
-
-        $this->assertEquals(18, $result[\PHPExif\Exif::FOCAL_LENGTH]);
-    }
-
-    /**
-     * @group exiftool
-     * @covers \PHPExif\Adapter\Exiftool::setNumeric
-     * @covers \PHPExif\Adapter\Exiftool::mapData
-     * @covers \PHPExif\Adapter\Exiftool::extractGPSCoordinates
-     */
-    public function testMapDataCreationDegGPSIsCalculated()
-    {
-        $this->adapter->setNumeric(false);
-        $result = $this->adapter->mapData(
-            array(
-                'GPSLatitude'     => '40 deg 20\' 0.42857" N',
-                'GPSLatitudeRef'  => 'North',
-                'GPSLongitude'    => '20 deg 10\' 2.33333" W',
-                'GPSLongitudeRef' => 'West',
-            )
-        );
-
-        $expected = '40.333452380556,-20.167314813889';
-        $this->assertEquals($expected, $result[\PHPExif\Exif::GPS]);
-    }
-
-    /**
-     * @group exiftool
-     * @covers \PHPExif\Adapter\Exiftool::mapData
-     * @covers \PHPExif\Adapter\Exiftool::extractGPSCoordinates
-     */
-    public function testMapDataCreationNumericGPSIsCalculated()
-    {
-        $result = $this->adapter->mapData(
-            array(
-                'GPSLatitude'     => '40.333452381',
-                'GPSLatitudeRef'  => 'North',
-                'GPSLongitude'    => '20.167314814',
-                'GPSLongitudeRef' => 'West',
-            )
-        );
-
-        $expected = '40.333452381,-20.167314814';
-        $this->assertEquals($expected, $result[\PHPExif\Exif::GPS]);
     }
 
     /**

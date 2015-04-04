@@ -1,4 +1,4 @@
-# [PHPExif v0.3.0](http://github.com/Miljar/php-exif) [![Build Status](https://travis-ci.org/Miljar/php-exif.png?branch=master)](https://travis-ci.org/Miljar/php-exif) [![Coverage Status](https://coveralls.io/repos/Miljar/php-exif/badge.svg?branch=master)](https://coveralls.io/r/Miljar/php-exif?branch=master) [![Code Climate](https://codeclimate.com/github/Miljar/php-exif/badges/gpa.svg)](https://codeclimate.com/github/Miljar/php-exif)
+# [PHPExif v0.4.0](http://github.com/Miljar/php-exif) [![Build Status](https://travis-ci.org/Miljar/php-exif.png?branch=master)](https://travis-ci.org/Miljar/php-exif) [![Coverage Status](https://coveralls.io/repos/Miljar/php-exif/badge.svg?branch=master)](https://coveralls.io/r/Miljar/php-exif?branch=master) [![Code Climate](https://codeclimate.com/github/Miljar/php-exif/badges/gpa.svg)](https://codeclimate.com/github/Miljar/php-exif)
 
 PHPExif is a library which gives you easy access to the EXIF meta-data of an image.
 
@@ -12,7 +12,7 @@ PHPExif serves as a wrapper around some native or CLI tools which access this EX
 ## Installation (composer)
 
 ```json
-"miljar/php-exif": "~0.3.0"
+"miljar/php-exif": "~0.4.0"
 ```
 
 
@@ -27,6 +27,7 @@ PHPExif serves as a wrapper around some native or CLI tools which access this EX
 Please submit all pull requests against the correct branch. The release branch for the next version is a branch with the same name as the next version. Bugfixes should go in the master branch, unless they are for code in a new release branch.
 
 PHPExif is written according the [PSR-0/1/2 standards](http://www.php-fig.org/). When submitting code, please make sure it is conform these standards.
+We aim to have all functionality covered by unit tests. When submitting code, you are strongly encouraged to unit test your code and to keep the level of code coverage on par with the current level.
 
 All contributions are welcomed and greatly appreciated.
 
@@ -40,6 +41,7 @@ Have a bug or a feature request? [Please open a new issue](https://github.com/Mi
 * [Ingewikkeld](https://github.com/Ingewikkeld)
 * [Christophe Singer](https://github.com/wasinger)
 * [Hanov Ruslan](https://github.com/hanovruslan)
+* [Julian Gutierrez](https://github.com/juliangut)
 
 ## License
 

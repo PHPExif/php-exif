@@ -134,6 +134,19 @@ class Exif
     }
 
     /**
+     * Sets the Aperture F-number
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setAperture($value)
+    {
+        $this->data[self::APERTURE] = $value;
+
+        return $this;
+    }
+
+    /**
      * Returns the Author
      *
      * @return string|boolean
@@ -145,6 +158,19 @@ class Exif
         }
 
         return $this->data[self::AUTHOR];
+    }
+
+    /**
+     * Sets the Author
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setAuthor($value)
+    {
+        $this->data[self::AUTHOR] = $value;
+
+        return $this;
     }
 
     /**
@@ -162,6 +188,19 @@ class Exif
     }
 
     /**
+     * Sets the Headline
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setHeadline($value)
+    {
+        $this->data[self::HEADLINE] = $value;
+
+        return $this;
+    }
+
+    /**
      * Returns the Credit
      *
      * @return string|boolean
@@ -173,6 +212,19 @@ class Exif
         }
 
         return $this->data[self::CREDIT];
+    }
+
+    /**
+     * Sets the Credit
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setCredit($value)
+    {
+        $this->data[self::CREDIT] = $value;
+
+        return $this;
     }
 
     /**
@@ -190,6 +242,19 @@ class Exif
     }
 
     /**
+     * Sets the Source
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setSource($value)
+    {
+        $this->data[self::SOURCE] = $value;
+
+        return $this;
+    }
+
+    /**
      * Returns the Jobtitle
      *
      * @return string|boolean
@@ -201,6 +266,19 @@ class Exif
         }
 
         return $this->data[self::JOB_TITLE];
+    }
+
+    /**
+     * Sets the Jobtitle
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setJobtitle($value)
+    {
+        $this->data[self::JOB_TITLE] = $value;
+
+        return $this;
     }
 
     /**
@@ -218,6 +296,19 @@ class Exif
     }
 
     /**
+     * Sets the ISO
+     *
+     * @param int $value
+     * @return \PHPExif\Exif
+     */
+    public function setIso($value)
+    {
+        $this->data[self::ISO] = $value;
+
+        return $this;
+    }
+
+    /**
      * Returns the Exposure
      *
      * @return string|boolean
@@ -229,6 +320,19 @@ class Exif
         }
 
         return $this->data[self::EXPOSURE];
+    }
+
+    /**
+     * Sets the Exposure
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setExposure($value)
+    {
+        $this->data[self::EXPOSURE] = $value;
+
+        return $this;
     }
 
     /**
@@ -262,6 +366,19 @@ class Exif
     }
 
     /**
+     * Sets the focus distance
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setFocusDistance($value)
+    {
+        $this->data[self::FOCAL_DISTANCE] = $value;
+
+        return $this;
+    }
+
+    /**
      * Returns the width in pixels, if it exists
      *
      * @return int|boolean
@@ -273,6 +390,19 @@ class Exif
         }
 
         return $this->data[self::WIDTH];
+    }
+
+    /**
+     * Sets the width
+     *
+     * @param int $value
+     * @return \PHPExif\Exif
+     */
+    public function setWidth($value)
+    {
+        $this->data[self::WIDTH] = $value;
+
+        return $this;
     }
 
     /**
@@ -290,6 +420,19 @@ class Exif
     }
 
     /**
+     * Sets the height
+     *
+     * @param int $value
+     * @return \PHPExif\Exif
+     */
+    public function setHeight($value)
+    {
+        $this->data[self::HEIGHT] = $value;
+
+        return $this;
+    }
+
+    /**
      * Returns the title, if it exists
      *
      * @return string|boolean
@@ -301,6 +444,19 @@ class Exif
         }
 
         return $this->data[self::TITLE];
+    }
+
+    /**
+     * Sets the title
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setTitle($value)
+    {
+        $this->data[self::TITLE] = $value;
+
+        return $this;
     }
 
     /**
@@ -318,6 +474,19 @@ class Exif
     }
 
     /**
+     * Sets the caption
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setCaption($value)
+    {
+        $this->data[self::CAPTION] = $value;
+
+        return $this;
+    }
+
+    /**
      * Returns the copyright, if it exists
      *
      * @return string|boolean
@@ -329,6 +498,19 @@ class Exif
         }
 
         return $this->data[self::COPYRIGHT];
+    }
+
+    /**
+     * Sets the copyright
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setCopyright($value)
+    {
+        $this->data[self::COPYRIGHT] = $value;
+
+        return $this;
     }
 
     /**
@@ -346,6 +528,19 @@ class Exif
     }
 
     /**
+     * Sets the keywords
+     *
+     * @param array $value
+     * @return \PHPExif\Exif
+     */
+    public function setKeywords($value)
+    {
+        $this->data[self::KEYWORDS] = $value;
+
+        return $this;
+    }
+
+    /**
      * Returns the camera, if it exists
      *
      * @return string|boolean
@@ -357,6 +552,19 @@ class Exif
         }
 
         return $this->data[self::CAMERA];
+    }
+
+    /**
+     * Sets the camera
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setCamera($value)
+    {
+        $this->data[self::CAMERA] = $value;
+
+        return $this;
     }
 
     /**
@@ -374,6 +582,19 @@ class Exif
     }
 
     /**
+     * Sets the horizontal resolution in DPI
+     *
+     * @param int $value
+     * @return \PHPExif\Exif
+     */
+    public function setHorizontalResolution($value)
+    {
+        $this->data[self::HORIZONTAL_RESOLUTION] = $value;
+
+        return $this;
+    }
+
+    /**
      * Returns the vertical resolution in DPI, if it exists
      *
      * @return int|boolean
@@ -385,6 +606,19 @@ class Exif
         }
 
         return $this->data[self::VERTICAL_RESOLUTION];
+    }
+
+    /**
+     * Sets the vertical resolution in DPI
+     *
+     * @param int $value
+     * @return \PHPExif\Exif
+     */
+    public function setVerticalResolution($value)
+    {
+        $this->data[self::VERTICAL_RESOLUTION] = $value;
+
+        return $this;
     }
 
     /**
@@ -402,6 +636,19 @@ class Exif
     }
 
     /**
+     * Sets the software
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setSoftware($value)
+    {
+        $this->data[self::SOFTWARE] = trim($value);
+
+        return $this;
+    }
+
+    /**
      * Returns the focal length in mm, if it exists
      *
      * @return float|boolean
@@ -413,6 +660,19 @@ class Exif
         }
 
         return $this->data[self::FOCAL_LENGTH];
+    }
+
+    /**
+     * Sets the focal length in mm
+     *
+     * @param float $value
+     * @return \PHPExif\Exif
+     */
+    public function setFocalLength($value)
+    {
+        $this->data[self::FOCAL_LENGTH] = $value;
+
+        return $this;
     }
 
     /**
@@ -430,51 +690,103 @@ class Exif
     }
 
     /**
+     * Sets the creation datetime
+     *
+     * @param \DateTime $value
+     * @return \PHPExif\Exif
+     */
+    public function setCreationDate(\DateTime $value)
+    {
+        $this->data[self::CREATION_DATE] = $value;
+
+        return $this;
+    }
+    
+    /**
      * Returns the colorspace, if it exists
      *
-     * @return string
+     * @return string|boolean
      */
     public function getColorSpace()
     {
         if (!isset($this->data[self::COLORSPACE])) {
             return false;
         }
-
+        
         return $this->data[self::COLORSPACE];
     }
 
     /**
+     * Sets the colorspace
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setColorSpace($value)
+    {
+        $this->data[self::COLORSPACE] = $value;
+
+        return $this;
+    }
+    
+    /**
      * Returns the mimetype, if it exists
      *
-     * @return string
+     * @return string|boolean
      */
     public function getMimeType()
     {
         if (!isset($this->data[self::MIMETYPE])) {
             return false;
         }
-
+        
         return $this->data[self::MIMETYPE];
     }
 
     /**
-     * Returns the filesize, if it exists
+     * Sets the mimetype
      *
-     * @return integer
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setMimeType($value)
+    {
+        $this->data[self::MIMETYPE] = $value;
+
+        return $this;
+    }
+    
+    /**
+     * Returns the filesize, if it exists
+     * 
+     * @return int|boolean
      */
     public function getFileSize()
     {
         if (!isset($this->data[self::FILESIZE])) {
             return false;
         }
-
+        
         return $this->data[self::FILESIZE];
+    }
+
+    /**
+     * Sets the filesize
+     *
+     * @param int $value
+     * @return \PHPExif\Exif
+     */
+    public function setFileSize($value)
+    {
+        $this->data[self::FILESIZE] = $value;
+
+        return $this;
     }
 
     /**
      * Returns the orientation, if it exists
      *
-     * @return integer
+     * @return int|boolean
      */
     public function getOrientation()
     {
@@ -483,6 +795,19 @@ class Exif
         }
 
         return $this->data[self::ORIENTATION];
+    }
+
+    /**
+     * Sets the orientation
+     *
+     * @param int $value
+     * @return \PHPExif\Exif
+     */
+    public function setOrientation($value)
+    {
+        $this->data[self::ORIENTATION] = $value;
+
+        return $this;
     }
 
     /**
@@ -497,5 +822,18 @@ class Exif
         }
 
         return $this->data[self::GPS];
+    }
+
+    /**
+     * Sets the GPS coordinates
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setGPS($value)
+    {
+        $this->data[self::GPS] = $value;
+
+        return $this;
     }
 }
