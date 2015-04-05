@@ -103,7 +103,7 @@ class Exiftool implements MapperInterface
      */
     public function setNumeric($numeric)
     {
-        $this->numeric = (bool)$numeric;
+        $this->numeric = (bool) $numeric;
 
         return $this;
     }

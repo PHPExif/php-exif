@@ -346,9 +346,9 @@ class Exif
             return false;
         }
 
-        $exposureParts  = explode('/', $this->data[self::EXPOSURE]);
+        $exposureParts = explode('/', $this->data[self::EXPOSURE]);
 
-        return (int)reset($exposureParts) / (int)end($exposureParts);
+        return (int) reset($exposureParts) / (int) end($exposureParts);
     }
 
     /**

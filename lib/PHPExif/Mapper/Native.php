@@ -154,13 +154,13 @@ class Native implements MapperInterface
                     $value = '1/' . round($denominator);
                     break;
                 case self::FOCALLENGTH:
-                    $parts  = explode('/', $value);
-                    $value = (int)reset($parts) / (int)end($parts);
+                    $parts = explode('/', $value);
+                    $value = (int) reset($parts) / (int) end($parts);
                     break;
                 case self::XRESOLUTION:
                 case self::YRESOLUTION:
                     $resolutionParts = explode('/', $value);
-                    $value = (int)reset($resolutionParts);
+                    $value = (int) reset($resolutionParts);
                     break;
                 case self::GPSLATITUDE:
                     $gpsData['lat'] = $this->extractGPSCoordinate($value);
@@ -218,7 +218,7 @@ class Native implements MapperInterface
      */
     protected function normalizeGPSComponent($component)
     {
-        $parts  = explode('/', $component);
+        $parts = explode('/', $component);
 
         return count($parts) === 1 ? $parts[0] : (int) reset($parts) / (int) end($parts);
     }

@@ -70,7 +70,7 @@ class Native extends AdapterAbstract
      *
      * @var array
      */
-    protected $iptcMapping  = array(
+    protected $iptcMapping = array(
         'title'     => '2#005',
         'keywords'  => '2#025',
         'copyright' => '2#116',
