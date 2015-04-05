@@ -40,6 +40,11 @@ abstract class AdapterAbstract implements AdapterInterface
     protected $hydrator;
 
     /**
+     * @var string
+     */
+    protected $mapperClass = '';
+
+    /**
      * Class constructor
      *
      * @param array $options Optional array of data to initialize the object with
