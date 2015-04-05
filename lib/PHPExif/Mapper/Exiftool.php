@@ -24,34 +24,34 @@ use DateTime;
  */
 class Exiftool implements MapperInterface
 {
-    const APERTURE = 'Aperture';
+    const APERTURE                 = 'Aperture';
     const APPROXIMATEFOCUSDISTANCE = 'ApproximateFocusDistance';
-    const ARTIST = 'Artist';
-    const CAPTION = 'Caption';
-    const CAPTIONABSTRACT = 'Caption-Abstract';
-    const COLORSPACE = 'ColorSpace';
-    const COPYRIGHT = 'Copyright';
-    const CREATEDATE = 'CreateDate';
-    const CREDIT = 'Credit';
-    const EXPOSURETIME = 'ExposureTime';
-    const FILESIZE = 'FileSize';
-    const FOCALLENGTH = 'FocalLength';
-    const HEADLINE = 'Headline';
-    const IMAGEHEIGHT = 'ImageHeight';
-    const IMAGEWIDTH = 'ImageWidth';
-    const ISO = 'ISO';
-    const JOBTITLE = 'JobTitle';
-    const KEYWORDS = 'Keywords';
-    const MIMETYPE = 'MIMEType';
-    const MODEL = 'Model';
-    const ORIENTATION = 'Orientation';
-    const SOFTWARE = 'Software';
-    const SOURCE = 'Source';
-    const TITLE = 'Title';
-    const XRESOLUTION = 'XResolution';
-    const YRESOLUTION = 'YResolution';
-    const GPSLATITUDE = 'GPSLatitude';
-    const GPSLONGITUDE = 'GPSLongitude';
+    const ARTIST                   = 'Artist';
+    const CAPTION                  = 'Caption';
+    const CAPTIONABSTRACT          = 'Caption-Abstract';
+    const COLORSPACE               = 'ColorSpace';
+    const COPYRIGHT                = 'Copyright';
+    const CREATEDATE               = 'CreateDate';
+    const CREDIT                   = 'Credit';
+    const EXPOSURETIME             = 'ExposureTime';
+    const FILESIZE                 = 'FileSize';
+    const FOCALLENGTH              = 'FocalLength';
+    const HEADLINE                 = 'Headline';
+    const IMAGEHEIGHT              = 'ImageHeight';
+    const IMAGEWIDTH               = 'ImageWidth';
+    const ISO                      = 'ISO';
+    const JOBTITLE                 = 'JobTitle';
+    const KEYWORDS                 = 'Keywords';
+    const MIMETYPE                 = 'MIMEType';
+    const MODEL                    = 'Model';
+    const ORIENTATION              = 'Orientation';
+    const SOFTWARE                 = 'Software';
+    const SOURCE                   = 'Source';
+    const TITLE                    = 'Title';
+    const XRESOLUTION              = 'XResolution';
+    const YRESOLUTION              = 'YResolution';
+    const GPSLATITUDE              = 'GPSLatitude';
+    const GPSLONGITUDE             = 'GPSLongitude';
 
     /**
      * Maps the ExifTool fields to the fields of
@@ -60,34 +60,34 @@ class Exiftool implements MapperInterface
      * @var array
      */
     protected $map = array(
-        self::APERTURE => Exif::APERTURE,
-        self::ARTIST => Exif::AUTHOR,
-        self::MODEL => Exif::CAMERA,
-        self::CAPTION => Exif::CAPTION,
-        self::COLORSPACE => Exif::COLORSPACE,
-        self::COPYRIGHT => Exif::COPYRIGHT,
-        self::CREATEDATE => Exif::CREATION_DATE,
-        self::CREDIT => Exif::CREDIT,
-        self::EXPOSURETIME => Exif::EXPOSURE,
-        self::FILESIZE => Exif::FILESIZE,
-        self::FOCALLENGTH => Exif::FOCAL_LENGTH,
+        self::APERTURE                 => Exif::APERTURE,
+        self::ARTIST                   => Exif::AUTHOR,
+        self::MODEL                    => Exif::CAMERA,
+        self::CAPTION                  => Exif::CAPTION,
+        self::COLORSPACE               => Exif::COLORSPACE,
+        self::COPYRIGHT                => Exif::COPYRIGHT,
+        self::CREATEDATE               => Exif::CREATION_DATE,
+        self::CREDIT                   => Exif::CREDIT,
+        self::EXPOSURETIME             => Exif::EXPOSURE,
+        self::FILESIZE                 => Exif::FILESIZE,
+        self::FOCALLENGTH              => Exif::FOCAL_LENGTH,
         self::APPROXIMATEFOCUSDISTANCE => Exif::FOCAL_DISTANCE,
-        self::HEADLINE => Exif::HEADLINE,
-        self::IMAGEHEIGHT => Exif::HEIGHT,
-        self::XRESOLUTION => Exif::HORIZONTAL_RESOLUTION,
-        self::ISO => Exif::ISO,
-        self::JOBTITLE => Exif::JOB_TITLE,
-        self::KEYWORDS => Exif::KEYWORDS,
-        self::MIMETYPE => Exif::MIMETYPE,
-        self::ORIENTATION => Exif::ORIENTATION,
-        self::SOFTWARE => Exif::SOFTWARE,
-        self::SOURCE => Exif::SOURCE,
-        self::TITLE => Exif::TITLE,
-        self::YRESOLUTION => Exif::VERTICAL_RESOLUTION,
-        self::IMAGEWIDTH => Exif::WIDTH,
-        self::CAPTIONABSTRACT => Exif::CAPTION,
-        self::GPSLATITUDE => Exif::GPS,
-        self::GPSLONGITUDE => Exif::GPS,
+        self::HEADLINE                 => Exif::HEADLINE,
+        self::IMAGEHEIGHT              => Exif::HEIGHT,
+        self::XRESOLUTION              => Exif::HORIZONTAL_RESOLUTION,
+        self::ISO                      => Exif::ISO,
+        self::JOBTITLE                 => Exif::JOB_TITLE,
+        self::KEYWORDS                 => Exif::KEYWORDS,
+        self::MIMETYPE                 => Exif::MIMETYPE,
+        self::ORIENTATION              => Exif::ORIENTATION,
+        self::SOFTWARE                 => Exif::SOFTWARE,
+        self::SOURCE                   => Exif::SOURCE,
+        self::TITLE                    => Exif::TITLE,
+        self::YRESOLUTION              => Exif::VERTICAL_RESOLUTION,
+        self::IMAGEWIDTH               => Exif::WIDTH,
+        self::CAPTIONABSTRACT          => Exif::CAPTION,
+        self::GPSLATITUDE              => Exif::GPS,
+        self::GPSLONGITUDE             => Exif::GPS,
     );
 
     /**
