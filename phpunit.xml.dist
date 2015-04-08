@@ -13,7 +13,6 @@
         <whitelist>
             <directory suffix=".php">./lib</directory>
             <exclude>
-                <file>./autoload.php</file>
                 <file>*Interface.php</file>
             </exclude>
         </whitelist>
