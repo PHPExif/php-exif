@@ -15,15 +15,14 @@
         "php": ">=5.3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*",
+        "phpunit/phpunit": "~4.5.0",
         "satooshi/php-coveralls": "~0.6",
-        "phpmd/phpmd": "~2.2",
-        "sebastian/phpcpd": "1.4.*@stable",
-        "squizlabs/php_codesniffer": "1.4.*@stable"
+        "phpmd/phpmd": "~2.2.0"
     },
     "suggest": {
         "lib-exiftool": "Use perl lib exiftool as adapter"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
             "PHPExif": "lib/"
