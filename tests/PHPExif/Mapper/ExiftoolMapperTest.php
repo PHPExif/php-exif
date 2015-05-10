@@ -239,9 +239,9 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testMapRawDataCorrectlyFormatsDifferentDateTimeString()
     {
-        $rawData = [
+        $rawData = array(
             \PHPExif\Mapper\Exiftool::CREATEDATE => '2014-12-15 00:12:00'
-        ];
+        );
 
         $mapped = $this->mapper->mapRawData(
             $rawData
@@ -257,9 +257,9 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testMapRawDataCorrectlyIgnoresInvalidCreateDate()
     {
-        $rawData = [
+        $rawData = array(
             \PHPExif\Mapper\Exiftool::CREATEDATE => 'Invalid Date String'
-        ];
+        );
 
         $result = $this->mapper->mapRawData(
             $rawData
