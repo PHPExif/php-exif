@@ -136,7 +136,11 @@ class Exiftool implements MapperInterface
                     $value = sprintf('%1$sm', $value);
                     break;
                 case self::CREATEDATE:
-                    $value = DateTime::createFromFormat('Y:m:d H:i:s', $value);
+                    try {
+                        $value = new DateTime($value);
+                    } catch (\Exception $exception) {
+                        $value = false;
+                    }
                     break;
                 case self::EXPOSURETIME:
                     $value = '1/' . round(1 / $value);
@@ -154,7 +158,10 @@ class Exiftool implements MapperInterface
             }
 
             // set end result
-            $mappedData[$key] = $value;
+            if ($value !== false) {
+                // Only map data when it does not equal a false value
+                $mappedData[$key] = $value;
+            }
         }
 
         // add GPS coordinates, if available

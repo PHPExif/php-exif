@@ -33,9 +33,6 @@ class Mutator implements HydratorInterface
     public function hydrate($object, array $data)
     {
         foreach ($data as $property => $value) {
-            if ($value === false) {
-                continue;
-            }
 
             $mutator = $this->determineMutator($property);
 
