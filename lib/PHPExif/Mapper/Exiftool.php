@@ -139,7 +139,7 @@ class Exiftool implements MapperInterface
                     try {
                         $value = new DateTime($value);
                     } catch (\Exception $exception) {
-                        $value = false;
+                        continue 2;
                     }
                     break;
                 case self::EXPOSURETIME:
@@ -158,10 +158,7 @@ class Exiftool implements MapperInterface
             }
 
             // set end result
-            if ($value !== false) {
-                // Only map data when it does not equal a false value
-                $mappedData[$key] = $value;
-            }
+            $mappedData[$key] = $value;
         }
 
         // add GPS coordinates, if available
