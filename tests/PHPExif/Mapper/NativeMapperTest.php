@@ -187,4 +187,39 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
         $expected = '40.333452380952,-20.167314814815';
         $this->assertEquals($expected, reset($result));
     }
+
+    public function testMapRawDataCorrectlyFormatsDifferentDateTimeString()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Native::DATETIMEORIGINAL => '2014-12-15 00:12:00'
+        );
+
+        $mapped = $this->mapper->mapRawData(
+            $rawData
+        );
+
+        $result = reset($mapped);
+        $this->assertInstanceOf('\DateTime', $result);
+        $this->assertEquals(
+            reset($rawData),
+            $result->format("Y-m-d H:i:s")
+        );
+    }
+
+    public function testMapRawDataCorrectlyIgnoresInvalidCreateDate()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Native::DATETIMEORIGINAL => 'Invalid Date String'
+        );
+
+        $result = $this->mapper->mapRawData(
+            $rawData
+        );
+
+        $this->assertCount(0, $result);
+        $this->assertNotEquals(
+            reset($rawData),
+            $result
+        );
+    }
 }

@@ -13,6 +13,7 @@ namespace PHPExif\Mapper;
 
 use PHPExif\Exif;
 use DateTime;
+use Exception;
 
 /**
  * PHP Exif Native Mapper
@@ -142,7 +143,11 @@ class Native implements MapperInterface
             // manipulate the value if necessary
             switch ($field) {
                 case self::DATETIMEORIGINAL:
-                    $value = DateTime::createFromFormat('Y:m:d H:i:s', $value);
+                    try {
+                        $value = new DateTime($value);
+                    } catch (Exception $exception) {
+                        continue 2;
+                    }
                     break;
                 case self::EXPOSURETIME:
                     // normalize ExposureTime
