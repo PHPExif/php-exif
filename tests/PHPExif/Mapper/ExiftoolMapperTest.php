@@ -236,4 +236,39 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $reflProperty->getValue($this->mapper));
     }
+
+    public function testMapRawDataCorrectlyFormatsDifferentDateTimeString()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Exiftool::CREATEDATE => '2014-12-15 00:12:00'
+        );
+
+        $mapped = $this->mapper->mapRawData(
+            $rawData
+        );
+
+        $result = reset($mapped);
+        $this->assertInstanceOf('\DateTime', $result);
+        $this->assertEquals(
+            reset($rawData),
+            $result->format("Y-m-d H:i:s")
+        );
+    }
+
+    public function testMapRawDataCorrectlyIgnoresInvalidCreateDate()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Exiftool::CREATEDATE => 'Invalid Date String'
+        );
+
+        $result = $this->mapper->mapRawData(
+            $rawData
+        );
+
+        $this->assertCount(0, $result);
+        $this->assertNotEquals(
+            reset($rawData),
+            $result
+        );
+    }
 }
