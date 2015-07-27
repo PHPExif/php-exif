@@ -163,10 +163,13 @@ class Exiftool implements MapperInterface
 
         // add GPS coordinates, if available
         if (count($gpsData) === 2 && $gpsData['lat'] !== false && $gpsData['lon'] !== false) {
+            $latitudeRef = isset($data['GPSLatitudeRef'][0]) ? $data['GPSLatitudeRef'][0] : null;
+            $longitudeRef = isset($data['GPSLongitudeRef'][0]) ? $data['GPSLongitudeRef'][0] : null;
+
             $gpsLocation = sprintf(
                 '%s,%s',
-                (isset($data['GPSLatitudeRef'][0]) && strtoupper($data['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $gpsData['lat'],
-                (isset($data['GPSLongitudeRef'][0]) && strtoupper($data['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $gpsData['lon']
+                (strtoupper($latitudeRef) === 'S' ? -1 : 1) * $gpsData['lat'],
+                (strtoupper($longitudeRef) === 'W' ? -1 : 1) * $gpsData['lon']
             );
 
             $mappedData[Exif::GPS] = $gpsLocation;
