@@ -179,13 +179,17 @@ class Native implements MapperInterface
             $mappedData[$key] = $value;
         }
 
+        // add GPS coordinates, if available
         if (count($gpsData) === 2) {
             $gpsLocation = sprintf(
                 '%s,%s',
-                (strtoupper($data['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $gpsData['lat'],
-                (strtoupper($data['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $gpsData['lon']
+                (isset($data['GPSLatitudeRef'][0]) && strtoupper($data['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $gpsData['lat'],
+                (isset($data['GPSLongitudeRef'][0]) && strtoupper($data['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $gpsData['lon']
             );
+
             $mappedData[Exif::GPS] = $gpsLocation;
+        } else {
+            unset($mappedData[Exif::GPS]);
         }
 
         return $mappedData;

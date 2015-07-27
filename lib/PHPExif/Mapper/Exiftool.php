@@ -162,25 +162,16 @@ class Exiftool implements MapperInterface
         }
 
         // add GPS coordinates, if available
-        if (count($gpsData) === 2) {
-            $latitude = $gpsData['lat'];
-            $longitude = $gpsData['lon'];
+        if (count($gpsData) === 2 && $gpsData['lat'] !== false && $gpsData['lon'] !== false) {
+            $gpsLocation = sprintf(
+                '%s,%s',
+                (isset($data['GPSLatitudeRef'][0]) && strtoupper($data['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $gpsData['lat'],
+                (isset($data['GPSLongitudeRef'][0]) && strtoupper($data['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $gpsData['lon']
+            );
 
-            if ($latitude !== false && $longitude !== false) {
-                $gpsLocation = sprintf(
-                    '%s,%s',
-                    (strtoupper($data['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $latitude,
-                    (strtoupper($data['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $longitude
-                );
-
-                $key = $this->map[self::GPSLATITUDE];
-
-                $mappedData[$key] = $gpsLocation;
-            } else {
-                unset($mappedData[$this->map[self::GPSLATITUDE]]);
-            }
+            $mappedData[Exif::GPS] = $gpsLocation;
         } else {
-            unset($mappedData[$this->map[self::GPSLATITUDE]]);
+            unset($mappedData[Exif::GPS]);
         }
 
         return $mappedData;
