@@ -225,6 +225,14 @@ class Native implements MapperInterface
     {
         $parts = explode('/', $component);
 
-        return count($parts) === 1 ? $parts[0] : (int) reset($parts) / (int) end($parts);
+        if (count($parts) > 0) {
+            if ($parts[1]) {
+                return (int) $parts[0] / (int) $parts[1];
+            }
+
+            return 0;
+        }
+
+        return $parts[0];
     }
 }
