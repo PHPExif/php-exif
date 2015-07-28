@@ -90,6 +90,21 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Native::mapRawData
      */
+    public function testMapRawDataCorrectlyIgnoresIncorrectDateTimeOriginal()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Native::DATETIMEORIGINAL => '2015:04:01',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(false, reset($mapped));
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
     public function testMapRawDataCorrectlyFormatsExposureTime()
     {
         $rawData = array(
@@ -175,17 +190,31 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
      */
     public function testMapRawDataCorrectlyFormatsGPSData()
     {
-        $result = $this->mapper->mapRawData(
-            array(
+        $expected = array(
+            '40.333452380952,-20.167314814815' => array(
                 'GPSLatitude'     => array('40/1', '20/1', '15/35'),
                 'GPSLatitudeRef'  => 'N',
                 'GPSLongitude'    => array('20/1', '10/1', '35/15'),
                 'GPSLongitudeRef' => 'W',
-            )
+            ),
+            '0,-0' => array(
+                'GPSLatitude'     => array('0/0', '0/0', '0/0'),
+                'GPSLatitudeRef'  => 'N',
+                'GPSLongitude'    => array('0/0', '0/0', '0/0'),
+                'GPSLongitudeRef' => 'W',
+            ),
+            '71.706936,-42.604303' => array(
+                'GPSLatitude'     => array('71.706936'),
+                'GPSLatitudeRef'  => 'N',
+                'GPSLongitude'    => array('42.604303'),
+                'GPSLongitudeRef' => 'W',
+            ),
         );
 
-        $expected = '40.333452380952,-20.167314814815';
-        $this->assertEquals($expected, reset($result));
+        foreach ($expected as $key => $value) {
+            $result = $this->mapper->mapRawData($value);
+            $this->assertEquals($key, reset($result));
+        }
     }
 
     public function testMapRawDataCorrectlyFormatsDifferentDateTimeString()

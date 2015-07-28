@@ -179,13 +179,20 @@ class Native implements MapperInterface
             $mappedData[$key] = $value;
         }
 
+        // add GPS coordinates, if available
         if (count($gpsData) === 2) {
+            $latitudeRef = empty($data['GPSLatitudeRef'][0]) ? 'N' : $data['GPSLatitudeRef'][0];
+            $longitudeRef = empty($data['GPSLongitudeRef'][0]) ? 'E' : $data['GPSLongitudeRef'][0];
+
             $gpsLocation = sprintf(
                 '%s,%s',
-                (strtoupper($data['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $gpsData['lat'],
-                (strtoupper($data['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $gpsData['lon']
+                (strtoupper($latitudeRef) === 'S' ? -1 : 1) * $gpsData['lat'],
+                (strtoupper($longitudeRef) === 'W' ? -1 : 1) * $gpsData['lon']
             );
+
             $mappedData[Exif::GPS] = $gpsLocation;
+        } else {
+            unset($mappedData[Exif::GPS]);
         }
 
         return $mappedData;
@@ -212,7 +219,11 @@ class Native implements MapperInterface
     {
         $components = array_map(array($this, 'normalizeGPSComponent'), $components);
 
-        return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
+        if (count($components) > 2) {
+            return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
+        }
+
+        return reset($components);
     }
 
     /**
@@ -225,6 +236,14 @@ class Native implements MapperInterface
     {
         $parts = explode('/', $component);
 
-        return count($parts) === 1 ? $parts[0] : (int) reset($parts) / (int) end($parts);
+        if (count($parts) > 1) {
+            if ($parts[1]) {
+                return intval($parts[0]) / intval($parts[1]);
+            }
+
+            return 0;
+        }
+
+        return floatval(reset($parts));
     }
 }
