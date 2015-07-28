@@ -219,7 +219,11 @@ class Native implements MapperInterface
     {
         $components = array_map(array($this, 'normalizeGPSComponent'), $components);
 
-        return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
+        if (count($components) > 2) {
+            return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
+        }
+
+        return reset($components);
     }
 
     /**
@@ -232,14 +236,14 @@ class Native implements MapperInterface
     {
         $parts = explode('/', $component);
 
-        if (count($parts) > 0) {
+        if (count($parts) > 1) {
             if ($parts[1]) {
-                return (int) $parts[0] / (int) $parts[1];
+                return intval($parts[0]) / intval($parts[1]);
             }
 
             return 0;
         }
 
-        return $parts[0];
+        return floatval(reset($parts));
     }
 }

@@ -120,6 +120,21 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Exiftool::mapRawData
      */
+    public function testMapRawDataCorrectlyIgnoresIncorrectCreationDate()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Exiftool::CREATEDATE => '2015:04:01',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(false, reset($mapped));
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
     public function testMapRawDataCorrectlyFormatsExposureTime()
     {
         $rawData = array(
