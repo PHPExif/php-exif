@@ -150,13 +150,18 @@ class Native implements MapperInterface
                     }
                     break;
                 case self::EXPOSURETIME:
-                    // normalize ExposureTime
-                    // on one test image, it reported "10/300" instead of "1/30"
-                    list($counter, $denominator) = explode('/', $value);
-                    if (intval($counter) !== 1) {
-                        $denominator /= $counter;
+                    if (!is_float($value)) {
+                        $value = $this->normalizeComponent($value);
                     }
-                    $value = '1/' . round($denominator);
+
+                    // Based on the source code of Exiftool (PrintExposureTime subroutine):
+                    // http://cpansearch.perl.org/src/EXIFTOOL/Image-ExifTool-9.90/lib/Image/ExifTool/Exif.pm
+                    if ($value < 0.25001 && $value > 0) {
+                        $value = sprintf('1/%d', intval(0.5 + 1 / $value));
+                    } else {
+                        $value = sprintf('%.1f', $value);
+                        $value = preg_replace('/.0$/', '', $value);
+                    }
                     break;
                 case self::FOCALLENGTH:
                     $parts = explode('/', $value);
@@ -217,7 +222,7 @@ class Native implements MapperInterface
      */
     protected function extractGPSCoordinate(array $components)
     {
-        $components = array_map(array($this, 'normalizeGPSComponent'), $components);
+        $components = array_map(array($this, 'normalizeComponent'), $components);
 
         if (count($components) > 2) {
             return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
@@ -227,12 +232,12 @@ class Native implements MapperInterface
     }
 
     /**
-     * Normalize GPS coordinates components
+     * Normalize component
      *
      * @param mixed $component
      * @return int|float
      */
-    protected function normalizeGPSComponent($component)
+    protected function normalizeComponent($component)
     {
         $parts = explode('/', $component);
 

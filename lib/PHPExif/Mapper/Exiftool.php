@@ -143,7 +143,14 @@ class Exiftool implements MapperInterface
                     }
                     break;
                 case self::EXPOSURETIME:
-                    $value = '1/' . round(1 / $value);
+                    // Based on the source code of Exiftool (PrintExposureTime subroutine):
+                    // http://cpansearch.perl.org/src/EXIFTOOL/Image-ExifTool-9.90/lib/Image/ExifTool/Exif.pm
+                    if ($value < 0.25001 && $value > 0) {
+                        $value = sprintf('1/%d', intval(0.5 + 1 / $value));
+                    } else {
+                        $value = sprintf('%.1f', $value);
+                        $value = preg_replace('/.0$/', '', $value);
+                    }
                     break;
                 case self::FOCALLENGTH:
                     $focalLengthParts = explode(' ', $value);
