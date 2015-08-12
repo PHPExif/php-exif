@@ -138,12 +138,19 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
     public function testMapRawDataCorrectlyFormatsExposureTime()
     {
         $rawData = array(
-            \PHPExif\Mapper\Exiftool::EXPOSURETIME => 1/400,
+            '1/30'  => 10/300,
+            '1/400' => 2/800,
+            '1/400' => 1/400,
+            '0'     => 0,
         );
 
-        $mapped = $this->mapper->mapRawData($rawData);
+        foreach ($rawData as $expected => $value) {
+            $mapped = $this->mapper->mapRawData(array(
+                \PHPExif\Mapper\Exiftool::EXPOSURETIME => $value,
+            ));
 
-        $this->assertEquals('1/400', reset($mapped));
+            $this->assertEquals($expected, reset($mapped));
+        }
     }
 
     /**

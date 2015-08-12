@@ -108,12 +108,19 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
     public function testMapRawDataCorrectlyFormatsExposureTime()
     {
         $rawData = array(
-            \PHPExif\Mapper\Native::EXPOSURETIME => '2/800',
+            '1/30'  => 10/300,
+            '1/400' => 2/800,
+            '1/400' => 1/400,
+            '0'     => 0,
         );
 
-        $mapped = $this->mapper->mapRawData($rawData);
+        foreach ($rawData as $expected => $value) {
+            $mapped = $this->mapper->mapRawData(array(
+                \PHPExif\Mapper\Native::EXPOSURETIME => $value,
+            ));
 
-        $this->assertEquals('1/400', reset($mapped));
+            $this->assertEquals($expected, reset($mapped));
+        }
     }
 
     /**
@@ -250,5 +257,28 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
             reset($rawData),
             $result
         );
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::normalizeComponent
+     */
+    public function testNormalizeComponentCorrectly()
+    {
+        $reflMethod = new \ReflectionMethod('\PHPExif\Mapper\Native', 'normalizeComponent');
+        $reflMethod->setAccessible(true);
+
+        $rawData = array(
+            '2/800' => 0.0025,
+            '1/400' => 0.0025,
+            '0/1'   => 0,
+            '0'     => 0,
+        );
+
+        foreach ($rawData as $value => $expected) {
+            $normalized = $reflMethod->invoke($this->mapper, $value);
+
+            $this->assertEquals($expected, $normalized);
+        }
     }
 }
