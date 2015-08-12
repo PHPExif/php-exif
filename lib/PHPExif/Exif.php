@@ -346,6 +346,10 @@ class Exif
             return false;
         }
 
+        if (is_numeric($this->data[self::EXPOSURE])) {
+            return $this->data[self::EXPOSURE] + 0;
+        }
+
         $exposureParts = explode('/', $this->data[self::EXPOSURE]);
 
         return (int) reset($exposureParts) / (int) end($exposureParts);
