@@ -346,6 +346,10 @@ class Exif
             return false;
         }
 
+        if (is_float($this->data[self::EXPOSURE])) {
+            return $this->data[self::EXPOSURE];
+        }
+
         $exposureParts = explode('/', $this->data[self::EXPOSURE]);
 
         return (int) reset($exposureParts) / (int) end($exposureParts);
