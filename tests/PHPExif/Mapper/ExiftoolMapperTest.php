@@ -177,10 +177,10 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
         $this->mapper->setNumeric(false);
         $result = $this->mapper->mapRawData(
             array(
-                'GPSLatitude'     => '40 deg 20\' 0.42857" N',
-                'GPSLatitudeRef'  => 'North',
-                'GPSLongitude'    => '20 deg 10\' 2.33333" W',
-                'GPSLongitudeRef' => 'West',
+                'EXIF:GPSLatitude'     => '40 deg 20\' 0.42857" N',
+                'EXIF:GPSLatitudeRef'  => 'North',
+                'EXIF:GPSLongitude'    => '20 deg 10\' 2.33333" W',
+                'EXIF:GPSLongitudeRef' => 'West',
             )
         );
 
@@ -197,10 +197,10 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->mapper->mapRawData(
             array(
-                'GPSLatitude'     => '40.333452381',
-                'GPSLatitudeRef'  => 'North',
-                'GPSLongitude'    => '20.167314814',
-                'GPSLongitudeRef' => 'West',
+                'EXIF:GPSLatitude'     => '40.333452381',
+                'EXIF:GPSLatitudeRef'  => 'North',
+                'EXIF:GPSLongitude'    => '20.167314814',
+                'EXIF:GPSLongitudeRef' => 'West',
             )
         );
 
@@ -218,10 +218,10 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
         $this->mapper->setNumeric(false);
         $result = $this->mapper->mapRawData(
             array(
-                'GPSLatitude'     => '40.333452381',
-                'GPSLatitudeRef'  => 'North',
-                'GPSLongitude'    => '20.167314814',
-                'GPSLongitudeRef' => 'West',
+                'EXIF:GPSLatitude'     => '40.333452381',
+                'EXIF:GPSLatitudeRef'  => 'North',
+                'EXIF:GPSLongitude'    => '20.167314814',
+                'EXIF:GPSLongitudeRef' => 'West',
             )
         );
 
@@ -236,8 +236,8 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->mapper->mapRawData(
             array(
-                'GPSLatitude'     => '40.333452381',
-                'GPSLatitudeRef'  => 'North',
+                'EXIF:GPSLatitude'    => '40.333452381',
+                'EXIF:GPSLatitudeRef' => 'North',
             )
         );
 
