@@ -31,7 +31,7 @@ class Exiftool implements MapperInterface
     const CAPTIONABSTRACT          = 'IPTC:Caption-Abstract';
     const COLORSPACE               = 'ExifIFD:ColorSpace';
     const COPYRIGHT                = 'IFD0:Copyright';
-    const CREATEDATE               = 'ExifIFD:CreateDate';
+    const DATETIMEORIGINAL         = 'ExifIFD:DateTimeOriginal';
     const CREDIT                   = 'IPTC:Credit';
     const EXPOSURETIME             = 'ExifIFD:ExposureTime';
     const FILESIZE                 = 'System:FileSize';
@@ -66,7 +66,7 @@ class Exiftool implements MapperInterface
         self::CAPTION                  => Exif::CAPTION,
         self::COLORSPACE               => Exif::COLORSPACE,
         self::COPYRIGHT                => Exif::COPYRIGHT,
-        self::CREATEDATE               => Exif::CREATION_DATE,
+        self::DATETIMEORIGINAL         => Exif::CREATION_DATE,
         self::CREDIT                   => Exif::CREDIT,
         self::EXPOSURETIME             => Exif::EXPOSURE,
         self::FILESIZE                 => Exif::FILESIZE,
@@ -135,7 +135,7 @@ class Exiftool implements MapperInterface
                 case self::APPROXIMATEFOCUSDISTANCE:
                     $value = sprintf('%1$sm', $value);
                     break;
-                case self::CREATEDATE:
+                case self::DATETIMEORIGINAL:
                     try {
                         $value = new DateTime($value);
                     } catch (\Exception $exception) {

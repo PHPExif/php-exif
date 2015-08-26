@@ -44,7 +44,7 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
         // ignore custom formatted data stuff:
         unset($map[\PHPExif\Mapper\Exiftool::APERTURE]);
         unset($map[\PHPExif\Mapper\Exiftool::APPROXIMATEFOCUSDISTANCE]);
-        unset($map[\PHPExif\Mapper\Exiftool::CREATEDATE]);
+        unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL]);
         unset($map[\PHPExif\Mapper\Exiftool::EXPOSURETIME]);
         unset($map[\PHPExif\Mapper\Exiftool::FOCALLENGTH]);
         unset($map[\PHPExif\Mapper\Exiftool::GPSLATITUDE]);
@@ -103,7 +103,7 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
     public function testMapRawDataCorrectlyFormatsCreationDate()
     {
         $rawData = array(
-            \PHPExif\Mapper\Exiftool::CREATEDATE => '2015:04:01 12:11:09',
+            \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL => '2015:04:01 12:11:09',
         );
 
         $mapped = $this->mapper->mapRawData($rawData);
@@ -123,7 +123,7 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
     public function testMapRawDataCorrectlyIgnoresIncorrectCreationDate()
     {
         $rawData = array(
-            \PHPExif\Mapper\Exiftool::CREATEDATE => '2015:04:01',
+            \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL => '2015:04:01',
         );
 
         $mapped = $this->mapper->mapRawData($rawData);
@@ -262,7 +262,7 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
     public function testMapRawDataCorrectlyFormatsDifferentDateTimeString()
     {
         $rawData = array(
-            \PHPExif\Mapper\Exiftool::CREATEDATE => '2014-12-15 00:12:00'
+            \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL => '2014-12-15 00:12:00'
         );
 
         $mapped = $this->mapper->mapRawData(
@@ -280,7 +280,7 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
     public function testMapRawDataCorrectlyIgnoresInvalidCreateDate()
     {
         $rawData = array(
-            \PHPExif\Mapper\Exiftool::CREATEDATE => 'Invalid Date String'
+            \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL => 'Invalid Date String'
         );
 
         $result = $this->mapper->mapRawData(
