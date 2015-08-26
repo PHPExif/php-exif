@@ -102,7 +102,7 @@ class Exiftool extends AdapterAbstract
     {
         $result = $this->getCliOutput(
             sprintf(
-                '%1$s%3$s -j -a -G0 -c %4$s %2$s',
+                '%1$s%3$s -j -a -G1 -c %4$s %2$s',
                 $this->getToolPath(),
                 escapeshellarg($file),
                 $this->numeric ? ' -n' : '',

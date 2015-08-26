@@ -25,33 +25,33 @@ use DateTime;
 class Exiftool implements MapperInterface
 {
     const APERTURE                 = 'Composite:Aperture';
-    const APPROXIMATEFOCUSDISTANCE = 'XMP:ApproximateFocusDistance';
-    const ARTIST                   = 'EXIF:Artist';
-    const CAPTION                  = 'XMP:Caption';
+    const APPROXIMATEFOCUSDISTANCE = 'XMP-aux:ApproximateFocusDistance';
+    const ARTIST                   = 'IFD0:Artist';
+    const CAPTION                  = 'XMP-acdsee';
     const CAPTIONABSTRACT          = 'IPTC:Caption-Abstract';
-    const COLORSPACE               = 'EXIF:ColorSpace';
-    const COPYRIGHT                = 'EXIF:Copyright';
-    const CREATEDATE               = 'EXIF:CreateDate';
+    const COLORSPACE               = 'ExifIFD:ColorSpace';
+    const COPYRIGHT                = 'IFD0:Copyright';
+    const CREATEDATE               = 'ExifIFD:CreateDate';
     const CREDIT                   = 'IPTC:Credit';
-    const EXPOSURETIME             = 'EXIF:ExposureTime';
-    const FILESIZE                 = 'File:FileSize';
-    const FOCALLENGTH              = 'EXIF:FocalLength';
+    const EXPOSURETIME             = 'ExifIFD:ExposureTime';
+    const FILESIZE                 = 'System:FileSize';
+    const FOCALLENGTH              = 'ExifIFD:FocalLength';
     const HEADLINE                 = 'IPTC:Headline';
     const IMAGEHEIGHT              = 'File:ImageHeight';
     const IMAGEWIDTH               = 'File:ImageWidth';
-    const ISO                      = 'EXIF:ISO';
+    const ISO                      = 'ExifIFD:ISO';
     const JOBTITLE                 = 'IPTC:By-lineTitle';
     const KEYWORDS                 = 'IPTC:Keywords';
     const MIMETYPE                 = 'File:MIMEType';
-    const MODEL                    = 'EXIF:Model';
-    const ORIENTATION              = 'EXIF:Orientation';
-    const SOFTWARE                 = 'EXIF:Software';
+    const MODEL                    = 'IFD0:Model';
+    const ORIENTATION              = 'IFD0:Orientation';
+    const SOFTWARE                 = 'IFD0:Software';
     const SOURCE                   = 'IPTC:Source';
     const TITLE                    = 'IPTC:ObjectName';
-    const XRESOLUTION              = 'EXIF:XResolution';
-    const YRESOLUTION              = 'EXIF:YResolution';
-    const GPSLATITUDE              = 'EXIF:GPSLatitude';
-    const GPSLONGITUDE             = 'EXIF:GPSLongitude';
+    const XRESOLUTION              = 'IFD0:XResolution';
+    const YRESOLUTION              = 'IFD0:YResolution';
+    const GPSLATITUDE              = 'GPS:GPSLatitude';
+    const GPSLONGITUDE             = 'GPS:GPSLongitude';
 
     /**
      * Maps the ExifTool fields to the fields of
@@ -172,8 +172,8 @@ class Exiftool implements MapperInterface
 
         // add GPS coordinates, if available
         if (count($gpsData) === 2 && $gpsData['lat'] !== false && $gpsData['lon'] !== false) {
-            $latitudeRef = empty($data['EXIF:GPSLatitudeRef'][0]) ? 'N' : $data['EXIF:GPSLatitudeRef'][0];
-            $longitudeRef = empty($data['EXIF:GPSLongitudeRef'][0]) ? 'E' : $data['EXIF:GPSLongitudeRef'][0];
+            $latitudeRef = empty($data['GPS:GPSLatitudeRef'][0]) ? 'N' : $data['GPS:GPSLatitudeRef'][0];
+            $longitudeRef = empty($data['GPS:GPSLongitudeRef'][0]) ? 'E' : $data['GPS:GPSLongitudeRef'][0];
 
             $gpsLocation = sprintf(
                 '%s,%s',
