@@ -346,9 +346,13 @@ class Exif
             return false;
         }
 
-        $exposureParts  = explode('/', $this->data[self::EXPOSURE]);
+        if (is_numeric($this->data[self::EXPOSURE])) {
+            return $this->data[self::EXPOSURE] + 0;
+        }
 
-        return (int)reset($exposureParts) / (int)end($exposureParts);
+        $exposureParts = explode('/', $this->data[self::EXPOSURE]);
+
+        return (int) reset($exposureParts) / (int) end($exposureParts);
     }
 
     /**

@@ -100,15 +100,13 @@ class Exiftool extends AdapterAbstract
      */
     public function getExifFromFile($file)
     {
-        $gpsFormat = '%d deg %d\' %.4f\"';
-
         $result = $this->getCliOutput(
             sprintf(
-                '%1$s%3$s -j -c "%4$s" %2$s',
+                '%1$s%3$s -j -a -G1 -c %4$s %2$s',
                 $this->getToolPath(),
-                $file,
+                escapeshellarg($file),
                 $this->numeric ? ' -n' : '',
-                $gpsFormat
+                escapeshellarg('%d deg %d\' %.4f"')
             )
         );
 

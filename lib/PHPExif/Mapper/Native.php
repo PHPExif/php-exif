@@ -13,6 +13,7 @@ namespace PHPExif\Mapper;
 
 use PHPExif\Exif;
 use DateTime;
+use Exception;
 
 /**
  * PHP Exif Native Mapper
@@ -142,25 +143,34 @@ class Native implements MapperInterface
             // manipulate the value if necessary
             switch ($field) {
                 case self::DATETIMEORIGINAL:
-                    $value = DateTime::createFromFormat('Y:m:d H:i:s', $value);
+                    try {
+                        $value = new DateTime($value);
+                    } catch (Exception $exception) {
+                        continue 2;
+                    }
                     break;
                 case self::EXPOSURETIME:
-                    // normalize ExposureTime
-                    // on one test image, it reported "10/300" instead of "1/30"
-                    list($counter, $denominator) = explode('/', $value);
-                    if (intval($counter) !== 1) {
-                        $denominator /= $counter;
+                    if (!is_float($value)) {
+                        $value = $this->normalizeComponent($value);
                     }
-                    $value = '1/' . round($denominator);
+
+                    // Based on the source code of Exiftool (PrintExposureTime subroutine):
+                    // http://cpansearch.perl.org/src/EXIFTOOL/Image-ExifTool-9.90/lib/Image/ExifTool/Exif.pm
+                    if ($value < 0.25001 && $value > 0) {
+                        $value = sprintf('1/%d', intval(0.5 + 1 / $value));
+                    } else {
+                        $value = sprintf('%.1f', $value);
+                        $value = preg_replace('/.0$/', '', $value);
+                    }
                     break;
                 case self::FOCALLENGTH:
-                    $parts  = explode('/', $value);
-                    $value = (int)reset($parts) / (int)end($parts);
+                    $parts = explode('/', $value);
+                    $value = (int) reset($parts) / (int) end($parts);
                     break;
                 case self::XRESOLUTION:
                 case self::YRESOLUTION:
                     $resolutionParts = explode('/', $value);
-                    $value = (int)reset($resolutionParts);
+                    $value = (int) reset($resolutionParts);
                     break;
                 case self::GPSLATITUDE:
                     $gpsData['lat'] = $this->extractGPSCoordinate($value);
@@ -174,13 +184,20 @@ class Native implements MapperInterface
             $mappedData[$key] = $value;
         }
 
+        // add GPS coordinates, if available
         if (count($gpsData) === 2) {
+            $latitudeRef = empty($data['GPSLatitudeRef'][0]) ? 'N' : $data['GPSLatitudeRef'][0];
+            $longitudeRef = empty($data['GPSLongitudeRef'][0]) ? 'E' : $data['GPSLongitudeRef'][0];
+
             $gpsLocation = sprintf(
                 '%s,%s',
-                (strtoupper($data['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $gpsData['lat'],
-                (strtoupper($data['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $gpsData['lon']
+                (strtoupper($latitudeRef) === 'S' ? -1 : 1) * $gpsData['lat'],
+                (strtoupper($longitudeRef) === 'W' ? -1 : 1) * $gpsData['lon']
             );
+
             $mappedData[Exif::GPS] = $gpsLocation;
+        } else {
+            unset($mappedData[Exif::GPS]);
         }
 
         return $mappedData;
@@ -205,21 +222,33 @@ class Native implements MapperInterface
      */
     protected function extractGPSCoordinate(array $components)
     {
-        $components = array_map(array($this, 'normalizeGPSComponent'), $components);
+        $components = array_map(array($this, 'normalizeComponent'), $components);
 
-        return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
+        if (count($components) > 2) {
+            return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
+        }
+
+        return reset($components);
     }
 
     /**
-     * Normalize GPS coordinates components
+     * Normalize component
      *
      * @param mixed $component
      * @return int|float
      */
-    protected function normalizeGPSComponent($component)
+    protected function normalizeComponent($component)
     {
-        $parts  = explode('/', $component);
+        $parts = explode('/', $component);
 
-        return count($parts) === 1 ? $parts[0] : (int) reset($parts) / (int) end($parts);
+        if (count($parts) > 1) {
+            if ($parts[1]) {
+                return intval($parts[0]) / intval($parts[1]);
+            }
+
+            return 0;
+        }
+
+        return floatval(reset($parts));
     }
 }

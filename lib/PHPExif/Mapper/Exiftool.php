@@ -24,34 +24,34 @@ use DateTime;
  */
 class Exiftool implements MapperInterface
 {
-    const APERTURE                 = 'Aperture';
-    const APPROXIMATEFOCUSDISTANCE = 'ApproximateFocusDistance';
-    const ARTIST                   = 'Artist';
-    const CAPTION                  = 'Caption';
-    const CAPTIONABSTRACT          = 'Caption-Abstract';
-    const COLORSPACE               = 'ColorSpace';
-    const COPYRIGHT                = 'Copyright';
-    const CREATEDATE               = 'CreateDate';
-    const CREDIT                   = 'Credit';
-    const EXPOSURETIME             = 'ExposureTime';
-    const FILESIZE                 = 'FileSize';
-    const FOCALLENGTH              = 'FocalLength';
-    const HEADLINE                 = 'Headline';
-    const IMAGEHEIGHT              = 'ImageHeight';
-    const IMAGEWIDTH               = 'ImageWidth';
-    const ISO                      = 'ISO';
-    const JOBTITLE                 = 'JobTitle';
-    const KEYWORDS                 = 'Keywords';
-    const MIMETYPE                 = 'MIMEType';
-    const MODEL                    = 'Model';
-    const ORIENTATION              = 'Orientation';
-    const SOFTWARE                 = 'Software';
-    const SOURCE                   = 'Source';
-    const TITLE                    = 'Title';
-    const XRESOLUTION              = 'XResolution';
-    const YRESOLUTION              = 'YResolution';
-    const GPSLATITUDE              = 'GPSLatitude';
-    const GPSLONGITUDE             = 'GPSLongitude';
+    const APERTURE                 = 'Composite:Aperture';
+    const APPROXIMATEFOCUSDISTANCE = 'XMP-aux:ApproximateFocusDistance';
+    const ARTIST                   = 'IFD0:Artist';
+    const CAPTION                  = 'XMP-acdsee';
+    const CAPTIONABSTRACT          = 'IPTC:Caption-Abstract';
+    const COLORSPACE               = 'ExifIFD:ColorSpace';
+    const COPYRIGHT                = 'IFD0:Copyright';
+    const DATETIMEORIGINAL         = 'ExifIFD:DateTimeOriginal';
+    const CREDIT                   = 'IPTC:Credit';
+    const EXPOSURETIME             = 'ExifIFD:ExposureTime';
+    const FILESIZE                 = 'System:FileSize';
+    const FOCALLENGTH              = 'ExifIFD:FocalLength';
+    const HEADLINE                 = 'IPTC:Headline';
+    const IMAGEHEIGHT              = 'File:ImageHeight';
+    const IMAGEWIDTH               = 'File:ImageWidth';
+    const ISO                      = 'ExifIFD:ISO';
+    const JOBTITLE                 = 'IPTC:By-lineTitle';
+    const KEYWORDS                 = 'IPTC:Keywords';
+    const MIMETYPE                 = 'File:MIMEType';
+    const MODEL                    = 'IFD0:Model';
+    const ORIENTATION              = 'IFD0:Orientation';
+    const SOFTWARE                 = 'IFD0:Software';
+    const SOURCE                   = 'IPTC:Source';
+    const TITLE                    = 'IPTC:ObjectName';
+    const XRESOLUTION              = 'IFD0:XResolution';
+    const YRESOLUTION              = 'IFD0:YResolution';
+    const GPSLATITUDE              = 'GPS:GPSLatitude';
+    const GPSLONGITUDE             = 'GPS:GPSLongitude';
 
     /**
      * Maps the ExifTool fields to the fields of
@@ -66,7 +66,7 @@ class Exiftool implements MapperInterface
         self::CAPTION                  => Exif::CAPTION,
         self::COLORSPACE               => Exif::COLORSPACE,
         self::COPYRIGHT                => Exif::COPYRIGHT,
-        self::CREATEDATE               => Exif::CREATION_DATE,
+        self::DATETIMEORIGINAL         => Exif::CREATION_DATE,
         self::CREDIT                   => Exif::CREDIT,
         self::EXPOSURETIME             => Exif::EXPOSURE,
         self::FILESIZE                 => Exif::FILESIZE,
@@ -103,7 +103,7 @@ class Exiftool implements MapperInterface
      */
     public function setNumeric($numeric)
     {
-        $this->numeric = (bool)$numeric;
+        $this->numeric = (bool) $numeric;
 
         return $this;
     }
@@ -135,15 +135,28 @@ class Exiftool implements MapperInterface
                 case self::APPROXIMATEFOCUSDISTANCE:
                     $value = sprintf('%1$sm', $value);
                     break;
-                case self::CREATEDATE:
-                    $value = DateTime::createFromFormat('Y:m:d H:i:s', $value);
+                case self::DATETIMEORIGINAL:
+                    try {
+                        $value = new DateTime($value);
+                    } catch (\Exception $exception) {
+                        continue 2;
+                    }
                     break;
                 case self::EXPOSURETIME:
-                    $value = '1/' . round(1 / $value);
+                    // Based on the source code of Exiftool (PrintExposureTime subroutine):
+                    // http://cpansearch.perl.org/src/EXIFTOOL/Image-ExifTool-9.90/lib/Image/ExifTool/Exif.pm
+                    if ($value < 0.25001 && $value > 0) {
+                        $value = sprintf('1/%d', intval(0.5 + 1 / $value));
+                    } else {
+                        $value = sprintf('%.1f', $value);
+                        $value = preg_replace('/.0$/', '', $value);
+                    }
                     break;
                 case self::FOCALLENGTH:
-                    $focalLengthParts = explode(' ', $value);
-                    $value = (int) reset($focalLengthParts);
+                    if (!$this->numeric || strpos($value, ' ') !== false) {
+                        $focalLengthParts = explode(' ', $value);
+                        $value = reset($focalLengthParts);
+                    }
                     break;
                 case self::GPSLATITUDE:
                     $gpsData['lat']  = $this->extractGPSCoordinates($value);
@@ -158,25 +171,19 @@ class Exiftool implements MapperInterface
         }
 
         // add GPS coordinates, if available
-        if (count($gpsData) === 2) {
-            $latitude = $gpsData['lat'];
-            $longitude = $gpsData['lon'];
+        if (count($gpsData) === 2 && $gpsData['lat'] !== false && $gpsData['lon'] !== false) {
+            $latitudeRef = empty($data['GPS:GPSLatitudeRef'][0]) ? 'N' : $data['GPS:GPSLatitudeRef'][0];
+            $longitudeRef = empty($data['GPS:GPSLongitudeRef'][0]) ? 'E' : $data['GPS:GPSLongitudeRef'][0];
 
-            if ($latitude !== false && $longitude !== false) {
-                $gpsLocation = sprintf(
-                    '%s,%s',
-                    (strtoupper($data['GPSLatitudeRef'][0]) === 'S' ? -1 : 1) * $latitude,
-                    (strtoupper($data['GPSLongitudeRef'][0]) === 'W' ? -1 : 1) * $longitude
-                );
+            $gpsLocation = sprintf(
+                '%s,%s',
+                (strtoupper($latitudeRef) === 'S' ? -1 : 1) * $gpsData['lat'],
+                (strtoupper($longitudeRef) === 'W' ? -1 : 1) * $gpsData['lon']
+            );
 
-                $key = $this->map[self::GPSLATITUDE];
-
-                $mappedData[$key] = $gpsLocation;
-            } else {
-                unset($mappedData[$this->map[self::GPSLATITUDE]]);
-            }
+            $mappedData[Exif::GPS] = $gpsLocation;
         } else {
-            unset($mappedData[$this->map[self::GPSLATITUDE]]);
+            unset($mappedData[Exif::GPS]);
         }
 
         return $mappedData;

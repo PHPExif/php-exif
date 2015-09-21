@@ -219,10 +219,19 @@ class ExifTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetExposureMilliseconds()
     {
-        $expected = 1/320;
-        $data[\PHPExif\Exif::EXPOSURE] = '1/320';
-        $this->exif->setData($data);
-        $this->assertEquals($expected, $this->exif->getExposureMilliseconds());
+        $rawData = array(
+            array(1/300, '1/300'),
+            array(0.0025, 0.0025),
+        );
+
+        foreach ($rawData as $data) {
+            $expected = reset($data);
+            $value = end($data);
+
+            $data[\PHPExif\Exif::EXPOSURE] = $value;
+            $this->exif->setData($data);
+            $this->assertEquals($expected, $this->exif->getExposureMilliseconds());
+        }
     }
 
     /**
