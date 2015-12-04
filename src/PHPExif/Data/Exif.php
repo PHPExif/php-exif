@@ -1,28 +1,30 @@
 <?php
 /**
- * PHP Exif Reader Adapter Interface: Defines the interface for reader adapters
+ * Exif: A container class for EXIF data
  *
  * @link        http://github.com/miljar/PHPExif for the canonical source repository
  * @copyright   Copyright (c) 2013 Tom Van Herreweghe <tom@theanalogguy.be>
  * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
  * @category    PHPExif
- * @package     Reader
- * @codeCoverageIgnore
+ * @package     Exif
  */
 
-namespace PHPExif\Adapter;
-
-use Exception;
+namespace PHPExif\Data;
 
 /**
- * PHP Exif Reader Adapter
+ * Exif class
  *
- * Defines the interface for reader adapters
+ * Container for EXIF data
  *
  * @category    PHPExif
- * @package     Reader
+ * @package     Exif
  */
-class NoAdapterException extends Exception
+final class Exif implements ExifInterface
 {
-    //empty
+    /**
+     * @param array $rawData
+     */
+    public function __construct(array $data)
+    {
+    }
 }

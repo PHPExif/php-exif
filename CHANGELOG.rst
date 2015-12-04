@@ -1,6 +1,11 @@
 CHANGELOG
 =====
 
+1.0.0
+-----
+
+* PSR-4 compliant
+
 0.4.0
 -----
 

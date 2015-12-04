@@ -10,12 +10,15 @@
  * @codeCoverageIgnore
  */
 
-namespace PHPExif\Mapper;
+namespace PHPExif\Adapter;
+
+use PHPExif\Data\ExifInterface;
 
 /**
- * PHP Exif Mapper
+ * MapperInterface
  *
- * Defines the interface for data mappers
+ * Public API for mapping raw EXIF data
+ * to and from Exif
  *
  * @category    PHPExif
  * @package     Mapper
@@ -27,7 +30,16 @@ interface MapperInterface
      * fields for the \PHPExif\Exif class
      *
      * @param array $data
+     * @return ExifInterface
+     */
+    public function map(array $data);
+
+    /**
+     * Maps the data of given Exif object
+     * to an array of raw data
+     *
+     * @param ExifInterface $exif
      * @return array
      */
-    public function mapRawData(array $data);
+    public function serialize(ExifInterface $exif);
 }
