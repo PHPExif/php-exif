@@ -11,7 +11,7 @@
 
     <filter>
         <whitelist>
-            <directory suffix=".php">./lib</directory>
+            <directory suffix=".php">./src</directory>
             <exclude>
                 <file>*Interface.php</file>
             </exclude>
