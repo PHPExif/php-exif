@@ -16,6 +16,9 @@
                 <file>*Interface.php</file>
             </exclude>
         </whitelist>
+        <blacklist>
+            <directory>./vendor</directory>
+        </blacklist>
     </filter>
 
     <logging>
