@@ -12,7 +12,7 @@
     ],
     "keywords": ["EXIF", "IPTC", "jpeg", "tiff", "exiftool"],
     "require": {
-        "php": ">=5.3.0"
+        "php": "~5.3"
     },
     "require-dev": {
         "phpmd/phpmd": "~2.2.0",
