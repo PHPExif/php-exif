@@ -25,6 +25,7 @@ interface IptcInterface
      * Array represenation of current instance
      *
      * @param boolean $withEmpty
+     *
      * @return array
      */
     public function toArray($withEmpty = true);
@@ -40,6 +41,7 @@ interface IptcInterface
      * Returns new instance with updated caption
      *
      * @param string $caption
+     *
      * @return IptcInterface
      */
     public function withCaption($caption);
@@ -55,6 +57,7 @@ interface IptcInterface
      * Returns new instance with updated copyright
      *
      * @param string $copyright
+     *
      * @return IptcInterface
      */
     public function withCopyright($copyright);
@@ -70,6 +73,7 @@ interface IptcInterface
      * Returns new instance with updated credit
      *
      * @param string $credit
+     *
      * @return IptcInterface
      */
     public function withCredit($credit);
@@ -85,6 +89,7 @@ interface IptcInterface
      * Returns new instance with updated headline
      *
      * @param string $headline
+     *
      * @return IptcInterface
      */
     public function withHeadline($headline);
@@ -100,6 +105,7 @@ interface IptcInterface
      * Returns new instance with updated jobtitle
      *
      * @param string $jobtitle
+     *
      * @return IptcInterface
      */
     public function withJobtitle($jobitle);
@@ -115,6 +121,7 @@ interface IptcInterface
      * Returns new instance with updated keywords
      *
      * @param string $keywords
+     *
      * @return IptcInterface
      */
     public function withKeywords(array $keywords);
@@ -130,6 +137,7 @@ interface IptcInterface
      * Returns new instance with updated source
      *
      * @param string $source
+     *
      * @return IptcInterface
      */
     public function withSource($source);
@@ -145,6 +153,7 @@ interface IptcInterface
      * Returns new instance with updated title
      *
      * @param string $title
+     *
      * @return IptcInterface
      */
     public function withTitle($title);
