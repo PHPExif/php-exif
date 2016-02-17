@@ -110,7 +110,15 @@ class Exiftool extends AdapterAbstract
             )
         );
 
-        $data = json_decode(utf8_encode($result), true);
+        if (!mb_check_encoding($result, "utf-8")) {
+            $result = utf8_encode($result);
+        }
+        $data = json_decode($result, true);
+        if (!is_array($data)) {
+            throw new RuntimeException(
+                'Could not decode exiftool output'
+            );
+        }
 
         // map the data:
         $mapper = $this->getMapper();
