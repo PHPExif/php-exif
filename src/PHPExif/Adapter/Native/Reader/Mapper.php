@@ -141,7 +141,7 @@ final class Mapper implements MapperInterface
             try {
                 $this->handleSection($field, $value, $mappedData);
                 $this->skipUnknownField($field);
-                $this->doCustomManipulation($field, $value)
+                $this->doCustomManipulation($field, $value);
             } catch (InterruptException $e) {
                 continue;
             }
