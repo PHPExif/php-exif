@@ -68,7 +68,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group reader
-     * @covers \PHPExif\Reader::read
+     * @covers \PHPExif\Reader::getMetadataFromFile
      */
     public function testReadForwardsToAdapter()
     {
@@ -76,12 +76,12 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
         $adapter = $this->getMockBuilder('\\PHPExif\\Adapter\\ReaderInterface')
             ->getMock();
         $adapter->expects($this->once())
-            ->method('read')
+            ->method('getMetadataFromFile')
             ->with(
                 $this->equalTo($file)
             );
 
         $reader = new \PHPExif\Reader($adapter);
-        $reader->read($file);
+        $reader->getMetadataFromFile($file);
     }
 }

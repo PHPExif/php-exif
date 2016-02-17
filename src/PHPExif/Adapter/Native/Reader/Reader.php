@@ -14,9 +14,6 @@ namespace PHPExif\Adapter\Native\Reader;
 
 use PHPExif\Adapter\MapperInterface;
 use PHPExif\Adapter\ReaderInterface;
-use PHPExif\Data\Exif;
-use PHPExif\Data\Iptc;
-use PHPExif\Data\IptcInterface;
 use PHPExif\Exception\NoExifDataException;
 use PHPExif\Exception\UnknownAdapterTypeException;
 
@@ -34,6 +31,11 @@ final class Reader implements ReaderInterface
     private $configuration;
 
     /**
+     * @var MapperInterface
+     */
+    private $mapper;
+
+    /**
      * @param Configuration $configuration
      */
     public function __construct(Configuration $configuration)
@@ -49,8 +51,9 @@ final class Reader implements ReaderInterface
      */
     public static function withDefaults()
     {
-        $configuration = new Configuration();
-        $instance = new Reader($configuration);
+        $instance = new Reader(
+            new Configuration
+        );
 
         return $instance;
     }
@@ -58,13 +61,31 @@ final class Reader implements ReaderInterface
     /**
      * Returns an instance of the configured mapper class
      *
-     * @return MapperInterface
      * @throws UnknownAdapterTypeException
+     *
+     * @return MapperInterface
      */
     public function getMapper()
     {
-        $mapper = new $this->configuration->mapperClass;
+        if (null !== $this->mapper) {
+            return $this->mapper;
+        }
 
+        $this-> mapper = $this->initializeMapper();
+
+        return $this->mapper;
+    }
+
+    /**
+     * Creates a new MapperInterface instance
+     * from given Configuration
+     *
+     * @return MapperInterface
+     */
+    private function initializeMapper()
+    {
+        $mapper = new $this->configuration->mapperClass;
+        
         if (!$mapper instanceof MapperInterface) {
             throw UnknownAdapterTypeException::noInterface(
                 $this->configuration->mapperClass,
@@ -77,62 +98,59 @@ final class Reader implements ReaderInterface
 
     /**
      * {@inheritDoc}
+     *
      * @throws NoExifDataException
      */
-    public function read($filePath)
+    public function getMetadataFromFile($filePath)
     {
         $data = @exif_read_data(
             $filePath,
-            $this->configuration->getRequiredSectionsAsString(),
-            $this->configuration->sectionsAsArrays,
-            $this->configuration->includeThumbnail
+            Configuration::SECTIONS,
+            Configuration::SECTIONS_FLAT,
+            Configuration::NO_THUMBNAIL
         );
 
         if (false === $data) {
             throw NoExifDataException::fromFile($filePath);
         }
 
-        $iptc = $this->getIptcData($file);
-        $data = array_merge(
-            $data,
-            array(
-                Configuration::SECTION_IPTC => $iptc->toArray(),
-            )
-        );
+        $this->augmentDataWithIptcRawData($data);
 
         // map the data:
         $mapper = $this->getMapper();
-        $exif = $mapper->map($data);
+        $readerResult = $mapper->map($data);
 
-        return $exif;
+        return $readerResult;
     }
 
     /**
-     * Returns an array of IPTC data
+     * Adds data from iptcparse to the original raw EXIF data
      *
-     * @param string $file The file to read the IPTC data from
-     * @return IptcInterface
+     * @param array $data
+     *
+     * @return void
      */
-    private function getIptcData($file)
+    private function augmentDataWithIptcRawData(array &$data)
     {
-        getimagesize($file, $info);
-        $arrData = array();
-        if (isset($info['APP13'])) {
-            $iptc = iptcparse($info['APP13']);
-
-            foreach (Iptc::$iptcMapping as $name => $field) {
-                if (!isset($iptc[$field])) {
-                    continue;
-                }
-
-                $value = $iptc[$field];
-                if (count($value) === 1) {
-                    $value = reset($value);
-                }
-                $arrData[$name] = $value;
-            }
+        if (!$this->configuration->parseRawIptcData) {
+            return;
         }
 
-        return new Iptc($arrData);
+        getimagesize($file, $info);
+        if (!array_key_exists('APP13', $info)) {
+            return;
+        }
+        $iptcRawData = iptcparse($info['APP13']);
+
+        // UTF8
+        if (isset($iptc["1#090"]) && $iptc["1#090"][0] == "\x1B%G") {
+            $iptcRawData = array_map('utf8_encode', $iptcRawData);
+        }
+
+        // Merge with original raw Exif data
+        $data = array_merge(
+            $data,
+            $iptcRawData
+        );
     }
 }

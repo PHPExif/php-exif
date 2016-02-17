@@ -23,6 +23,7 @@ class UnknownAdapterTypeException extends \Exception
      * No adapter set in the reader
      *
      * @param string $type
+     *
      * @return UnknownAdapterTypeException
      */
     public static function forType($type)
@@ -40,6 +41,7 @@ class UnknownAdapterTypeException extends \Exception
      *
      * @param string $classname
      * @param string $interfaceName
+     *
      * @return UnknownAdapterTypeException
      */
     public static function noInterface($classname, $interfaceName)

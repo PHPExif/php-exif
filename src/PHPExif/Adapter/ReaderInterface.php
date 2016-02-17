@@ -11,7 +11,7 @@
 
 namespace PHPExif\Adapter;
 
-use PHPExif\Data\ExifInterface;
+use PHPExif\Data\MetadataInterface;
 
 /**
  * ReaderInterface
@@ -24,10 +24,11 @@ use PHPExif\Data\ExifInterface;
 interface ReaderInterface
 {
     /**
-     * Read the EXIF metadata of given file
+     * Read the available metadata of given file
      *
      * @param string $filePath
-     * @return ExifInterface
+     *
+     * @return MetadataInterface
      */
-    public function read($filePath);
+    public function getMetadataFromFile($filePath);
 }

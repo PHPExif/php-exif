@@ -54,7 +54,6 @@ final class Mapper implements MapperInterface
     const XRESOLUTION      = 'XResolution';
     const YRESOLUTION      = 'YResolution';
 
-    const SECTION_ALL       = 'ANY_TAG';
     const SECTION_COMMENT   = 'COMMENT';
     const SECTION_COMPUTED  = 'COMPUTED';
     const SECTION_EXIF      = 'EXIF';
@@ -69,7 +68,6 @@ final class Mapper implements MapperInterface
      * @var array
      */
     private $sections = array(
-        self::SECTION_ALL,
         self::SECTION_COMMENT,
         self::SECTION_COMPUTED,
         self::SECTION_EXIF,

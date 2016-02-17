@@ -23,6 +23,7 @@ class NoExifDataException extends \Exception
      * Could not read EXIF data from given path
      *
      * @param string $path
+     *
      * @return NoExifDataException
      */
     public static function fromFile($path)

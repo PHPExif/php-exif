@@ -12,7 +12,7 @@
 
 namespace PHPExif\Adapter;
 
-use PHPExif\Data\ExifInterface;
+use PHPExif\Data\MetadataInterface;
 
 /**
  * MapperInterface
@@ -27,19 +27,11 @@ interface MapperInterface
 {
     /**
      * Maps the array of raw source data to the correct
-     * fields for the \PHPExif\Exif class
+     * value objects
      *
      * @param array $data
-     * @return ExifInterface
+     *
+     * @return MetadataInterface
      */
     public function map(array $data);
-
-    /**
-     * Maps the data of given Exif object
-     * to an array of raw data
-     *
-     * @param ExifInterface $exif
-     * @return array
-     */
-    public function serialize(ExifInterface $exif);
 }

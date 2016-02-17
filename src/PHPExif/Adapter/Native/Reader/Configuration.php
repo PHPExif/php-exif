@@ -26,35 +26,10 @@ final class Configuration
     const SECTIONS_AS_ARRAYS = true;
     const SECTIONS_FLAT      = false;
 
-    const SECTION_FILE      = 'FILE';
-    const SECTION_COMPUTED  = 'COMPUTED';
-    const SECTION_IFD0      = 'IFD0';
-    const SECTION_THUMBNAIL = 'THUMBNAIL';
-    const SECTION_COMMENT   = 'COMMENT';
-    const SECTION_EXIF      = 'EXIF';
-    const SECTION_ALL       = 'ANY_TAG';
-    const SECTION_IPTC      = 'IPTC';
+    const SECTIONS = 'ANY_TAG';
 
-    /**
-     * List of EXIF sections
-     *
-     * @var array
-     */
-    private $requiredSections = array();
-
-    /**
-     * Include the thumbnail in the EXIF data?
-     *
-     * @var boolean
-     */
-    public $includeThumbnail = self::NO_THUMBNAIL;
-
-    /**
-     * Parse the sections as arrays?
-     *
-     * @var boolean
-     */
-    public $sectionsAsArrays = self::SECTIONS_FLAT;
+    const IPTC_EXIF_ONLY = false;
+    const IPTC_ADD_RAW = true;
 
     /**
      * Classname of the Mapper to use when mapping raw data
@@ -65,55 +40,10 @@ final class Configuration
     public $mapperClass = '\\PHPExif\\Adapter\\Native\\Mapper';
 
     /**
-     * Getter for the EXIF sections
+     * Parse IPTC data from binary data and add it to the
+     * data read from Exif?
      *
-     * @return array
+     * @var bool
      */
-    public function getRequiredSections()
-    {
-        return $this->requiredSections;
-    }
-
-    /**
-     * Returns the required EXIF sections as
-     * a comma-separated string
-     *
-     * @return string
-     */
-    public function getRequiredSectionsAsString()
-    {
-        if (empty($this->requiredSections)) {
-            return null;
-        }
-
-        return implode(',', $this->requiredSections);
-    }
-
-    /**
-     * Setter for the EXIF sections
-     *
-     * @param array $sections List of EXIF sections
-     * @return Configuration
-     */
-    public function setRequiredSections(array $sections)
-    {
-        $this->requiredSections = $sections;
-
-        return $this;
-    }
-
-    /**
-     * Adds an EXIF section to the list
-     *
-     * @param string $section
-     * @return Configuration
-     */
-    public function addRequiredSection($section)
-    {
-        if (!in_array($section, $this->requiredSections)) {
-            array_push($this->requiredSections, $section);
-        }
-
-        return $this;
-    }
+    public $parseRawIptcData = self::IPTC_ADD_RAW;
 }

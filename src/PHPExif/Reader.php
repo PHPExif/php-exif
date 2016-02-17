@@ -76,8 +76,8 @@ final class Reader implements ReaderInterface
     /**
      * {@inheritDoc}
      */
-    public function read($file)
+    public function getMetadataFromFile($file)
     {
-        return $this->getAdapter()->read($file);
+        return $this->getAdapter()->getMetadataFromFile($file);
     }
 }

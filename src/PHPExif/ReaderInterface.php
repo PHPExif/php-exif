@@ -11,6 +11,7 @@
 
 namespace PHPExif;
 
+use PHPExif\Data\MetadataInterface;
 use PHPExif\Exception\UnknownAdapterTypeException;
 
 /**
@@ -37,8 +38,10 @@ interface ReaderInterface
      * Factory for the reader
      *
      * @param string $type
-     * @return ReaderInterface
+     *
      * @throws UnknownAdapterTypeException When given type is invalid
+     *
+     * @return ReaderInterface
      */
     public static function factory($type);
 
@@ -46,7 +49,8 @@ interface ReaderInterface
      * Reads & parses the EXIF data from given file
      *
      * @param string $file
-     * @return \PHPExif\Data\Exif
+     *
+     * @return MetadataInterface
      */
-    public function read($file);
+    public function getMetadataFromFile($file);
 }
