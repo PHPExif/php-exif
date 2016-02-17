@@ -1,38 +1,11 @@
 <?php
+use PHPExif\Reader;
+
 /**
  * @covers \PHPExif\Reader::<!public>
  */
 class ReaderTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @group reader
-     * @covers \PHPExif\Reader::__construct
-     */
-    public function testConstructorCallsSetData()
-    {
-        $mock = $this->getMockBuilder('\\PHPExif\\Reader')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $adapter = $this->getMockBuilder('\\PHPExif\\Adapter\\ReaderInterface')
-            ->getMock();
-
-        // now call the constructor
-        $reflectedClass = new ReflectionClass('\\PHPExif\\Reader');
-        $constructor = $reflectedClass->getConstructor();
-        $constructor->invoke($mock, array($adapter));
-
-        // verify if set in property
-        $reflProperty = new \ReflectionProperty('\\PHPExif\\Reader', 'adapter');
-        $reflProperty->setAccessible(true);
-
-        $actual = $reflProperty->getValue($mock);
-
-        $this->assertSame(
-            $adapter,
-            $actual
-        );
-    }
-
     /**
      * @group reader
      * @covers \PHPExif\Reader::getAdapter
@@ -46,11 +19,69 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
         $reflProperty = new \ReflectionProperty('\\PHPExif\\Reader', 'adapter');
         $reflProperty->setAccessible(true);
 
-        $relfProperty->setValue($reader, $adapter);
+        $reflProperty->setValue($reader, $adapter);
 
         $this->assertSame(
             $adapter,
             $reader->getAdapter()
         );
+    }
+
+    /**
+     * @group reader
+     * @covers \PHPExif\Reader::factory
+     * @expectedException \PHPExif\Exception\UnknownAdapterTypeException
+     */
+    public function testFactoryThrowsExceptionForUnknownType()
+    {
+        $type = 'foo';
+        $instance = Reader::factory($type);
+    }
+
+    /**
+     * @group reader
+     * @covers \PHPExif\Reader::factory
+     */
+    public function testFactoryForNativeReturnsInstance()
+    {
+        $type = Reader::TYPE_NATIVE;
+        $instance = Reader::factory($type);
+
+        $this->assertInstanceOf('\\PHPExif\\Reader', $instance);
+    }
+
+    /**
+     * @group reader
+     * @covers \PHPExif\Reader::factory
+     */
+    public function testFactoryForNativeReturnsInstanceWithCorrectAdapter()
+    {
+        $type = Reader::TYPE_NATIVE;
+        $instance = Reader::factory($type);
+        $adapter = $instance->getAdapter();
+
+        $this->assertInstanceOf(
+            '\\PHPExif\\Adapter\\Native\\Reader\\Reader',
+            $adapter
+        );
+    }
+
+    /**
+     * @group reader
+     * @covers \PHPExif\Reader::read
+     */
+    public function testReadForwardsToAdapter()
+    {
+        $file = '/path/to/a/file';
+        $adapter = $this->getMockBuilder('\\PHPExif\\Adapter\\ReaderInterface')
+            ->getMock();
+        $adapter->expects($this->once())
+            ->method('read')
+            ->with(
+                $this->equalTo($file)
+            );
+
+        $reader = new \PHPExif\Reader($adapter);
+        $reader->read($file);
     }
 }

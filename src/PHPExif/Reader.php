@@ -9,10 +9,10 @@
  * @package     Exif
  */
 
-namespace PHPExif\Data;
+namespace PHPExif;
 
 use PHPExif\Adapter\Native\Reader\Reader as NativeReader;
-use PHPExif\Exception\NoAdapterException;
+use PHPExif\Adapter\ReaderInterface as AdapterReaderInterface;
 use PHPExif\Exception\UnknownAdapterTypeException;
 
 /**
@@ -23,11 +23,8 @@ use PHPExif\Exception\UnknownAdapterTypeException;
  * @category    PHPExif
  * @package     Exif
  */
-final class Reader
+final class Reader implements ReaderInterface
 {
-    const TYPE_NATIVE   = 'native';
-    const TYPE_EXIFTOOL = 'exiftool';
-
     /**
      * The current adapter
      *
@@ -40,15 +37,13 @@ final class Reader
      *
      * @param \PHPExif\Adapter\ReaderInterface $adapter
      */
-    public function __construct(ReaderInterface $adapter)
+    public function __construct(AdapterReaderInterface $adapter)
     {
         $this->adapter = $adapter;
     }
 
     /**
-     * Getter for the reader adapter
-     *
-     * @return \PHPExif\Adapter\ReaderInterface
+     * {@inheritDoc}
      */
     public function getAdapter()
     {
@@ -56,15 +51,10 @@ final class Reader
     }
 
     /**
-     * Factory for the reader
-     *
-     * @param string $type
-     * @return Reader
-     * @throws UnknownAdapterTypeException When given type is invalid
+     * {@inheritDoc}
      */
     public static function factory($type)
     {
-        $classname = get_called_class();
         switch ($type) {
             case self::TYPE_NATIVE:
                 $adapter = NativeReader::withDefaults();
@@ -77,14 +67,14 @@ final class Reader
             default:
                 throw UnknownAdapterTypeException::forType($type);
         }
+
+        $classname = get_called_class();
+
         return new $classname($adapter);
     }
 
     /**
-     * Reads & parses the EXIF data from given file
-     *
-     * @param string $file
-     * @return \PHPExif\Data\Exif
+     * {@inheritDoc}
      */
     public function read($file)
     {
