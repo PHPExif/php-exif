@@ -16,6 +16,7 @@
     },
     "require-dev": {
         "phpmd/phpmd": "~2.2.0",
+        "squizlabs/php_codesniffer": "~2.0",
         "phpro/grumphp": "~0.1",
         "phpunit/phpunit": "~4.5.0",
         "satooshi/php-coveralls": "~0.6"
