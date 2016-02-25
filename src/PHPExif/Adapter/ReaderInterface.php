@@ -24,6 +24,22 @@ use PHPExif\Data\MetadataInterface;
 interface ReaderInterface
 {
     /**
+     * Accessor for the data mapper
+     *
+     * @return MapperInterface
+     */
+    public function getMapper();
+
+    /**
+     * Mutator for the data mapper
+     *
+     * @param MapperInterface $mapper
+     *
+     * @return void
+     */
+    public function setMapper(MapperInterface $mapper);
+
+    /**
      * Read the available metadata of given file
      *
      * @param string $filePath

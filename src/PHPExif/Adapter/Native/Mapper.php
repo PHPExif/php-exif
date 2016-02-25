@@ -11,7 +11,7 @@
  * @package     Exif
  */
 
-namespace PHPExif\Adapter\Native\Mapper;
+namespace PHPExif\Adapter\Native;
 
 use PHPExif\Adapter\MapperInterface;
 use PHPExif\Data\Exif;

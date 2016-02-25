@@ -7,10 +7,10 @@
  * @copyright   Copyright (c) 2013 Tom Van Herreweghe <tom@theanalogguy.be>
  * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
  * @category    PHPExif
- * @package     Exif
+ * @package     Adapter
  */
 
-namespace PHPExif\Adapter\Native\Reader;
+namespace PHPExif\Adapter\Native;
 
 use PHPExif\Adapter\MapperInterface;
 use PHPExif\Adapter\ReaderInterface;
@@ -21,12 +21,12 @@ use PHPExif\Exception\UnknownAdapterTypeException;
  * Reader class
  *
  * @category    PHPExif
- * @package     Exif
+ * @package     Adapter
  */
 final class Reader implements ReaderInterface
 {
     /**
-     * @var Configuration
+     * @var ReaderConfig
      */
     private $configuration;
 
@@ -36,34 +36,15 @@ final class Reader implements ReaderInterface
     private $mapper;
 
     /**
-     * @param Configuration $configuration
+     * @param ReaderConfig $configuration
      */
-    public function __construct(Configuration $configuration)
+    public function __construct(ReaderConfig $configuration)
     {
         $this->configuration = $configuration;
     }
 
     /**
-     * Returns an instance with sane defaults
-     * everyone can agree on
-     *
-     * @return Reader
-     */
-    public static function withDefaults()
-    {
-        $instance = new Reader(
-            new Configuration
-        );
-
-        return $instance;
-    }
-
-    /**
-     * Returns an instance of the configured mapper class
-     *
-     * @throws UnknownAdapterTypeException
-     *
-     * @return MapperInterface
+     * {@inheritDoc}
      */
     public function getMapper()
     {
@@ -71,29 +52,19 @@ final class Reader implements ReaderInterface
             return $this->mapper;
         }
 
-        $this-> mapper = $this->initializeMapper();
+        $this->setMapper(
+            new Mapper
+        );
 
         return $this->mapper;
     }
 
     /**
-     * Creates a new MapperInterface instance
-     * from given Configuration
-     *
-     * @return MapperInterface
+     * {@inheritDoc}
      */
-    private function initializeMapper()
+    public function setMapper(MapperInterface $mapper)
     {
-        $mapper = new $this->configuration->mapperClass;
-        
-        if (!$mapper instanceof MapperInterface) {
-            throw UnknownAdapterTypeException::noInterface(
-                $this->configuration->mapperClass,
-                'PHPExif\\Adapter\\MapperInterface'
-            );
-        }
-
-        return $mapper;
+        $this->mapper = $mapper;
     }
 
     /**
@@ -105,16 +76,16 @@ final class Reader implements ReaderInterface
     {
         $data = @exif_read_data(
             $filePath,
-            Configuration::SECTIONS,
-            Configuration::SECTIONS_FLAT,
-            Configuration::NO_THUMBNAIL
+            $this->configuration->getSections(),
+            false, // flat array
+            false // no thumbnail
         );
 
         if (false === $data) {
             throw NoExifDataException::fromFile($filePath);
         }
 
-        $this->augmentDataWithIptcRawData($data);
+        $this->augmentDataWithIptcRawData($filePath, $data);
 
         // map the data:
         $mapper = $this->getMapper();
@@ -126,20 +97,23 @@ final class Reader implements ReaderInterface
     /**
      * Adds data from iptcparse to the original raw EXIF data
      *
+     * @param string $filePath
      * @param array $data
      *
      * @return void
      */
-    private function augmentDataWithIptcRawData(array &$data)
+    private function augmentDataWithIptcRawData($filePath, array &$data)
     {
-        if (!$this->configuration->parseRawIptcData) {
+        if (!$this->configuration->isParseRawIptcData()) {
             return;
         }
 
-        getimagesize($file, $info);
+        getimagesize($filePath, $info);
+
         if (!array_key_exists('APP13', $info)) {
             return;
         }
+
         $iptcRawData = iptcparse($info['APP13']);
 
         // UTF8
