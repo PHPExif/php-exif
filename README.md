@@ -4,6 +4,13 @@ PHPExif is a library which gives you easy access to the EXIF meta-data of an ima
 
 PHPExif serves as a wrapper around some native or CLI tools which access this EXIF meta-data from an image. As such, it provides a standard API for retrieving and accessing that information.
 
+## Minimum requirements
+
+* 0.x branch: PHP 5.3
+* 1.x branch: PHP 5.6
+
+See [http://php.net/supported-versions.php](http://php.net/supported-versions.php) for reason.
+
 ## Supported tools
 
 * Native PHP functionality (exif_read_data, iptcparse)
