@@ -1,10 +1,14 @@
 <?php
+
+namespace Tests\PHPExif\Exception;
+
 use PHPExif\Exception\UnknownAdapterTypeException;
+use Tests\PHPExif\Exception\BaseExceptionTest;
 
 /**
  * @covers \PHPExif\Exception\UnknownAdapterTypeException::<!public>
  */
-class UnknownAdapterTypeExceptionTest extends \PHPUnit_Framework_TestCase
+class UnknownAdapterTypeExceptionTest extends BaseExceptionTest
 {
     /**
      * @group exception
@@ -12,11 +16,10 @@ class UnknownAdapterTypeExceptionTest extends \PHPUnit_Framework_TestCase
      */
     public function testForTypeReturnsInstance()
     {
-        $instance = UnknownAdapterTypeException::forType('foo');
-
-        $this->assertInstanceOf(
-            '\\PHPExif\\Exception\\UnknownAdapterTypeException',
-            $instance
+        $this->assertNamedConstructorReturnsInstance(
+            UnknownAdapterTypeException::class,
+            'forType',
+            array('foo')
         );
     }
 
@@ -26,14 +29,10 @@ class UnknownAdapterTypeExceptionTest extends \PHPUnit_Framework_TestCase
      */
     public function testnoInterfaceReturnsInstance()
     {
-        $instance = UnknownAdapterTypeException::noInterface(
-            'foo',
-            'bar'
-        );
-
-        $this->assertInstanceOf(
-            '\\PHPExif\\Exception\\UnknownAdapterTypeException',
-            $instance
+        $this->assertNamedConstructorReturnsInstance(
+            UnknownAdapterTypeException::class,
+            'noInterface',
+            array('foo', 'bar',)
         );
     }
 }

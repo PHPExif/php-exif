@@ -26,5 +26,8 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": { "PHPExif\\": "src/PHPExif/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Tests\\PHPExif\\": "tests/PHPExif/" }
     }
 }

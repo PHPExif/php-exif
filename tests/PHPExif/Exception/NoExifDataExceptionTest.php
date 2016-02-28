@@ -1,10 +1,14 @@
 <?php
+
+namespace Tests\PHPExif\Exception;
+
 use PHPExif\Exception\NoExifDataException;
+use Tests\PHPExif\Exception\BaseExceptionTest;
 
 /**
  * @covers \PHPExif\Exception\NoExifDataException::<!public>
  */
-class NoExifDataExceptionTest extends \PHPUnit_Framework_TestCase
+class NoExifDataExceptionTest extends BaseExceptionTest
 {
     /**
      * @group exception
@@ -12,11 +16,10 @@ class NoExifDataExceptionTest extends \PHPUnit_Framework_TestCase
      */
     public function testFromFileReturnsInstance()
     {
-        $instance = NoExifDataException::fromFile('foo');
-
-        $this->assertInstanceOf(
-            '\\PHPExif\\Exception\\NoExifDataException',
-            $instance
+        $this->assertNamedConstructorReturnsInstance(
+            NoExifDataException::class,
+            'fromFile',
+            array('foo')
         );
     }
 }
