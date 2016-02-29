@@ -47,4 +47,20 @@ interface ExifInterface
     const VERTICAL_RESOLUTION   = 'verticalResolution';
     const WIDTH                 = 'width';
     const GPS                   = 'gps';
+
+    /**
+     * Accessor for the aperture
+     *
+     * @return float
+     */
+    public function getAperture();
+
+    /**
+     * Returns new instance with updated aperture
+     *
+     * @param float $aperture
+     *
+     * @return ExifInterface
+     */
+    public function withAperture($aperture);
 }

@@ -22,9 +22,26 @@ namespace PHPExif\Data;
 final class Exif implements ExifInterface
 {
     /**
-     * @param array $rawData
+     * @var float
      */
-    public function __construct(array $data)
+    private $aperture;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAperture()
     {
+        return $this->aperture;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function withAperture($aperture)
+    {
+        $new = clone $this;
+        $new->aperture = $aperture;
+
+        return $new;
     }
 }

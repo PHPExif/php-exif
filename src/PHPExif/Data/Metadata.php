@@ -59,7 +59,7 @@ final class Metadata implements MetadataInterface
     public function getExif()
     {
         if (null === $this->exif) {
-            $this->exif = new Exif(array());
+            $this->exif = new Exif;
         }
 
         return $this->exif;
