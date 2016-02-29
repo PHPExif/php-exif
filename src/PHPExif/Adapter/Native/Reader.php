@@ -14,6 +14,7 @@ namespace PHPExif\Adapter\Native;
 
 use PHPExif\Adapter\HasMapper;
 use PHPExif\Adapter\MapperAccessorTrait;
+use PHPExif\Adapter\MapperInterface;
 use PHPExif\Adapter\ReaderInterface;
 use PHPExif\Exception\NoExifDataException;
 use PHPExif\Exception\UnknownAdapterTypeException;
@@ -36,9 +37,12 @@ final class Reader implements ReaderInterface, HasMapper
     /**
      * @param ReaderConfig $configuration
      */
-    public function __construct(ReaderConfig $configuration)
-    {
+    public function __construct(
+        ReaderConfig $configuration,
+        MapperInterface $mapper
+    ) {
         $this->configuration = $configuration;
+        $this->setMapper($mapper);
     }
 
     /**

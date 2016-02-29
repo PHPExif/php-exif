@@ -96,7 +96,8 @@ final class NativeAdapterConfig implements AdapterConfig, HasMapper
         $reader = new Reader(
             ReaderConfig::fromArray(
                 $this->config[AdapterConfig::READER]
-            )
+            ),
+            $this->getMapper()
         );
 
         return $reader;
