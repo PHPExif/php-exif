@@ -1,6 +1,6 @@
 <?php
 /**
- * AdapterConfig interface
+ * HasMapper interface
  *
  * @link        http://github.com/miljar/PHPExif for the canonical source repository
  * @copyright   Copyright (c) 2015 Tom Van Herreweghe <tom@theanalogguy.be>
@@ -13,23 +13,28 @@
 namespace PHPExif\Adapter;
 
 /**
- * AdapterConfig
+ * HasMapper
  *
- * Defines a public API for a AdapterConfig
+ * Defines a public API for a accessing the mapper
  *
  * @category    PHPExif
  * @package     Adapter
  */
-interface AdapterConfig
+interface HasMapper
 {
-    const READER = 'reader';
-    const WRITER = 'writer';
+    /**
+     * Accessor for the data mapper
+     *
+     * @return MapperInterface
+     */
+    public function getMapper();
 
     /**
-     * Factory method for producting the Reader/Writer
+     * Mutator for the data mapper
      *
-     * @param string $type
-     * @return ReaderInterface|WriterInterface
+     * @param MapperInterface $mapper
+     *
+     * @return void
      */
-    public function factory($type);
+    public function setMapper(MapperInterface $mapper);
 }

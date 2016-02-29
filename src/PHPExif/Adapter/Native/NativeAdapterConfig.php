@@ -12,6 +12,7 @@
 namespace PHPExif\Adapter\Native;
 
 use PHPExif\Adapter\AdapterConfig;
+use PHPExif\Adapter\HasMapper;
 use PHPExif\Adapter\Native\Reader;
 use PHPExif\Adapter\Native\ReaderConfig;
 
@@ -21,10 +22,13 @@ use PHPExif\Adapter\Native\ReaderConfig;
  * @category    PHPExif
  * @package     Adapter
  */
-final class NativeAdapterConfig implements AdapterConfig
+final class NativeAdapterConfig implements AdapterConfig, HasMapper
 {
+    use MapperAccessorTrait;
+
     const ENABLE = true;
     const DISABLE = false;
+
     /**
      * @var array
      */
