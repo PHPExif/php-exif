@@ -18,7 +18,8 @@
         "phpmd/phpmd": "~2.3.0",
         "squizlabs/php_codesniffer": "~2.0",
         "phpunit/phpunit": "~5.2.0",
-        "satooshi/php-coveralls": "~1.0.0"
+        "satooshi/php-coveralls": "~1.0.0",
+        "mockery/mockery": "^0.9.4"
     },
     "suggest": {
         "lib-exiftool": "Use perl lib exiftool as adapter"
