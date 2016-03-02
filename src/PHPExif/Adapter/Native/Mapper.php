@@ -12,8 +12,10 @@
 
 namespace PHPExif\Adapter\Native;
 
-use PHPExif\Adapter\Native\Exception\MapperNotRegisteredException;
+use PHPExif\Adapter\MapperInterface;
 use PHPExif\Data\MetaData;
+use PHPExif\Mapper\ArrayMapper;
+use PHPExif\Mapper\FieldMapperTrait;
 
 /**
  * Mapper

@@ -12,9 +12,8 @@
 
 namespace PHPExif\Adapter\Native\Mapper\Exif;
 
-use PHPExif\Adapter\Native\Exception\UnsupportedFieldException;
-use PHPExif\Adapter\Native\FieldMapper;
 use PHPExif\Data\ExifInterface;
+use PHPExif\Mapper\FieldMapper;
 
 /**
  * Mapper

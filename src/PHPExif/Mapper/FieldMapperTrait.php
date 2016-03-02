@@ -6,19 +6,19 @@
  * @copyright   Copyright (c) 2015 Tom Van Herreweghe <tom@theanalogguy.be>
  * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
  * @category    PHPExif
- * @package     Adapter
+ * @package     Exif
  * @codeCoverageIgnore
  */
 
-namespace PHPExif\Adapter\Native;
+namespace PHPExif\Mapper;
 
-use PHPExif\Adapter\Native\Exception\MapperNotRegisteredException;
+use PHPExif\Exception\Mapper\MapperNotRegisteredException;
 
 /**
  * Mapper
  *
  * @category    PHPExif
- * @package     Adapter
+ * @package     Exif
  */
 trait FieldMapperTrait
 {
@@ -39,6 +39,7 @@ trait FieldMapperTrait
 
     /**
      * Registers given FieldMapper instance
+     * Allows overwriting an already existing mapper for a given field
      *
      * @param FieldMapper $fieldMapper
      *
@@ -49,7 +50,6 @@ trait FieldMapperTrait
         $targetFields = $fieldMapper->getSupportedFields();
 
         foreach ($targetFields as $fieldName) {
-            // explicitly allow overwriting the FieldMapper for a given field
             $this->fieldMappers[$fieldName] = $fieldMapper;
         }
     }

@@ -6,13 +6,13 @@
  * @copyright   Copyright (c) 2015 Tom Van Herreweghe <tom@theanalogguy.be>
  * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
  * @category    PHPExif
- * @package     Mapper
+ * @package     Exif
  * @codeCoverageIgnore
  */
 
-namespace PHPExif\Adapter\Native;
+namespace PHPExif\Mapper;
 
-use PHPExif\Adapter\Native\Exception\MapperNotRegisteredException;
+use PHPExif\Exception\Mapper\MapperNotRegisteredException;
 
 /**
  * ArrayMapper
@@ -21,7 +21,7 @@ use PHPExif\Adapter\Native\Exception\MapperNotRegisteredException;
  * to and from Exif
  *
  * @category    PHPExif
- * @package     Mapper
+ * @package     Exif
  */
 interface ArrayMapper
 {

@@ -1,37 +1,37 @@
 <?php
 /**
- * MapperNotRegisteredException for when an expected mapper was not found
+ * UnsupportedOutputException for when an unsupported output was given to the mapper
  *
  * @link        http://github.com/miljar/PHPExif for the canonical source repository
  * @copyright   Copyright (c) 2015 Tom Van Herreweghe <tom@theanalogguy.be>
  * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
  * @category    PHPExif
- * @package     Adapter
+ * @package     Exif
  * @codeCoverageIgnore
  */
 
-namespace PHPExif\Adapter\Native\Exception;
+namespace PHPExif\Exception\Mapper;
 
 /**
- * MapperNotRegisteredException
+ * UnsupportedOutputException
  *
  * @category    PHPExif
- * @package     Adapter
+ * @package     Exif
  */
-class MapperNotRegisteredException extends \Exception
+class UnsupportedOutputException extends \Exception
 {
     /**
      * Returns new instance with set message
      *
-     * @param string $field
-     * @return MapperNotRegisteredException
+     * @param object $output
+     * @return UnsupportedOutputException
      */
-    public static function forField($field)
+    public static function forOutput($output)
     {
         return new self(
             sprintf(
-                'No mapper was registered for field "%1$s"',
-                $field
+                'Mapper does not support output objects of type "%1$s"',
+                get_class($output)
             )
         );
     }

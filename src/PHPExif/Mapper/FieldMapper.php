@@ -6,11 +6,11 @@
  * @copyright   Copyright (c) 2015 Tom Van Herreweghe <tom@theanalogguy.be>
  * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
  * @category    PHPExif
- * @package     Mapper
+ * @package     Exif
  * @codeCoverageIgnore
  */
 
-namespace PHPExif\Adapter\Native;
+namespace PHPExif\Mapper;
 
 use PHPExif\Data\MetadataInterface;
 
@@ -21,7 +21,7 @@ use PHPExif\Data\MetadataInterface;
  * to and from Exif
  *
  * @category    PHPExif
- * @package     Mapper
+ * @package     Exif
  */
 interface FieldMapper
 {
@@ -41,5 +41,5 @@ interface FieldMapper
      *
      * @return void
      */
-    public function mapField($field, array $input, &$output);
+    public function mapField($field, array $input, $output);
 }

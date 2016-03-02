@@ -12,9 +12,10 @@
 
 namespace PHPExif\Adapter\Native\Mapper;
 
-use PHPExif\Adapter\Native\Exception\UnsupportedOutputException;
-use PHPExif\Adapter\Native\FieldMapperTrait;
 use PHPExif\Data\IptcInterface;
+use PHPExif\Exception\Mapper\UnsupportedOutputException;
+use PHPExif\Mapper\ArrayMapper;
+use PHPExif\Mapper\FieldMapperTrait;
 
 /**
  * Mapper
