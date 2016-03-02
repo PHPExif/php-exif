@@ -6,13 +6,14 @@ use PHPExif\Exception\UnknownAdapterTypeException;
 use Tests\PHPExif\Exception\BaseExceptionTest;
 
 /**
- * @covers \PHPExif\Exception\UnknownAdapterTypeException::<!public>
+ * @coversDefaultClass \PHPExif\Exception\UnknownAdapterTypeException
+ * @covers ::<!public>
  */
 class UnknownAdapterTypeExceptionTest extends BaseExceptionTest
 {
     /**
      * @group exception
-     * @covers \PHPExif\Exception\UnknownAdapterTypeException::forType
+     * @covers ::forType
      */
     public function testForTypeReturnsInstance()
     {
@@ -25,7 +26,7 @@ class UnknownAdapterTypeExceptionTest extends BaseExceptionTest
 
     /**
      * @group exception
-     * @covers \PHPExif\Exception\UnknownAdapterTypeException::noInterface
+     * @covers ::noInterface
      */
     public function testnoInterfaceReturnsInstance()
     {

@@ -6,15 +6,16 @@ use PHPExif\Exception\Adapter\AdapterNotRegisteredException;
 use Tests\PHPExif\Exception\BaseExceptionTest;
 
 /**
- * @covers \PHPExif\Exception\Adapter\AdapterNotRegisteredException::<!public>
+ * @coversDefaultClass \PHPExif\Exception\Adapter\AdapterNotRegisteredException
+ * @covers ::<!public>
  */
 class AdapterNotRegisteredExceptionTest extends BaseExceptionTest
 {
     /**
      * @group exception
-     * @covers \PHPExif\Exception\Adapter\AdapterNotRegisteredException::withName
+     * @covers ::withName
      */
-    public function testWithKeyReturnsInstance()
+    public function testWithNameReturnsInstance()
     {
         $this->assertNamedConstructorReturnsInstance(
             AdapterNotRegisteredException::class,

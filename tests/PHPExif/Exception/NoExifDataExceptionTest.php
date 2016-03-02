@@ -6,13 +6,14 @@ use PHPExif\Exception\NoExifDataException;
 use Tests\PHPExif\Exception\BaseExceptionTest;
 
 /**
- * @covers \PHPExif\Exception\NoExifDataException::<!public>
+ * @coversDefaultClass \PHPExif\Exception\NoExifDataException
+ * @covers ::<!public>
  */
 class NoExifDataExceptionTest extends BaseExceptionTest
 {
     /**
      * @group exception
-     * @covers \PHPExif\Exception\NoExifDataException::fromFile
+     * @covers ::fromFile
      */
     public function testFromFileReturnsInstance()
     {

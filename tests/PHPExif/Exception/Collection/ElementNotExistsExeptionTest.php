@@ -6,13 +6,14 @@ use PHPExif\Exception\Collection\ElementNotExistsException;
 use Tests\PHPExif\Exception\BaseExceptionTest;
 
 /**
- * @covers \PHPExif\Exception\Collection\ElementNotExistsException::<!public>
+ * @coversDefaultClass \PHPExif\Exception\Collection\ElementNotExistsException
+ * @covers ::<!public>
  */
 class ElementNotExistsExceptionTest extends BaseExceptionTest
 {
     /**
      * @group exception
-     * @covers \PHPExif\Exception\Collection\ElementNotExistsException::withKey
+     * @covers ::withKey
      */
     public function testWithKeyReturnsInstance()
     {

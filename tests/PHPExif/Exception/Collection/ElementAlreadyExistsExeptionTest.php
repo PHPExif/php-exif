@@ -6,13 +6,14 @@ use PHPExif\Exception\Collection\ElementAlreadyExistsException;
 use Tests\PHPExif\Exception\BaseExceptionTest;
 
 /**
- * @covers \PHPExif\Exception\Collection\ElementAlreadyExistsException::<!public>
+ * @coversDefaultClass \PHPExif\Exception\Collection\ElementAlreadyExistsException
+ * @covers ::<!public>
  */
 class ElementAlreadyExistsExceptionTest extends BaseExceptionTest
 {
     /**
      * @group exception
-     * @covers \PHPExif\Exception\Collection\ElementAlreadyExistsException::withKey
+     * @covers ::withKey
      */
     public function testWithKeyReturnsInstance()
     {

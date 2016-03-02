@@ -6,15 +6,16 @@ use PHPExif\Exception\Collection\InvalidElementTypeException;
 use Tests\PHPExif\Exception\BaseExceptionTest;
 
 /**
- * @covers \PHPExif\Exception\Collection\InvalidElementTypeException::<!public>
+ * @coversDefaultClass \PHPExif\Exception\Collection\InvalidElementTypeException
+ * @covers ::<!public>
  */
 class InvalidElementTypeExceptionTest extends BaseExceptionTest
 {
     /**
      * @group exception
-     * @covers \PHPExif\Exception\Collection\InvalidElementTypeException::withExpectedType
+     * @covers ::withExpectedType
      */
-    public function testWithKeyReturnsInstance()
+    public function testWithExpectedTypeReturnsInstance()
     {
         $this->assertNamedConstructorReturnsInstance(
             InvalidElementTypeException::class,

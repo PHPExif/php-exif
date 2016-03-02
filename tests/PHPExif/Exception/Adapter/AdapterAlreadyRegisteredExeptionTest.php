@@ -6,15 +6,16 @@ use PHPExif\Exception\Adapter\AdapterAlreadyRegisteredException;
 use Tests\PHPExif\Exception\BaseExceptionTest;
 
 /**
- * @covers \PHPExif\Exception\Adapter\AdapterAlreadyRegisteredException::<!public>
+ * @coversDefaultClass \PHPExif\Exception\Adapter\AdapterAlreadyRegisteredException
+ * @covers ::<!public>
  */
 class AdapterAlreadyRegisteredExceptionTest extends BaseExceptionTest
 {
     /**
      * @group exception
-     * @covers \PHPExif\Exception\Adapter\AdapterAlreadyRegisteredException::withName
+     * @covers ::withName
      */
-    public function testWithKeyReturnsInstance()
+    public function testWithNameReturnsInstance()
     {
         $this->assertNamedConstructorReturnsInstance(
             AdapterAlreadyRegisteredException::class,
