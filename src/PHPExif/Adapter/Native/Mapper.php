@@ -13,7 +13,7 @@
 namespace PHPExif\Adapter\Native;
 
 use PHPExif\Adapter\MapperInterface;
-use PHPExif\Data\MetaData;
+use PHPExif\Data\Metadata;
 use PHPExif\Mapper\ArrayMapper;
 use PHPExif\Mapper\FieldMapperTrait;
 

@@ -6,7 +6,7 @@ use Mockery as m;
 use PHPExif\Adapter\Native\Mapper;
 use PHPExif\Data\Exif;
 use PHPExif\Data\Iptc;
-use PHPExif\Data\MetaData;
+use PHPExif\Data\Metadata;
 use PHPExif\Mapper\ArrayMapper;
 use PHPExif\Mapper\FieldMapper;
 
@@ -236,7 +236,7 @@ class MapperTest extends \PHPUnit_Framework_TestCase
         $iptc = new Iptc(array());
 
         $input = array();
-        $metadata = new MetaData;
+        $metadata = new Metadata;
         $output = m::mock($metadata);
         $output->shouldReceive('getExif')
             ->once()
