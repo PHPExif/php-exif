@@ -1,6 +1,18 @@
 CHANGELOG
 =====
 
+1.0.0
+-----
+
+* PSR-4 compliant
+* Immutable Exif data class
+* Immutable Iptc data class
+* Custom exception classes
+* Adapters are now considered as namespaces which implement certain behavior
+* Refactored Native mapper class
+* Introduced Configuration class to configure the Reader adapters
+* Created & used interfaces as typehints throughout the code
+
 0.4.0
 -----
 

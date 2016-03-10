@@ -1,20 +1,16 @@
 language: php
 
-php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
-
 matrix:
-  allow_failures:
+  fast_finish: true
+  include:
     - php: 5.6
+    - php: 7.0
 
 script:
   - mkdir -p build/logs
   - php vendor/bin/phpunit -c phpunit.xml.dist
   - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
-  - ./vendor/bin/phpcs --standard=PSR2 ./lib/
+  - ./vendor/bin/phpcs --standard=PSR2 ./src/
 
 before_script:
   - composer install --prefer-source
