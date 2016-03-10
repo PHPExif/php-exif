@@ -47,12 +47,37 @@ class Mapper implements MapperInterface, ArrayMapper
      */
     public function mapArray(array $input, $output)
     {
-        $exif = $output->getExif();
-        $exifMapper = $this->getFieldMapper(self::FIELD_EXIF);
-        $exifMapper->mapArray($input, $exif);
+        $this->mapExif($input, $output);
+        $this->mapIptc($input, $output);
+    }
 
+    /**
+     * Maps the IPTC data
+     *
+     * @param array $input
+     * @param object $output
+     *
+     * @return void
+     */
+    private function mapIptc($input, $output)
+    {
         $iptc = $output->getIptc();
         $iptcMapper = $this->getFieldMapper(self::FIELD_IPTC);
         $iptcMapper->mapArray($input, $iptc);
+    }
+
+    /**
+     * Maps the EXIF data
+     *
+     * @param array $input
+     * @param object $output
+     *
+     * @return void
+     */
+    private function mapExif($input, $output)
+    {
+        $exif = $output->getExif();
+        $exifMapper = $this->getFieldMapper(self::FIELD_EXIF);
+        $exifMapper->mapArray($input, $exif);
     }
 }
