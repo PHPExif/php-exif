@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\PHPExif\Adapter\Native;
+namespace Tests\Unit\PHPExif\Adapter\Native;
 
 use Mockery as m;
 use PHPExif\Adapter\Native\Mapper;
@@ -232,31 +232,22 @@ class MapperTest extends \PHPUnit_Framework_TestCase
      */
     public function testMapArrayForwardsCall()
     {
-        $exif = new Exif(array());
-        $iptc = new Iptc(array());
-
         $input = array();
-        $metadata = new Metadata;
-        $output = m::mock($metadata);
-        $output->shouldReceive('getExif')
-            ->once()
-            ->andReturn($exif);
-        $output->shouldReceive('getIptc')
-            ->once()
-            ->andReturn($iptc);
+        $output = new Metadata;
 
         $mapper = new Mapper;
 
         foreach (array(Mapper::FIELD_EXIF, MAPPER::FIELD_IPTC) as $field) {
-            $fieldMapper = m::mock(FieldMapper::class . '[getSupportedFields,mapArray]');
+            $fieldMapper = m::mock(FieldMapper::class . '[getSupportedFields,mapField]');
             $fieldMapper->shouldReceive('getSupportedFields')
                 ->once()
                 ->andReturn(array($field));
-            $fieldMapper->shouldReceive('mapArray')
+            $fieldMapper->shouldReceive('mapField')
                 ->once()
                 ->with(
+                    $field,
                     $input,
-                    ($field === Mapper::FIELD_EXIF) ? $exif : $iptc
+                    m::type(Metadata::class)
                 )
                 ->andReturnNull();
 
