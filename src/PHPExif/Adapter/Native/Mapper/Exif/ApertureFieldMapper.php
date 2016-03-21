@@ -42,6 +42,6 @@ class ApertureFieldMapper implements FieldMapper
     {
         $this->guardInvalidArguments($field, $input, $output);
 
-        $output = $output->withAperture((float) $input['ApertureFNumber']);
+        $output = $output->withAperture($input['COMPUTED']['ApertureFNumber']);
     }
 }

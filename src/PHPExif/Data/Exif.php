@@ -22,7 +22,7 @@ namespace PHPExif\Data;
 final class Exif implements ExifInterface
 {
     /**
-     * @var float
+     * @var string
      */
     private $aperture;
 
@@ -43,5 +43,17 @@ final class Exif implements ExifInterface
         $new->aperture = $aperture;
 
         return $new;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray($withEmpty = true)
+    {
+        $data = get_class_vars(
+            self::class
+        );
+
+        return $data;
     }
 }

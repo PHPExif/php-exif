@@ -60,5 +60,5 @@ interface ArrayMapper
      *
      * @return void
      */
-    public function mapArray(array $input, $output);
+    public function mapArray(array $input, &$output);
 }

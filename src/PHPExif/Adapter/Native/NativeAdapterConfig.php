@@ -13,6 +13,7 @@ namespace PHPExif\Adapter\Native;
 
 use PHPExif\Adapter\AdapterConfig;
 use PHPExif\Adapter\HasMapper;
+use PHPExif\Adapter\MapperAccessorTrait;
 use PHPExif\Adapter\Native\Reader;
 use PHPExif\Adapter\Native\ReaderConfig;
 

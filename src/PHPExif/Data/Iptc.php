@@ -83,7 +83,7 @@ final class Iptc implements IptcInterface
     public function __construct(array $data)
     {
         foreach ($data as $key => $value) {
-            if (!array_key_exists($key, $this->iptcMapping)) {
+            if (!array_key_exists($key, self::$iptcMapping)) {
                 continue;
             }
 
@@ -97,7 +97,7 @@ final class Iptc implements IptcInterface
     public function toArray($withEmpty = true)
     {
         $data = array();
-        $keys = array_keys($this->iptcMapping);
+        $keys = array_keys(self::$iptcMapping);
         foreach ($keys as $prop) {
             $accessor = 'get' . ucfirst($prop);
             $value = $this->$accessor();

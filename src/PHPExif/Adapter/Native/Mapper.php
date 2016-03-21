@@ -45,7 +45,7 @@ class Mapper implements MapperInterface, ArrayMapper
     /**
      * {@inheritDoc}
      */
-    public function mapArray(array $input, $output)
+    public function mapArray(array $input, &$output)
     {
         $this->mapExif($input, $output);
         $this->mapIptc($input, $output);
@@ -59,11 +59,10 @@ class Mapper implements MapperInterface, ArrayMapper
      *
      * @return void
      */
-    private function mapIptc($input, $output)
+    private function mapIptc($input, &$output)
     {
-        $iptc = $output->getIptc();
         $iptcMapper = $this->getFieldMapper(self::FIELD_IPTC);
-        $iptcMapper->mapArray($input, $iptc);
+        $iptcMapper->mapField(self::FIELD_IPTC, $input, $output);
     }
 
     /**
@@ -74,10 +73,9 @@ class Mapper implements MapperInterface, ArrayMapper
      *
      * @return void
      */
-    private function mapExif($input, $output)
+    private function mapExif($input, &$output)
     {
-        $exif = $output->getExif();
         $exifMapper = $this->getFieldMapper(self::FIELD_EXIF);
-        $exifMapper->mapArray($input, $exif);
+        $exifMapper->mapField(self::FIELD_EXIF, $input, $output);
     }
 }

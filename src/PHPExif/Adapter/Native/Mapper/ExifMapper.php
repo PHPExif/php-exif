@@ -12,9 +12,15 @@
 
 namespace PHPExif\Adapter\Native\Mapper;
 
+use PHPExif\Adapter\Native\Exception\UnsupportedFieldException;
+use PHPExif\Adapter\Native\Mapper;
+use PHPExif\Data\Exif;
 use PHPExif\Data\ExifInterface;
+use PHPExif\Data\MetadataInterface;
+use PHPExif\Exception\Mapper\MapperNotRegisteredException;
 use PHPExif\Exception\Mapper\UnsupportedOutputException;
 use PHPExif\Mapper\ArrayMapper;
+use PHPExif\Mapper\FieldMapper;
 use PHPExif\Mapper\FieldMapperTrait;
 
 /**
@@ -23,14 +29,24 @@ use PHPExif\Mapper\FieldMapperTrait;
  * @category    PHPExif
  * @package     Adapter
  */
-class ExifMapper implements ArrayMapper
+class ExifMapper implements ArrayMapper, FieldMapper
 {
     use FieldMapperTrait;
 
     /**
      * {@inheritDoc}
      */
-    public function mapArray(array $input, $output)
+    public function getSupportedFields()
+    {
+        return array(
+            Mapper::FIELD_EXIF,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function mapArray(array $input, &$output)
     {
         if (!($output instanceof ExifInterface)) {
             throw UnsupportedOutputException::forOutput($output);
@@ -40,7 +56,12 @@ class ExifMapper implements ArrayMapper
         $fields = array_keys($data);
 
         foreach ($fields as $name) {
-            $fieldMapper = $this->getFieldMapper($name);
+            try {
+                $fieldMapper = $this->getFieldMapper($name);
+            } catch (MapperNotRegisteredException $e) {
+                // silently ignore missing FieldMapper
+                continue;
+            }
 
             $fieldMapper->mapField(
                 $name,
@@ -48,5 +69,23 @@ class ExifMapper implements ArrayMapper
                 $output
             );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function mapField($field, array $input, &$output)
+    {
+        if (!in_array($field, $this->getSupportedFields())) {
+            throw UnsupportedFieldException::forField($field);
+        }
+
+        if (!($output instanceof MetadataInterface)) {
+            throw UnsupportedOutputException::forOutput($output);
+        }
+
+        $exif = $output->getExif();
+        $this->mapArray($input, $exif);
+        $output = $output->withExif($exif);
     }
 }

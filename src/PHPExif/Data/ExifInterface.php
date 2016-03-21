@@ -51,16 +51,25 @@ interface ExifInterface
     /**
      * Accessor for the aperture
      *
-     * @return float
+     * @return string
      */
     public function getAperture();
 
     /**
      * Returns new instance with updated aperture
      *
-     * @param float $aperture
+     * @param string $aperture
      *
      * @return ExifInterface
      */
     public function withAperture($aperture);
+
+    /**
+     * Array represenation of current instance
+     *
+     * @param boolean $withEmpty
+     *
+     * @return array
+     */
+    public function toArray($withEmpty = true);
 }

@@ -41,5 +41,5 @@ interface FieldMapper
      *
      * @return void
      */
-    public function mapField($field, array $input, $output);
+    public function mapField($field, array $input, &$output);
 }

@@ -10,7 +10,7 @@
  * @package     Adapter
  */
 
-namespace PHPExif\Adapter\Native\Reader;
+namespace PHPExif\Adapter\Native;
 
 /**
  * ReaderConfig class
