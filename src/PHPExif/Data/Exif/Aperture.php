@@ -83,6 +83,9 @@ final class Aperture implements \JsonSerializable
      */
     public function __toString()
     {
-        return 'f/' . $this->fNumber;
+        return sprintf(
+            'f/%1.1f',
+            $this->fNumber
+        );
     }
 }
