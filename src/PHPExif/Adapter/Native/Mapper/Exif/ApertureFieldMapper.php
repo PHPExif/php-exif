@@ -13,6 +13,7 @@
 namespace PHPExif\Adapter\Native\Mapper\Exif;
 
 use PHPExif\Data\ExifInterface;
+use PHPExif\Data\Exif\Aperture;
 use PHPExif\Mapper\FieldMapper;
 
 /**
@@ -42,6 +43,10 @@ class ApertureFieldMapper implements FieldMapper
     {
         $this->guardInvalidArguments($field, $input, $output);
 
-        $output = $output->withAperture($input['COMPUTED']['ApertureFNumber']);
+        $aperture = Aperture::fromFocalLength(
+            $input['COMPUTED']['ApertureFNumber']
+        );
+
+        $output = $output->withAperture($aperture);
     }
 }

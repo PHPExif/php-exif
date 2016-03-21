@@ -11,6 +11,8 @@
 
 namespace PHPExif\Data;
 
+use PHPExif\Data\Exif\Aperture;
+
 /**
  * ExifInterface
  *
@@ -51,18 +53,18 @@ interface ExifInterface
     /**
      * Accessor for the aperture
      *
-     * @return string
+     * @return Aperture
      */
     public function getAperture();
 
     /**
      * Returns new instance with updated aperture
      *
-     * @param string $aperture
+     * @param Aperture $aperture
      *
      * @return ExifInterface
      */
-    public function withAperture($aperture);
+    public function withAperture(Aperture $aperture);
 
     /**
      * Array represenation of current instance

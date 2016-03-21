@@ -11,6 +11,8 @@
 
 namespace PHPExif\Data;
 
+use PHPExif\Data\Exif\Aperture;
+
 /**
  * Exif class
  *
@@ -37,7 +39,7 @@ final class Exif implements ExifInterface
     /**
      * {@inheritDoc}
      */
-    public function withAperture($aperture)
+    public function withAperture(Aperture $aperture)
     {
         $new = clone $this;
         $new->aperture = $aperture;
