@@ -233,7 +233,10 @@ class MapperTest extends \PHPUnit_Framework_TestCase
     public function testMapArrayForwardsCall()
     {
         $input = array();
-        $output = new Metadata;
+        $output = new Metadata(
+            new Exif,
+            new Iptc
+        );
 
         $mapper = new Mapper;
 

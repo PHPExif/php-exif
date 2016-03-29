@@ -13,6 +13,8 @@
 namespace PHPExif\Adapter\Native;
 
 use PHPExif\Adapter\MapperInterface;
+use PHPExif\Data\Exif;
+use PHPExif\Data\Iptc;
 use PHPExif\Data\Metadata;
 use PHPExif\Mapper\ArrayMapper;
 use PHPExif\Mapper\FieldMapperTrait;
@@ -35,7 +37,10 @@ class Mapper implements MapperInterface, ArrayMapper
      */
     public function map(array $data)
     {
-        $output = new Metadata;
+        $output = new Metadata(
+            new Exif,
+            new Iptc
+        );
 
         $this->mapArray($data, $output);
 
