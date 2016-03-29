@@ -32,6 +32,18 @@ final class Metadata implements MetadataInterface
     private $iptc;
 
     /**
+     * Constructor
+     *
+     * @param ExifInterface $exif
+     * @param IptcInterface $iptc
+     */
+    public function __construct(ExifInterface $exif, IptcInterface $iptc)
+    {
+        $this->exif = $exif;
+        $this->iptc = $iptc;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function withExif(ExifInterface $exif)
