@@ -80,7 +80,7 @@ final class Iptc implements IptcInterface
     /**
      * @param array $data
      */
-    public function __construct(array $data)
+    public function __construct(array $data = array())
     {
         foreach ($data as $key => $value) {
             if (!array_key_exists($key, self::$iptcMapping)) {
