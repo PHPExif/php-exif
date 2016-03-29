@@ -24,7 +24,7 @@ use PHPExif\Data\Exif\Aperture;
 final class Exif implements ExifInterface
 {
     /**
-     * @var string
+     * @var Aperture
      */
     private $aperture;
 
@@ -55,6 +55,10 @@ final class Exif implements ExifInterface
         $data = get_class_vars(
             self::class
         );
+
+        if (!$withEmpty) {
+            return array_filter($data);
+        }
 
         return $data;
     }
