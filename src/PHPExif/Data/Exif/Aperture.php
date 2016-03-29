@@ -41,7 +41,7 @@ final class Aperture implements \JsonSerializable
             throw new \InvalidArgumentException('fNumber must be a float');
         }
 
-        $this->fNumber = $fNumber;
+        $this->fNumber = (float) $fNumber;
     }
 
     /**
