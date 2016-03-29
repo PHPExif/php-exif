@@ -70,10 +70,6 @@ final class Metadata implements MetadataInterface
      */
     public function getExif()
     {
-        if (null === $this->exif) {
-            $this->exif = new Exif;
-        }
-
         return $this->exif;
     }
 
@@ -82,10 +78,6 @@ final class Metadata implements MetadataInterface
      */
     public function getIptc()
     {
-        if (null === $this->iptc) {
-            $this->iptc = new Iptc(array());
-        }
-
         return $this->iptc;
     }
 }
