@@ -14,6 +14,10 @@ namespace PHPExif\Adapter\Native;
 use PHPExif\Adapter\AdapterConfig;
 use PHPExif\Adapter\HasMapper;
 use PHPExif\Adapter\MapperAccessorTrait;
+use PHPExif\Adapter\Native\Mapper\Exif as ExifMappers;
+use PHPExif\Adapter\Native\Mapper\ExifMapper;
+use PHPExif\Adapter\Native\Mapper\Iptc as IptcMappers;
+use PHPExif\Adapter\Native\Mapper\IptcMapper;
 use PHPExif\Adapter\Native\Reader;
 use PHPExif\Adapter\Native\ReaderConfig;
 
@@ -102,5 +106,34 @@ final class NativeAdapterConfig implements AdapterConfig, HasMapper
         );
 
         return $reader;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMapper()
+    {
+        $exifMapper = new ExifMapper();
+        $exifMapper->registerFieldMapers(
+            [
+                new ExifMappers\ApertureFieldMapper,
+            ]
+        );
+
+        $iptcMapper = new IptcMapper();
+        $iptcMapper->registerFieldMapers(
+            [
+            ]
+        );
+
+        $mapper = new Mapper();
+        $mapper->registerFieldMappers(
+            [
+                $exifMapper,
+                $iptcMapper,
+            ]
+        );
+
+        return $mapper;
     }
 }
