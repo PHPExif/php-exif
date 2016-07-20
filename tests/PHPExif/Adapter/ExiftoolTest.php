@@ -79,12 +79,44 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @see URI http://www.sno.phy.queensu.ca/~phil/exiftool/faq.html#Q10
+     * @group exiftool
+     * @covers \PHPExif\Adapter\Exiftool::setEncoding
+     */
+    public function testSetEncodingInProperty()
+    {
+        $reflProperty = new \ReflectionProperty('\PHPExif\Adapter\Exiftool', 'encoding');
+        $reflProperty->setAccessible(true);
+
+        $expected = array('iptc' => 'cp1250');
+        $input = array('iptc' => 'cp1250', 'exif' => 'utf8', 'foo' => 'bar');
+        $this->adapter->setEncoding($input);
+
+        $this->assertEquals($expected, $reflProperty->getValue($this->adapter));
+    }
+
+    /**
      * @group exiftool
      * @covers \PHPExif\Adapter\Exiftool::getExifFromFile
      */
     public function testGetExifFromFile()
     {
         $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';
+        $this->adapter->setOptions(array('encoding' => array('iptc' => 'cp1252')));
+        $result = $this->adapter->getExifFromFile($file);
+        $this->assertInstanceOf('\PHPExif\Exif', $result);
+        $this->assertInternalType('array', $result->getRawData());
+        $this->assertNotEmpty($result->getRawData());
+    }
+
+    /**
+     * @group exiftool
+     * @covers \PHPExif\Adapter\Exiftool::getExifFromFile
+     */
+    public function testGetExifFromFileWithUtf8()
+    {
+        $file = PHPEXIF_TEST_ROOT . '/files/utf8.jpg';
+        $this->adapter->setOptions(array('encoding' => array('iptc' => 'utf8')));
         $result = $this->adapter->getExifFromFile($file);
         $this->assertInstanceOf('\PHPExif\Exif', $result);
         $this->assertInternalType('array', $result->getRawData());
