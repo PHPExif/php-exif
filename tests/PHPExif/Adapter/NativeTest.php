@@ -103,12 +103,12 @@ class NativeTest extends \PHPUnit_Framework_TestCase
     /**
      * @group native
      * @covers \PHPExif\Adapter\Native::getExifFromFile
-     * @expectedException RuntimeException
      */
     public function testGetExifFromFileNoData()
     {
         $file = PHPEXIF_TEST_ROOT . '/files/empty.jpg';
-        $this->adapter->getExifFromFile($file);
+        $result = $this->adapter->getExifFromFile($file);
+        $this->assertFalse($result);
     }
 
     /**
