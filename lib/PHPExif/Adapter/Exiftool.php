@@ -40,6 +40,11 @@ class Exiftool extends AdapterAbstract
     protected $numeric = true;
 
     /**
+     * @var array
+     */
+    protected $encoding = array();
+
+    /**
      * @var string
      */
     protected $mapperClass = '\\PHPExif\\Mapper\\Exiftool';
@@ -76,6 +81,26 @@ class Exiftool extends AdapterAbstract
     }
 
     /**
+     * @see  http://www.sno.phy.queensu.ca/~phil/exiftool/faq.html#Q10
+     * @param array $encoding encoding parameters in an array eg. ["exif" => "UTF-8"]
+     */
+    public function setEncoding($encoding)
+    {
+        $possible_keys = array("exif", "iptc", "id3", "photoshop", "quicktime",);
+        $possible_values = array("UTF8", "cp65001", "UTF-8", "Thai", "cp874", "Latin", "cp1252",
+            "Latin1", "MacRoman", "cp10000", "Mac", "Roman", "Latin2", "cp1250", "MacLatin2",
+            "cp10029", "Cyrillic", "cp1251", "Russian", "MacCyrillic", "cp10007", "Greek",
+            "cp1253", "MacGreek", "cp10006", "Turkish", "cp1254", "MacTurkish", "cp10081",
+            "Hebrew", "cp1255", "MacRomanian", "cp10010", "Arabic", "cp1256", "MacIceland",
+            "cp10079", "Baltic", "cp1257", "MacCroatian", "cp10082", "Vietnam", "cp1258",);
+        foreach ($encoding as $type => $encoding) {
+            if (in_array($type, $possible_keys) && in_array($encoding, $possible_values)) {
+                $this->encoding[$type] = $encoding;
+            }
+        }
+    }
+
+    /**
      * Getter for the exiftool binary path
      * Lazy loads the "default" path
      *
@@ -100,17 +125,33 @@ class Exiftool extends AdapterAbstract
      */
     public function getExifFromFile($file)
     {
+        $encoding = '';
+        if (!empty($this->encoding)) {
+            $encoding = '-charset ';
+            foreach ($this->encoding as $key => $value) {
+                $encoding .= escapeshellarg($key).'='.escapeshellarg($value);
+            }
+        }
         $result = $this->getCliOutput(
             sprintf(
-                '%1$s%3$s -j -a -G1 -c %4$s %2$s',
+                '%1$s%3$s -j -a -G1 %5$s -c %4$s %2$s',
                 $this->getToolPath(),
                 escapeshellarg($file),
                 $this->numeric ? ' -n' : '',
-                escapeshellarg('%d deg %d\' %.4f"')
+                escapeshellarg('%d deg %d\' %.4f"'),
+                $encoding
             )
         );
 
-        $data = json_decode(utf8_encode($result), true);
+        if (!mb_check_encoding($result, "utf-8")) {
+            $result = utf8_encode($result);
+        }
+        $data = json_decode($result, true);
+        if (!is_array($data)) {
+            throw new RuntimeException(
+                'Could not decode exiftool output'
+            );
+        }
 
         // map the data:
         $mapper = $this->getMapper();
