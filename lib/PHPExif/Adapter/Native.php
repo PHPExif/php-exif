@@ -170,8 +170,7 @@ class Native extends AdapterAbstract
      * Reads & parses the EXIF data from given file
      *
      * @param string $file
-     * @return \PHPExif\Exif Instance of Exif object with data
-     * @throws \RuntimeException If the EXIF data could not be read
+     * @return \PHPExif\Exif|boolean Instance of Exif object with data
      */
     public function getExifFromFile($file)
     {
@@ -187,9 +186,7 @@ class Native extends AdapterAbstract
         );
 
         if (false === $data) {
-            throw new \RuntimeException(
-                sprintf('Could not read EXIF data from file %1$s', $file)
-            );
+            return false;
         }
 
         $xmpData = $this->getIptcData($file);
