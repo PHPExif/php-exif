@@ -22,7 +22,8 @@
         "squizlabs/php_codesniffer": "1.4.*@stable"
     },
     "suggest": {
-        "lib-exiftool": "Use perl lib exiftool as adapter"
+        "lib-exiftool": "Use perl lib exiftool as adapter",
+        "ext-exif": "Use exif PHP extension as adapter"
     },
     "autoload": {
         "psr-0": {
