@@ -195,6 +195,27 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Native::mapRawData
      */
+    public function testMapRawDataMacthesFieldsWithoutCaseSensibilityOnFirstLetter()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Native::ORIENTATION => 'Portrait',
+            'Copyright' => 'Acme',
+        );
+        $mapped = $this->mapper->mapRawData($rawData);
+        $this->assertCount(2, $mapped);
+        $keys = array_keys($mapped);
+
+        $expected = array(
+            \PHPExif\Mapper\Native::ORIENTATION,
+            \PHPExif\Mapper\Native::COPYRIGHT
+        );
+        $this->assertEquals($expected, $keys);
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
     public function testMapRawDataCorrectlyFormatsGPSData()
     {
         $expected = array(
