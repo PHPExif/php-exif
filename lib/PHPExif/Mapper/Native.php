@@ -165,7 +165,12 @@ class Native implements MapperInterface
                     break;
                 case self::FOCALLENGTH:
                     $parts = explode('/', $value);
-                    $value = (int) reset($parts) / (int) end($parts);
+                    // Avoid division by zero if focal length is invalid
+                    if (end($parts) == '0') {
+                        $value = 0;
+                    } else {
+                        $value = (int) reset($parts) / (int) end($parts);
+                    }
                     break;
                 case self::XRESOLUTION:
                 case self::YRESOLUTION:

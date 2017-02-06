@@ -142,6 +142,21 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Native::mapRawData
      */
+    public function testMapRawDataCorrectlyFormatsFocalLengthDivisionByZero()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Native::FOCALLENGTH => '1/0',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(0, reset($mapped));
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
     public function testMapRawDataCorrectlyFormatsXResolution()
     {
         $rawData = array(
