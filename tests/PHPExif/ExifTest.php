@@ -611,7 +611,8 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $methods = $reflClass->getMethods(ReflectionMethod::IS_PUBLIC);
         $testfiles = array(
             PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg',
-            PHPEXIF_TEST_ROOT . '/files/dsc_5794.jpg'
+            PHPEXIF_TEST_ROOT . '/files/dsc_5794.jpg',
+            PHPEXIF_TEST_ROOT . '/files/dsc_0003.jpg'
         );
 
         $adapter_exiftool = new \PHPExif\Adapter\Exiftool();
