@@ -16,7 +16,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $adapter = $this->getMock('\PHPExif\Adapter\AdapterInterface');
+        $adapter = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
         $this->reader = new \PHPExif\Reader\Reader($adapter);
     }
 
@@ -26,7 +26,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorWithAdapter()
     {
-        $mock = $this->getMock('\PHPExif\Adapter\AdapterInterface');
+        $mock = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
 
@@ -41,7 +41,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAdapterFromProperty()
     {
-        $mock = $this->getMock('\PHPExif\Adapter\AdapterInterface');
+        $mock = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
 
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
@@ -71,7 +71,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetExifPassedToAdapter()
     {
-        $adapter = $this->getMock('\PHPExif\Adapter\AdapterInterface');
+        $adapter = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
         $adapter->expects($this->once())->method('getExifFromFile');
 
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
@@ -138,13 +138,10 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetExifFromFileCallsReadMethod()
     {
-        $mock = $this->getMock(
-            '\\PHPExif\\Reader\\Reader',
-            array('read'),
-            array(),
-            '',
-            false
-        );
+        $mock = $this->getMockBuilder('\\PHPExif\\Reader\\Reader')
+            ->setMethods(array('read'))
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $expected = '/foo/bar/baz';
         $expectedResult = 'test';
