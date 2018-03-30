@@ -1,4 +1,4 @@
-# [PHPExif v0.6.1](http://github.com/Miljar/php-exif) [![Build Status](https://travis-ci.org/Miljar/php-exif.png?branch=master)](https://travis-ci.org/Miljar/php-exif) [![Coverage Status](https://coveralls.io/repos/Miljar/php-exif/badge.svg?branch=master)](https://coveralls.io/r/Miljar/php-exif?branch=master) [![Code Climate](https://codeclimate.com/github/Miljar/php-exif/badges/gpa.svg)](https://codeclimate.com/github/Miljar/php-exif)
+# [PHPExif v0.6.1](http://github.com/PHPExif/php-exif) [![Build Status](https://travis-ci.org/PHPExif/php-exif.png?branch=master)](https://travis-ci.org/PHPExif/php-exif) [![Coverage Status](https://coveralls.io/repos/PHPExif/php-exif/badge.svg?branch=master)](https://coveralls.io/r/PHPExif/php-exif?branch=master) [![Code Climate](https://codeclimate.com/github/PHPExif/php-exif/badges/gpa.svg)](https://codeclimate.com/github/PHPExif/php-exif)
 
 PHPExif is a library which gives you easy access to the EXIF meta-data of an image.
 
@@ -12,7 +12,7 @@ PHPExif serves as a wrapper around some native or CLI tools which access this EX
 ## Installation (composer)
 
 ```json
-"miljar/php-exif": "~0.6.0"
+composer require miljar/php-exif
 ```
 
 

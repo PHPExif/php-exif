@@ -1,14 +1,22 @@
 language: php
 
-php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
+env:
+  global:
+    - DEPENDENCIES=no
 
 matrix:
-  allow_failures:
+  include:
+    - php: 5.3
+      dist: precise
+    - php: 5.4
+      dist: precise
     - php: 5.6
+    - php: 7.0
+    - php: 7.1
+    - php: nightly
+  allow_failures:
+    - php: 7.2
+    - php: nightly
 
 script:
   - mkdir -p build/logs
