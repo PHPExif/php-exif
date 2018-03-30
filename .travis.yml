@@ -1,31 +1,33 @@
 language: php
 
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
+  - nightly
+
 env:
-  global:
-    - DEPENDENCIES=no
+  - DEPENDENCIES=no
+  - DEPENDENCIES=beta
+  - DEPENDENCIES=low
 
 matrix:
-  include:
-    - php: 5.3
-      dist: precise
-    - php: 5.4
-      dist: precise
-    - php: 5.6
-    - php: 7.0
-    - php: 7.1
-    - php: nightly
   allow_failures:
-    - php: 7.2
     - php: nightly
+    - env: DEPENDENCIES=beta
+    - env: DEPENDENCIES=low
 
 script:
   - mkdir -p build/logs
-  - php vendor/bin/phpunit -c phpunit.xml.dist
-  - ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml
-  - ./vendor/bin/phpcs --standard=PSR2 ./lib/
+  - composer validate-files
+  - composer check-code-style
+  - composer run-tests
 
 before_script:
-  - composer install --prefer-source
+  - if [ "$DEPENDENCIES" = "low" ]; then composer --prefer-lowest --prefer-stable update; else composer update; fi;
 
 after_script:
   - php vendor/bin/coveralls -v 
@@ -36,3 +38,11 @@ before_install:
   - tar -zxvf Image-ExifTool-9.90.tar.gz
   - cd Image-ExifTool-9.90 && perl Makefile.PL && make test && sudo make install
   - cd .. && rm -rf Image-ExifTool-9.90
+  # Set composer minimum-stability configuration filter to beta versions
+  - if [ "$DEPENDENCIES" = "beta" ]; then perl -pi -e 's/^}$/,"minimum-stability":"beta"}/' composer.json; fi;
+  # Disable xdebug, there is no use of it being enabled
+  - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{,.disabled} || echo "xdebug not available"
+  # Prevent Travis throwing an out of memory error
+  - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  # Test if we have a token for github in case the project hits the 60 rph limit
+  - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
