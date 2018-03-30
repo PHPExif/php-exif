@@ -1,4 +1,4 @@
-# [PHPExif v0.6.1](http://github.com/PHPExif/php-exif) [![Build Status](https://travis-ci.org/PHPExif/php-exif.png?branch=master)](https://travis-ci.org/PHPExif/php-exif) [![Coverage Status](https://coveralls.io/repos/PHPExif/php-exif/badge.svg?branch=master)](https://coveralls.io/r/PHPExif/php-exif?branch=master) [![Code Climate](https://codeclimate.com/github/PHPExif/php-exif/badges/gpa.svg)](https://codeclimate.com/github/PHPExif/php-exif)
+# [PHPExif v0.6.4](http://github.com/PHPExif/php-exif) [![Build Status](https://travis-ci.org/PHPExif/php-exif.png?branch=master)](https://travis-ci.org/PHPExif/php-exif) [![Coverage Status](https://coveralls.io/repos/PHPExif/php-exif/badge.svg?branch=master)](https://coveralls.io/r/PHPExif/php-exif?branch=master) [![Code Climate](https://codeclimate.com/github/PHPExif/php-exif/badges/gpa.svg)](https://codeclimate.com/github/PHPExif/php-exif)
 
 PHPExif is a library which gives you easy access to the EXIF meta-data of an image.
 
