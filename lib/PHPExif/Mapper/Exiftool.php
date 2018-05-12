@@ -204,7 +204,7 @@ class Exiftool implements MapperInterface
                 return false;
             }
 
-            return intval($matches[1]) + (intval($matches[2]) / 60) + (floatval($matches[3]) / 3600);
+            return floatval($matches[1]) + (floatval($matches[2]) / 60) + (floatval($matches[3]) / 3600);
         }
     }
 }

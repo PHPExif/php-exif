@@ -260,7 +260,7 @@ class Native implements MapperInterface
         $components = array_map(array($this, 'normalizeComponent'), $components);
 
         if (count($components) > 2) {
-            return intval($components[0]) + (intval($components[1]) / 60) + (floatval($components[2]) / 3600);
+            return floatval($components[0]) + (floatval($components[1]) / 60) + (floatval($components[2]) / 3600);
         }
 
         return reset($components);
