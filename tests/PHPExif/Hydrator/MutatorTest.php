@@ -24,7 +24,9 @@ class MutatorTest extends \PHPUnit_Framework_TestCase
         );
 
         // create mock
-        $mock = $this->getMock('\\PHPExif\\Hydrator\\Mutator', array('determineMutator'));
+        $mock = $this->getMockBuilder('\\PHPExif\\Hydrator\\Mutator')
+            ->setMethods(array('determineMutator'))
+            ->getMock();
 
         $mock->expects($this->exactly(count($input)))
             ->method('determineMutator')
@@ -48,7 +50,9 @@ class MutatorTest extends \PHPUnit_Framework_TestCase
         );
 
         // create mock
-        $mock = $this->getMock('TestClass', array('setBar'));
+        $mock = $this->getMockBuilder('TestClass')
+            ->setMethods(array('setBar'))
+            ->getMock();
 
         $mock->expects($this->once())
             ->method('setBar')
