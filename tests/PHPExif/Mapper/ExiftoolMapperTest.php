@@ -111,7 +111,7 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
         $result = reset($mapped);
         $this->assertInstanceOf('\\DateTime', $result);
         $this->assertEquals(
-            reset($rawData), 
+            reset($rawData),
             $result->format('Y:m:d H:i:s')
         );
     }
@@ -184,9 +184,13 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $expected = '40.333452380556,-20.167314813889';
-        $this->assertCount(1, $result);
-        $this->assertEquals($expected, reset($result));
+        $expected_gps = '40.333452380556,-20.167314813889';
+        $expected_lat = '40.333452380556';
+        $expected_lon = '40.333452380556';
+        $this->assertCount(3, $result);
+        $this->assertEquals($expected_gps, $result['gps']);
+        $this->assertEquals($expected_lat, $result['latitude']);
+        $this->assertEquals($expected_lon, $result['longitude']);
     }
 
     /**
@@ -204,9 +208,13 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $expected = '40.333452381,-20.167314814';
-        $this->assertCount(1, $result);
-        $this->assertEquals($expected, reset($result));
+        $expected_gps = '40.333452381,-20.167314814';
+        $expected_lat = '40.333452381';
+        $expected_lon = '-20.167314814';
+        $this->assertCount(3, $result);
+        $this->assertEquals($expected_gps, $result['gps']);
+        $this->assertEquals($expected_lat, $result['latitude']);
+        $this->assertEquals($expected_lon, $result['longitude']);
     }
 
     /**
@@ -232,7 +240,7 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Exiftool::mapRawData
      */
-    public function testMapRawDataCorrectlyIgnoresIncompleteGPSData()
+    public function testMapRawDataOnlyLatitude()
     {
         $result = $this->mapper->mapRawData(
             array(
@@ -241,7 +249,7 @@ class ExiftoolMapperTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertCount(0, $result);
+        $this->assertCount(1, $result);
     }
 
     /**

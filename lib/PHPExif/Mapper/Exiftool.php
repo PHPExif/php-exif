@@ -118,7 +118,7 @@ class Exiftool implements MapperInterface
         self::IMGDIRECTION             => Exif::IMGDIRECTION,
         self::LENS                     => Exif::LENS,
         self::DESCRIPTION              => Exif::DESCRIPTION,
-        self::SUBJECT                  => Exif::SUBJECT,
+        self::SUBJECT                  => Exif::KEYWORDS,
         self::CONTENTIDENTIFIER        => Exif::CONTENTIDENTIFIER,
         self::DATETIMEORIGINAL_QUICKTIME  => Exif::CREATION_DATE,
         self::MAKE_QUICKTIME              => Exif::MAKE,
@@ -185,7 +185,12 @@ class Exiftool implements MapperInterface
                 case self::DATETIMEORIGINAL:
                 case self::DATETIMEORIGINAL_QUICKTIME:
                     try {
-                        $value = new DateTime(date('Y-m-d H:i:s', strtotime($value)));
+                        if(!(strtotime($value)==false)) {
+                          $value = new DateTime(date('Y-m-d H:i:s', strtotime($value)));
+                        } else {
+                          continue 2;
+                        }
+
                     } catch (\Exception $exception) {
                         continue 2;
                     }

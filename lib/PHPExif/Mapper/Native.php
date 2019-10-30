@@ -131,7 +131,7 @@ class Native implements MapperInterface
         self::LENS_LR          => Exif::LENS,
         self::LENS_TYPE        => Exif::LENS,
         self::DESCRIPTION      => Exif::DESCRIPTION,
-        self::SUBJECT          => Exif::SUBJECT,
+        self::SUBJECT          => Exif::KEYWORDS,
         self::FRAMERATE        => Exif::FRAMERATE,
         self::DURATION         => Exif::DURATION
 
@@ -148,7 +148,7 @@ class Native implements MapperInterface
     {
         $mappedData = array();
         $gpsData = array();
-        $mappedData['description']="";
+
         foreach ($data as $field => $value) {
             if ($this->isSection($field) && is_array($value)) {
                 $subData = $this->mapRawData($value);
@@ -168,7 +168,11 @@ class Native implements MapperInterface
             switch ($field) {
                 case self::DATETIMEORIGINAL:
                     try {
-                        $value = new DateTime($value);
+                      if(!(strtotime($value)==false)) {
+                        $value = new DateTime(date('Y-m-d H:i:s', strtotime($value)));
+                      } else {
+                        continue 2;
+                      }
                     } catch (Exception $exception) {
                         continue 2;
                     }

@@ -210,7 +210,7 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Native::mapRawData
      */
-    public function testMapRawDataMacthesFieldsWithoutCaseSensibilityOnFirstLetter()
+    public function testMapRawDataMatchesFieldsWithoutCaseSensibilityOnFirstLetter()
     {
         $rawData = array(
             \PHPExif\Mapper\Native::ORIENTATION => 'Portrait',

@@ -56,7 +56,6 @@ class Exif
     const LATITUDE              = 'latitude';
     const IMGDIRECTION          = 'imgDirection';
     const LENS                  = 'lens';
-    const SUBJECT               = 'subject';
     const CONTENTIDENTIFIER     = 'contentIdentifier';
     const FRAMERATE             = 'framerate';
     const DURATION              = 'duration';
@@ -1070,33 +1069,6 @@ class Exif
         }
 
         return $this->data[self::LENS];
-    }
-
-    /**
-     * Sets the subject value
-     *
-     * @param string $value
-     * @return \PHPExif\Exif
-     */
-    public function setSubject($value)
-    {
-        $this->data[self::SUBJECT] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Returns subject, if it exists
-     *
-     * @return string|boolean
-     */
-    public function getSubject()
-    {
-        if (!isset($this->data[self::SUBJECT])) {
-            return false;
-        }
-
-        return $this->data[self::SUBJECT];
     }
 
     /**
