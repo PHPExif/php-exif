@@ -289,7 +289,7 @@ class Exiftool implements MapperInterface
      */
     protected function extractGPSCoordinates($coordinates)
     {
-        if (is_numeric($coordinates) === true or $this->numeric === true) {) {
+        if (is_numeric($coordinates) === true || $this->numeric === true)  {
             return ((float) $coordinates);
         } else {
             if (!preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches)) {
