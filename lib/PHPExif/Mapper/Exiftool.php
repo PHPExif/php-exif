@@ -35,6 +35,7 @@ class Exiftool implements MapperInterface
     const CREDIT                   = 'IPTC:Credit';
     const EXPOSURETIME             = 'ExifIFD:ExposureTime';
     const FILESIZE                 = 'System:FileSize';
+    const FILENAME                 = 'System:FileName';
     const FOCALLENGTH              = 'ExifIFD:FocalLength';
     const HEADLINE                 = 'IPTC:Headline';
     const IMAGEHEIGHT              = 'File:ImageHeight';
@@ -52,6 +53,29 @@ class Exiftool implements MapperInterface
     const YRESOLUTION              = 'IFD0:YResolution';
     const GPSLATITUDE              = 'GPS:GPSLatitude';
     const GPSLONGITUDE             = 'GPS:GPSLongitude';
+    const GPSALTITUDE              = 'GPS:GPSAltitude';
+    const IMGDIRECTION             = 'GPS:GPSImgDirection';
+    const DESCRIPTION              = 'IFD0:ImageDescription ';
+    const MAKE                     = 'IFD0:Make';
+    const LENS                     = 'ExifIFD:LensModel';
+    const SUBJECT                  = 'XMP-dc:Subject';
+    const CONTENTIDENTIFIER        = 'Apple:ContentIdentifier';
+
+    const DATETIMEORIGINAL_QUICKTIME  = 'QuickTime:CreationDate';
+    const IMAGEHEIGHT_VIDEO           = 'Composite:ImageSize';
+    const IMAGEWIDTH_VIDEO            = 'Composite:ImageSize';
+    const MAKE_QUICKTIME              = 'QuickTime:Make';
+    const MODEL_QUICKTIME             = 'QuickTime:Model';
+    const CONTENTIDENTIFIER_QUICKTIME = 'QuickTime:ContentIdentifier';
+    const GPSLATITUDE_QUICKTIME       = 'Composite:GPSLatitude';
+    const GPSLONGITUDE_QUICKTIME      = 'Composite:GPSLongitude';
+    const GPSALTITUDE_QUICKTIME       = 'Composite:GPSAltitude';
+    const FRAMERATE                   = 'MPEG:FrameRate';
+    const FRAMERATE_QUICKTIME_1       = 'Track1:VideoFrameRate';
+    const FRAMERATE_QUICKTIME_2       = 'Track2:VideoFrameRate';
+    const FRAMERATE_QUICKTIME_3       = 'Track3:VideoFrameRate';
+    const DURATION                    = 'Composite:Duration';
+    const DURATION_QUICKTIME          = 'QuickTime:Duration';
 
     /**
      * Maps the ExifTool fields to the fields of
@@ -70,6 +94,7 @@ class Exiftool implements MapperInterface
         self::CREDIT                   => Exif::CREDIT,
         self::EXPOSURETIME             => Exif::EXPOSURE,
         self::FILESIZE                 => Exif::FILESIZE,
+        self::FILENAME                 => Exif::FILENAME,
         self::FOCALLENGTH              => Exif::FOCAL_LENGTH,
         self::APPROXIMATEFOCUSDISTANCE => Exif::FOCAL_DISTANCE,
         self::HEADLINE                 => Exif::HEADLINE,
@@ -86,8 +111,30 @@ class Exiftool implements MapperInterface
         self::YRESOLUTION              => Exif::VERTICAL_RESOLUTION,
         self::IMAGEWIDTH               => Exif::WIDTH,
         self::CAPTIONABSTRACT          => Exif::CAPTION,
-        self::GPSLATITUDE              => Exif::GPS,
-        self::GPSLONGITUDE             => Exif::GPS,
+        self::GPSLATITUDE              => Exif::LATITUDE,
+        self::GPSLONGITUDE             => Exif::LONGITUDE,
+        self::GPSALTITUDE              => Exif::ALTITUDE,
+        self::MAKE                     => Exif::MAKE,
+        self::IMGDIRECTION             => Exif::IMGDIRECTION,
+        self::LENS                     => Exif::LENS,
+        self::DESCRIPTION              => Exif::DESCRIPTION,
+        self::SUBJECT                  => Exif::SUBJECT,
+        self::CONTENTIDENTIFIER        => Exif::CONTENTIDENTIFIER,
+        self::DATETIMEORIGINAL_QUICKTIME  => Exif::CREATION_DATE,
+        self::MAKE_QUICKTIME              => Exif::MAKE,
+        self::MODEL_QUICKTIME             => Exif::CAMERA,
+        self::CONTENTIDENTIFIER_QUICKTIME => Exif::CONTENTIDENTIFIER,
+        self::GPSLATITUDE_QUICKTIME       => Exif::LATITUDE,
+        self::GPSLONGITUDE_QUICKTIME      => Exif::LONGITUDE,
+        self::GPSALTITUDE_QUICKTIME       => Exif::ALTITUDE,
+        self::IMAGEHEIGHT_VIDEO           => Exif::HEIGHT,
+        self::IMAGEWIDTH_VIDEO            => Exif::WIDTH,
+        self::FRAMERATE                   => Exif::FRAMERATE,
+        self::FRAMERATE_QUICKTIME_1       => Exif::FRAMERATE,
+        self::FRAMERATE_QUICKTIME_2       => Exif::FRAMERATE,
+        self::FRAMERATE_QUICKTIME_3       => Exif::FRAMERATE,
+        self::DURATION                    => Exif::DURATION,
+        self::DURATION_QUICKTIME          => Exif::DURATION,
     );
 
     /**
@@ -136,8 +183,9 @@ class Exiftool implements MapperInterface
                     $value = sprintf('%1$sm', $value);
                     break;
                 case self::DATETIMEORIGINAL:
+                case self::DATETIMEORIGINAL_QUICKTIME:
                     try {
-                        $value = new DateTime($value);
+                        $value = new DateTime(date('Y-m-d H:i:s', strtotime($value)));
                     } catch (\Exception $exception) {
                         continue 2;
                     }
@@ -158,30 +206,69 @@ class Exiftool implements MapperInterface
                         $value = reset($focalLengthParts);
                     }
                     break;
+                case self::GPSLATITUDE_QUICKTIME:
+                    $value  = $this->extractGPSCoordinates($value);
+                    break;
                 case self::GPSLATITUDE:
-                    $gpsData['lat']  = $this->extractGPSCoordinates($value);
+                    $latitudeRef = empty($data['GPS:GPSLatitudeRef']) ? 'N' : $data['GPS:GPSLatitudeRef'];
+                    $value = (strtoupper($latitudeRef) === 'S' ? -1.0 : 1.0)*$this->extractGPSCoordinates($value);
+                    break;
+                case self::GPSLONGITUDE_QUICKTIME:
+                    $value  = $this->extractGPSCoordinates($value);
                     break;
                 case self::GPSLONGITUDE:
-                    $gpsData['lon']  = $this->extractGPSCoordinates($value);
+                    $longitudeRef = empty($data['GPS:GPSLongitudeRef']) ? 'E' : $data['GPS:GPSLongitudeRef'];
+                    $value  = (strtoupper($longitudeRef) === 'W' ? -1 : 1) * $this->extractGPSCoordinates($value);
+                    break;
+                case self::GPSALTITUDE:
+                    $flip = 1;
+                    if(!(empty($data['GPS:GPSAltitudeRef']))) {
+                      $flip = ($data['GPS:GPSAltitudeRef'] == '1') ? -1 : 1;
+                    }
+		                $value = $flip * (float) $value;
+                    break;
+                case self::GPSALTITUDE_QUICKTIME:
+                    $flip = 1;
+                    if(!(empty($data['Composite:GPSAltitudeRef']))) {
+                      $flip = ($data['Composite:GPSAltitudeRef'] == '1') ? -1 : 1;
+                    }
+                    $value = $flip * (float) $value;
+                    break;
+                case self::IMAGEHEIGHT_VIDEO:
+                case self::IMAGEWIDTH_VIDEO:
+                    $value_splitted = explode("x", $value);
+                    if(empty($mappedData[Exif::WIDTH])) {
+                      if(!(empty($data['Composite:Rotation']))) {
+                        if ($data['Composite:Rotation']=='90' || $data['Composite:Rotation']=='270') {
+                          $mappedData[Exif::WIDTH]  = intval($value_splitted[1]);
+                        } else {
+                          $mappedData[Exif::WIDTH]  = intval($value_splitted[0]);
+                        }
+                      } else {
+                        $mappedData[Exif::WIDTH]  = intval($value_splitted[0]);
+                      }
+                    }
+                    if(empty($mappedData[Exif::HEIGHT])) {
+                      if(!(empty($data['Composite:Rotation']))) {
+                        if ($data['Composite:Rotation']=='90' || $data['Composite:Rotation']=='270') {
+                          $mappedData[Exif::HEIGHT] = intval($value_splitted[0]);
+                        } else {
+                          $mappedData[Exif::HEIGHT] = intval($value_splitted[1]);
+                        }
+                      } else {
+                        $mappedData[Exif::HEIGHT] = intval($value_splitted[1]);
+                      }
+                    }
+                    continue 2;
                     break;
             }
-
             // set end result
             $mappedData[$key] = $value;
         }
 
         // add GPS coordinates, if available
-        if (count($gpsData) === 2 && $gpsData['lat'] !== false && $gpsData['lon'] !== false) {
-            $latitudeRef = empty($data['GPS:GPSLatitudeRef'][0]) ? 'N' : $data['GPS:GPSLatitudeRef'][0];
-            $longitudeRef = empty($data['GPS:GPSLongitudeRef'][0]) ? 'E' : $data['GPS:GPSLongitudeRef'][0];
-
-            $gpsLocation = sprintf(
-                '%s,%s',
-                (strtoupper($latitudeRef) === 'S' ? -1 : 1) * $gpsData['lat'],
-                (strtoupper($longitudeRef) === 'W' ? -1 : 1) * $gpsData['lon']
-            );
-
-            $mappedData[Exif::GPS] = $gpsLocation;
+        if (!(empty($mappedData[Exif::LATITUDE])) && !(empty($mappedData[Exif::LONGITUDE]))) {
+            $mappedData[Exif::GPS] = sprintf('%s,%s', $mappedData[Exif::LATITUDE], $mappedData[Exif::LONGITUDE]);
         } else {
             unset($mappedData[Exif::GPS]);
         }
@@ -197,8 +284,8 @@ class Exiftool implements MapperInterface
      */
     protected function extractGPSCoordinates($coordinates)
     {
-        if ($this->numeric === true) {
-            return abs((float) $coordinates);
+        if (is_numeric($coordinates) === true) {
+            return ((float) $coordinates);
         } else {
             if (!preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches)) {
                 return false;
