@@ -215,14 +215,14 @@ class Exiftool implements MapperInterface
                     $value  = $this->extractGPSCoordinates($value);
                     break;
                 case self::GPSLATITUDE:
-                    $latitudeRef = empty($data['GPS:GPSLatitudeRef']) ? 'N' : $data['GPS:GPSLatitudeRef'];
+                    $latitudeRef = empty($data['GPS:GPSLatitudeRef']) ? 'N' : $data['GPS:GPSLatitudeRef'][0];
                     $value = (strtoupper($latitudeRef) === 'S' ? -1.0 : 1.0)*$this->extractGPSCoordinates($value);
                     break;
                 case self::GPSLONGITUDE_QUICKTIME:
                     $value  = $this->extractGPSCoordinates($value);
                     break;
                 case self::GPSLONGITUDE:
-                    $longitudeRef = empty($data['GPS:GPSLongitudeRef']) ? 'E' : $data['GPS:GPSLongitudeRef'];
+                    $longitudeRef = empty($data['GPS:GPSLongitudeRef']) ? 'E' : $data['GPS:GPSLongitudeRef'][0];
                     $value  = (strtoupper($longitudeRef) === 'W' ? -1 : 1) * $this->extractGPSCoordinates($value);
                     break;
                 case self::GPSALTITUDE:
@@ -289,7 +289,7 @@ class Exiftool implements MapperInterface
      */
     protected function extractGPSCoordinates($coordinates)
     {
-        if (is_numeric($coordinates) === true) {
+        if (is_numeric($coordinates) === true or $this->numeric === true) {) {
             return ((float) $coordinates);
         } else {
             if (!preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches)) {

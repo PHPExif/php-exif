@@ -206,14 +206,12 @@ class Native implements MapperInterface
                     $value = (int) reset($resolutionParts);
                     break;
                 case self::GPSLATITUDE:
-                    if(!(empty($data['GPSLatitudeRef'][0]))) {
-                      $value = $this->extractGPSCoordinate($value, $data['GPSLatitudeRef'][0]);
-                    }
+                    $GPSLatitudeRef = (!(empty($data['GPSLatitudeRef'][0]))) ? $data['GPSLatitudeRef'][0] : '';
+                    $value = $this->extractGPSCoordinate((array)$value, $GPSLatitudeRef);
                     break;
                 case self::GPSLONGITUDE:
-                    if(!(empty($data['GPSLongitudeRef'][0]))) {
-                      $value = $this->extractGPSCoordinate($value, $data['GPSLongitudeRef'][0]);
-                    }
+                    $GPSLongitudeRef = (!(empty($data['GPSLongitudeRef'][0]))) ? $data['GPSLongitudeRef'][0] : '';
+                    $value = $this->extractGPSCoordinate((array)$value, $GPSLongitudeRef);
                     break;
                 case self::GPSALTITUDE:
                     $flip = 1;
@@ -298,6 +296,7 @@ class Native implements MapperInterface
      */
     protected function extractGPSCoordinate(array $coordinate, string $ref)
     {
+
         $degrees = count($coordinate) > 0 ? $this->normalizeComponent($coordinate[0]) : 0;
     		$minutes = count($coordinate) > 1 ? $this->normalizeComponent($coordinate[1]) : 0;
     		$seconds = count($coordinate) > 2 ? $this->normalizeComponent($coordinate[2]) : 0;
