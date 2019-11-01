@@ -59,6 +59,7 @@ class Exif
     const CONTENTIDENTIFIER     = 'contentIdentifier';
     const FRAMERATE             = 'framerate';
     const DURATION              = 'duration';
+    const MICROVIDEOOFFSET      = 'MicroVideoOffset';
 
     /**
      * The mapped EXIF data
@@ -1152,5 +1153,32 @@ class Exif
             }
 
             return $this->data[self::DURATION];
+        }
+
+        /**
+         * Sets the duration value
+         *
+         * @param string $value
+         * @return \PHPExif\Exif
+         */
+        public function setMicroVideoOffset($value)
+        {
+            $this->data[self::MICROVIDEOOFFSET] = $value;
+
+            return $this;
+        }
+
+        /**
+         * Returns duration, if it exists
+         *
+         * @return string|boolean
+         */
+        public function getMicroVideoOffset()
+        {
+            if (!isset($this->data[self::MICROVIDEOOFFSET])) {
+                return false;
+            }
+
+            return $this->data[self::MICROVIDEOOFFSET];
         }
 }

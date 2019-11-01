@@ -60,6 +60,7 @@ class Exiftool implements MapperInterface
     const LENS                     = 'ExifIFD:LensModel';
     const SUBJECT                  = 'XMP-dc:Subject';
     const CONTENTIDENTIFIER        = 'Apple:ContentIdentifier';
+    const MICROVIDEOOFFSET         = 'XMP-GCamera:MicroVideoOffset';
 
     const DATETIMEORIGINAL_QUICKTIME  = 'QuickTime:CreationDate';
     const IMAGEHEIGHT_VIDEO           = 'Composite:ImageSize';
@@ -135,6 +136,7 @@ class Exiftool implements MapperInterface
         self::FRAMERATE_QUICKTIME_3       => Exif::FRAMERATE,
         self::DURATION                    => Exif::DURATION,
         self::DURATION_QUICKTIME          => Exif::DURATION,
+        self::MICROVIDEOOFFSET            => Exif::MICROVIDEOOFFSET,
     );
 
     /**
