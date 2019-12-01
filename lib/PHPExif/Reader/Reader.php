@@ -14,6 +14,7 @@ namespace PHPExif\Reader;
 use PHPExif\Adapter\AdapterInterface;
 use PHPExif\Adapter\NoAdapterException;
 use PHPExif\Adapter\Exiftool as ExiftoolAdapter;
+use PHPExif\Adapter\FFprobe as FFprobeAdapter;
 use PHPExif\Adapter\Native as NativeAdapter;
 
 /**
@@ -29,6 +30,7 @@ class Reader implements ReaderInterface
 {
     const TYPE_NATIVE   = 'native';
     const TYPE_EXIFTOOL = 'exiftool';
+    const TYPE_FFPROBE  = 'ffprobe';
 
     /**
      * The current adapter
@@ -78,6 +80,9 @@ class Reader implements ReaderInterface
                 break;
             case self::TYPE_EXIFTOOL:
                 $adapter = new ExiftoolAdapter();
+                break;
+            case self::TYPE_FFPROBE:
+                $adapter = new FFProbeAdapter();
                 break;
             default:
                 throw new \InvalidArgumentException(

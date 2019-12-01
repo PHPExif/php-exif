@@ -2,14 +2,14 @@
 /**
  * @covers \PHPExif\Adapter\Exiftool::<!public>
  */
-class ExiftoolTest extends \PHPUnit_Framework_TestCase
+class ExiftoolTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPExif\Adapter\Exiftool
      */
     protected $adapter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->adapter = new \PHPExif\Adapter\Exiftool();
     }
@@ -46,10 +46,10 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
     /**
      * @group exiftool
      * @covers \PHPExif\Adapter\Exiftool::setToolPath
-     * @expectedException InvalidArgumentException
      */
     public function testSetToolPathThrowsException()
     {
+        $this->expectException('InvalidArgumentException');
         $this->adapter->setToolPath('/foo/bar');
     }
 
@@ -60,7 +60,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetToolPathLazyLoadsPath()
     {
-        $this->assertInternalType('string', $this->adapter->getToolPath());
+        $this->assertIsString($this->adapter->getToolPath());
     }
 
     /**
@@ -105,7 +105,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
         $this->adapter->setOptions(array('encoding' => array('iptc' => 'cp1252')));
         $result = $this->adapter->getExifFromFile($file);
         $this->assertInstanceOf('\PHPExif\Exif', $result);
-        $this->assertInternalType('array', $result->getRawData());
+        $this->assertIsArray($result->getRawData());
         $this->assertNotEmpty($result->getRawData());
     }
 
@@ -119,7 +119,7 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
         $this->adapter->setOptions(array('encoding' => array('iptc' => 'utf8')));
         $result = $this->adapter->getExifFromFile($file);
         $this->assertInstanceOf('\PHPExif\Exif', $result);
-        $this->assertInternalType('array', $result->getRawData());
+        $this->assertIsArray($result->getRawData());
         $this->assertNotEmpty($result->getRawData());
     }
 
@@ -140,6 +140,6 @@ class ExiftoolTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertInternalType('string', $result);
+        $this->assertIsString($result);
     }
 }

@@ -1,16 +1,15 @@
 <?php
 /**
  * @covers \PHPExif\Adapter\AdapterAbstract::<!public>
- * @covers \PHPExif\Adapter\AdapterInterface
  */
-class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
+class AdapterAbstractTest extends PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPExif\Adapter\Exiftool|\PHPExif\Adapter\Native
      */
     protected $adapter;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->adapter = new \PHPExif\Adapter\Native();
     }
@@ -229,4 +228,3 @@ class AdapterAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf($hydratorClass, $reflProp->getValue($this->adapter));
     }
 }
-
