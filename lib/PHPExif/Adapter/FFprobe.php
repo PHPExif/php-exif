@@ -12,6 +12,7 @@
 namespace PHPExif\Adapter;
 
 use PHPExif\Exif;
+use InvalidArgumentException;
 use FFMpeg;
 
 /**
@@ -25,11 +26,61 @@ use FFMpeg;
 class FFprobe extends AdapterAbstract
 {
 
+    const TOOL_NAME = 'ffprobe';
+
+    /**
+     * Path to the exiftool binary
+     *
+     * @var string
+     */
+    protected $toolPath;
+
     /**
      * @var string
      */
     protected $mapperClass = '\\PHPExif\\Mapper\\FFprobe';
 
+
+    /**
+     * Setter for the exiftool binary path
+     *
+     * @param string $path The path to the exiftool binary
+     * @return \PHPExif\Adapter\FFprobe Current instance
+     * @throws \InvalidArgumentException When path is invalid
+     */
+    public function setToolPath($path)
+    {
+        if (!file_exists($path)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Given path (%1$s) to the ffprobe binary is invalid',
+                    $path
+                )
+            );
+        }
+
+        $this->toolPath = $path;
+
+        return $this;
+    }
+
+
+
+    /**
+     * Getter for the ffprobe binary path
+     * Lazy loads the "default" path
+     *
+     * @return string
+     */
+    public function getToolPath()
+    {
+        if (empty($this->toolPath)) {
+            $path = exec('which ' . self::TOOL_NAME);
+            $this->setToolPath($path);
+        }
+
+        return $this->toolPath;
+    }
 
     /**
      * Reads & parses the EXIF data from given file
@@ -46,8 +97,10 @@ class FFprobe extends AdapterAbstract
             return false;
         }
 
+        $ffprobe = FFMpeg\FFProbe::create(array(
+                 'ffprobe.binaries' => $this->getToolPath(),
+             ));
 
-        $ffprobe = FFMpeg\FFProbe::create();
 
         $stream = $ffprobe->streams($file)->videos()->first()->all();
         $format = $ffprobe->format($file)->all();

@@ -55,7 +55,7 @@ class Exiftool implements MapperInterface
     const GPSLONGITUDE             = 'GPS:GPSLongitude';
     const GPSALTITUDE              = 'GPS:GPSAltitude';
     const IMGDIRECTION             = 'GPS:GPSImgDirection';
-    const DESCRIPTION              = 'IFD0:ImageDescription ';
+    const DESCRIPTION              = 'ExifIFD:ImageDescription ';
     const MAKE                     = 'IFD0:Make';
     const LENS                     = 'ExifIFD:LensModel';
     const SUBJECT                  = 'XMP-dc:Subject';

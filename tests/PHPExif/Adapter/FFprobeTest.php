@@ -14,8 +14,57 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
         $this->adapter = new \PHPExif\Adapter\FFprobe();
     }
 
+
     /**
-     * @group native
+     * @group ffprobe
+     * @covers \PHPExif\Adapter\FFprobe::getToolPath
+     */
+    public function testGetToolPathFromProperty()
+    {
+        $reflProperty = new \ReflectionProperty('\PHPExif\Adapter\FFprobe', 'toolPath');
+        $reflProperty->setAccessible(true);
+        $expected = '/foo/bar/baz';
+        $reflProperty->setValue($this->adapter, $expected);
+
+        $this->assertEquals($expected, $this->adapter->getToolPath());
+    }
+
+    /**
+     * @group ffprobe
+     * @covers \PHPExif\Adapter\FFprobe::setToolPath
+     */
+    public function testSetToolPathInProperty()
+    {
+        $reflProperty = new \ReflectionProperty('\PHPExif\Adapter\FFprobe', 'toolPath');
+        $reflProperty->setAccessible(true);
+
+        $expected = '/tmp';
+        $this->adapter->setToolPath($expected);
+
+        $this->assertEquals($expected, $reflProperty->getValue($this->adapter));
+    }
+
+    /**
+     * @group ffprobe
+     * @covers \PHPExif\Adapter\FFprobe::setToolPath
+     */
+    public function testSetToolPathThrowsException()
+    {
+        $this->expectException('InvalidArgumentException');
+        $this->adapter->setToolPath('/foo/bar');
+    }
+
+    /**
+     * @group ffprobe
+     * @covers \PHPExif\Adapter\FFprobe::getToolPath
+     */
+    public function testGetToolPathLazyLoadsPath()
+    {
+        $this->assertIsString($this->adapter->getToolPath());
+    }
+
+    /**
+     * @group ffprobe
      * @covers \PHPExif\Adapter\FFprobe::getExifFromFile
      */
     public function testGetExifFromFileHasData()
@@ -34,7 +83,7 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @group native
+     * @group ffprobe
      * @covers \PHPExif\Adapter\FFprobe::getExifFromFile
      */
     public function testErrorImageUsed()
