@@ -567,4 +567,26 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
               $this->assertEquals($expected, $mapped['width']);
           }
         }
+
+
+        /**
+         * @group mapper
+         * @covers \PHPExif\Mapper\Exiftool::mapRawData
+         */
+        public function testMapRawDataCorrectlyIsoFormats()
+        {
+            $expected = array(
+                '80' => array(
+                    'ExifIFD:ISO'     => '80',
+                ),
+                '800' => array(
+                    'ExifIFD:ISO'     => '800 0 0',
+                ),
+            );
+
+            foreach ($expected as $key => $value) {
+    		        $result = $this->mapper->mapRawData($value);
+    	          $this->assertEquals($key, reset($result));
+            }
+        }
 }

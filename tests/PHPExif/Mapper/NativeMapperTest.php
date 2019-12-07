@@ -404,4 +404,25 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
             $this->assertEquals($expected, $normalized);
         }
     }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
+    public function testMapRawDataCorrectlyIsoFormats()
+    {
+        $expected = array(
+            '80' => array(
+                'ISOSpeedRatings'     => '80',
+            ),
+            '800' => array(
+                'ISOSpeedRatings'     => '800 0 0',
+            ),
+        );
+
+        foreach ($expected as $key => $value) {
+		        $result = $this->mapper->mapRawData($value);
+	          $this->assertEquals($key, reset($result));
+        }
+    }
 }

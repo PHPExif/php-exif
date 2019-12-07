@@ -235,6 +235,9 @@ class Exiftool implements MapperInterface
                         $value = reset($focalLengthParts);
                     }
                     break;
+                case self::ISO:
+                    $value = explode(" ", $value)[0];
+                    break;
                 case self::GPSLATITUDE_QUICKTIME:
                     $value  = $this->extractGPSCoordinates($value);
                     break;

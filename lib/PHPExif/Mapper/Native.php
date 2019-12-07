@@ -211,6 +211,9 @@ class Native implements MapperInterface
                         $value = (int) reset($parts) / (int) end($parts);
                     }
                     break;
+                case self::ISOSPEEDRATINGS:
+                    $value = explode(" ", $value)[0];
+                    break;
                 case self::XRESOLUTION:
                 case self::YRESOLUTION:
                     $resolutionParts = explode('/', $value);
