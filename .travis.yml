@@ -1,12 +1,9 @@
 language: php
 
 php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - 7.0
-  - 7.1
   - 7.2
+  - 7.3
+  - 7.4snapshot
   - nightly
 
 env:
@@ -17,6 +14,7 @@ env:
 matrix:
   allow_failures:
     - php: nightly
+    - php: 7.4snapshot
     - env: DEPENDENCIES=beta
     - env: DEPENDENCIES=low
 
@@ -27,21 +25,21 @@ script:
   - composer run-tests
 
 before_script:
-  - if [ "$DEPENDENCIES" = "low" ]; then composer --prefer-lowest --prefer-stable update; else composer update; fi;
+  - if [ "$DEPENDENCIES" = "low" ]; then composer -vvv --prefer-lowest --prefer-stable update; else composer update; fi;
 
 after_script:
-  - php vendor/bin/coveralls -v 
+  - php vendor/bin/php-coveralls -v
 
 before_install:
+  - sudo apt-get update
+  - sudo apt-get install ffmpeg
   - composer self-update
-  - wget http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.90.tar.gz
-  - tar -zxvf Image-ExifTool-9.90.tar.gz
-  - cd Image-ExifTool-9.90 && perl Makefile.PL && make test && sudo make install
-  - cd .. && rm -rf Image-ExifTool-9.90
+  - wget http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-11.77.tar.gz
+  - tar -zxvf Image-ExifTool-11.77.tar.gz
+  - cd Image-ExifTool-11.77 && perl Makefile.PL && make test && sudo make install
+  - cd .. && rm -rf Image-ExifTool-11.77
   # Set composer minimum-stability configuration filter to beta versions
   - if [ "$DEPENDENCIES" = "beta" ]; then perl -pi -e 's/^}$/,"minimum-stability":"beta"}/' composer.json; fi;
-  # Disable xdebug, there is no use of it being enabled
-  - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{,.disabled} || echo "xdebug not available"
   # Prevent Travis throwing an out of memory error
   - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   # Test if we have a token for github in case the project hits the 60 rph limit

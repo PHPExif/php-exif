@@ -1,10 +1,9 @@
 <?php
 /**
  * @covers \PHPExif\Reader\Reader::<!public>
- * @covers \PHPExif\Reader\ReaderInterface
  * @covers \PHPExif\Adapter\NoAdapterException
  */
-class ReaderTest extends \PHPUnit_Framework_TestCase
+class ReaderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPExif\Reader\Reader
@@ -14,7 +13,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
     /**
      * Setup function before the tests
      */
-    public function setUp()
+    public function setUp() : void
     {
         $adapter = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
         $this->reader = new \PHPExif\Reader\Reader($adapter);
@@ -54,10 +53,10 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
      * @group reader
      * @covers \PHPExif\Reader\Reader::getAdapter
      * @covers \PHPExif\Adapter\NoAdapterException
-     * @expectedException \PHPExif\Adapter\NoAdapterException
      */
     public function testGetAdapterThrowsExceptionWhenNoAdapterIsSet()
     {
+        $this->expectException('\PHPExif\Adapter\NoAdapterException');
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
         $reflProperty->setValue($this->reader, null);
@@ -84,10 +83,10 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
     /**
      * @group reader
      * @covers \PHPExif\Reader\Reader::factory
-     * @expectedException InvalidArgumentException
      */
     public function testFactoryThrowsException()
     {
+        $this->expectException('InvalidArgumentException');
         \PHPExif\Reader\Reader::factory('foo');
     }
 
@@ -134,6 +133,21 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group reader
+     * @covers \PHPExif\Reader\Reader::factory
+     */
+    public function testFactoryAdapterTypeFFprobe()
+    {
+        $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_FFPROBE);
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $reflProperty->setAccessible(true);
+
+        $adapter = $reflProperty->getValue($reader);
+
+        $this->assertInstanceOf('\PHPExif\Adapter\FFprobe', $adapter);
+    }
+
+    /**
+     * @group reader
      * @covers \PHPExif\Reader\Reader::getExifFromFile
      */
     public function testGetExifFromFileCallsReadMethod()
@@ -155,4 +169,3 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedResult, $result);
     }
 }
-

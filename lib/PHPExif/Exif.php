@@ -22,32 +22,50 @@ namespace PHPExif;
  */
 class Exif
 {
+    const ALTITUDE              = 'altitude';
     const APERTURE              = 'aperture';
     const AUTHOR                = 'author';
     const CAMERA                = 'camera';
     const CAPTION               = 'caption';
+    const CITY                  = 'city';
     const COLORSPACE            = 'ColorSpace';
+    const CONTENTIDENTIFIER     = 'contentIdentifier';
     const COPYRIGHT             = 'copyright';
+    const COUNTRY               = 'country';
     const CREATION_DATE         = 'creationdate';
     const CREDIT                = 'credit';
+    const DESCRIPTION           = 'description';
+    const DURATION              = 'duration';
     const EXPOSURE              = 'exposure';
     const FILESIZE              = 'FileSize';
+    const FILENAME              = 'FileName';
     const FOCAL_LENGTH          = 'focalLength';
     const FOCAL_DISTANCE        = 'focalDistance';
+    const FRAMERATE             = 'framerate';
+    const GPS                   = 'gps';
     const HEADLINE              = 'headline';
     const HEIGHT                = 'height';
     const HORIZONTAL_RESOLUTION = 'horizontalResolution';
+    const IMGDIRECTION          = 'imgDirection';
     const ISO                   = 'iso';
     const JOB_TITLE             = 'jobTitle';
     const KEYWORDS              = 'keywords';
+    const LATITUDE              = 'latitude';
+    const LONGITUDE             = 'longitude';
+    const LENS                  = 'lens';
+    const MAKE                  = 'make';
+    const MICROVIDEOOFFSET      = 'MicroVideoOffset';
     const MIMETYPE              = 'MimeType';
     const ORIENTATION           = 'Orientation';
     const SOFTWARE              = 'software';
     const SOURCE                = 'source';
+    const STATE                 = 'state';
+    const SUBLOCATION           = 'Sublocation';
     const TITLE                 = 'title';
     const VERTICAL_RESOLUTION   = 'verticalResolution';
     const WIDTH                 = 'width';
-    const GPS                   = 'gps';
+
+
 
     /**
      * The mapped EXIF data
@@ -705,7 +723,7 @@ class Exif
 
         return $this;
     }
-    
+
     /**
      * Returns the colorspace, if it exists
      *
@@ -716,7 +734,7 @@ class Exif
         if (!isset($this->data[self::COLORSPACE])) {
             return false;
         }
-        
+
         return $this->data[self::COLORSPACE];
     }
 
@@ -732,7 +750,7 @@ class Exif
 
         return $this;
     }
-    
+
     /**
      * Returns the mimetype, if it exists
      *
@@ -743,7 +761,7 @@ class Exif
         if (!isset($this->data[self::MIMETYPE])) {
             return false;
         }
-        
+
         return $this->data[self::MIMETYPE];
     }
 
@@ -759,10 +777,10 @@ class Exif
 
         return $this;
     }
-    
+
     /**
      * Returns the filesize, if it exists
-     * 
+     *
      * @return int|boolean
      */
     public function getFileSize()
@@ -770,7 +788,7 @@ class Exif
         if (!isset($this->data[self::FILESIZE])) {
             return false;
         }
-        
+
         return $this->data[self::FILESIZE];
     }
 
@@ -783,6 +801,33 @@ class Exif
     public function setFileSize($value)
     {
         $this->data[self::FILESIZE] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns the filename, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getFileName()
+    {
+        if (!isset($this->data[self::FILENAME])) {
+            return false;
+        }
+
+        return $this->data[self::FILENAME];
+    }
+
+    /**
+     * Sets the filename
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setFileName($value)
+    {
+        $this->data[self::FILENAME] = $value;
 
         return $this;
     }
@@ -839,5 +884,413 @@ class Exif
         $this->data[self::GPS] = $value;
 
         return $this;
+    }
+
+    /**
+     * Sets the description value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setDescription($value)
+    {
+        $this->data[self::DESCRIPTION] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns description, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getDescription()
+    {
+        if (!isset($this->data[self::DESCRIPTION])) {
+            return false;
+        }
+
+        return $this->data[self::DESCRIPTION];
+    }
+
+
+    /**
+     * Sets the Make value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setMake($value)
+    {
+        $this->data[self::MAKE] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns make, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getMake()
+    {
+        if (!isset($this->data[self::MAKE])) {
+            return false;
+        }
+
+        return $this->data[self::MAKE];
+    }
+
+    /**
+     * Sets the altitude value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setAltitude($value)
+    {
+        $this->data[self::ALTITUDE] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns altitude, if it exists
+     *
+     * @return float|boolean
+     */
+    public function getAltitude()
+    {
+        if (!isset($this->data[self::ALTITUDE])) {
+            return false;
+        }
+
+        return $this->data[self::ALTITUDE];
+    }
+
+    /**
+     * Sets the altitude value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setLongitude($value)
+    {
+        $this->data[self::LONGITUDE] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns altitude, if it exists
+     *
+     * @return float|boolean
+     */
+    public function getLongitude()
+    {
+        if (!isset($this->data[self::LONGITUDE])) {
+            return false;
+        }
+
+        return $this->data[self::LONGITUDE];
+    }
+
+    /**
+     * Sets the latitude value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setLatitude($value)
+    {
+        $this->data[self::LATITUDE] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns latitude, if it exists
+     *
+     * @return float|boolean
+     */
+    public function getLatitude()
+    {
+        if (!isset($this->data[self::LATITUDE])) {
+            return false;
+        }
+
+        return $this->data[self::LATITUDE];
+    }
+
+    /**
+     * Sets the imgDirection value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setImgDirection($value)
+    {
+        $this->data[self::IMGDIRECTION] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns imgDirection, if it exists
+     *
+     * @return float|boolean
+     */
+    public function getImgDirection()
+    {
+        if (!isset($this->data[self::IMGDIRECTION])) {
+            return false;
+        }
+
+        return $this->data[self::IMGDIRECTION];
+    }
+
+
+    /**
+     * Sets the Make value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setLens($value)
+    {
+        $this->data[self::LENS] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns make, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getLens()
+    {
+        if (!isset($this->data[self::LENS])) {
+            return false;
+        }
+
+        return $this->data[self::LENS];
+    }
+
+    /**
+     * Sets the content identifier value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setContentIdentifier($value)
+    {
+        $this->data[self::CONTENTIDENTIFIER] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns content identifier, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getContentIdentifier()
+    {
+        if (!isset($this->data[self::CONTENTIDENTIFIER])) {
+            return false;
+        }
+
+        return $this->data[self::CONTENTIDENTIFIER];
+    }
+
+
+    /**
+     * Sets the framerate value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setFramerate($value)
+    {
+        $this->data[self::FRAMERATE] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns content identifier, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getFramerate()
+    {
+        if (!isset($this->data[self::FRAMERATE])) {
+            return false;
+        }
+
+        return $this->data[self::FRAMERATE];
+    }
+
+
+    /**
+     * Sets the duration value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setDuration($value)
+    {
+        $this->data[self::DURATION] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns duration, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getDuration()
+    {
+        if (!isset($this->data[self::DURATION])) {
+            return false;
+        }
+        return $this->data[self::DURATION];
+    }
+
+    /**
+     * Sets the duration value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setMicroVideoOffset($value)
+    {
+        $this->data[self::MICROVIDEOOFFSET] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns duration, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getMicroVideoOffset()
+    {
+        if (!isset($this->data[self::MICROVIDEOOFFSET])) {
+            return false;
+        }
+
+        return $this->data[self::MICROVIDEOOFFSET];
+    }
+
+    /**
+     * Sets the sublocation value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setSublocation($value)
+    {
+        $this->data[self::SUBLOCATION] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns sublocation, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getSublocation()
+    {
+        if (!isset($this->data[self::SUBLOCATION])) {
+            return false;
+        }
+
+        return $this->data[self::SUBLOCATION];
+    }
+
+    /**
+     * Sets the city value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setCity($value)
+    {
+        $this->data[self::CITY] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns city, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getCity()
+    {
+        if (!isset($this->data[self::CITY])) {
+            return false;
+        }
+
+        return $this->data[self::CITY];
+    }
+
+    /**
+     * Sets the state value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setState($value)
+    {
+        $this->data[self::STATE] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns state, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getState()
+    {
+        if (!isset($this->data[self::STATE])) {
+            return false;
+        }
+
+        return $this->data[self::STATE];
+    }
+
+    /**
+     * Sets the country value
+     *
+     * @param string $value
+     * @return \PHPExif\Exif
+     */
+    public function setCountry($value)
+    {
+        $this->data[self::COUNTRY] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns country, if it exists
+     *
+     * @return string|boolean
+     */
+    public function getCountry()
+    {
+        if (!isset($this->data[self::COUNTRY])) {
+            return false;
+        }
+
+        return $this->data[self::COUNTRY];
     }
 }
