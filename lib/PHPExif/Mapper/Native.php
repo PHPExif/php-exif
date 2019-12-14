@@ -34,6 +34,7 @@ class Native implements MapperInterface
     const CREDIT           = 'credit';
     const EXPOSURETIME     = 'ExposureTime';
     const FILESIZE         = 'FileSize';
+    const FILENAME         = 'FileName';
     const FOCALLENGTH      = 'FocalLength';
     const FOCUSDISTANCE    = 'FocusDistance';
     const HEADLINE         = 'headline';
@@ -52,6 +53,20 @@ class Native implements MapperInterface
     const YRESOLUTION      = 'YResolution';
     const GPSLATITUDE      = 'GPSLatitude';
     const GPSLONGITUDE     = 'GPSLongitude';
+    const GPSALTITUDE      = 'GPSAltitude';
+    const IMGDIRECTION     = 'GPSImgDirection';
+    const MAKE             = 'Make';
+    const LENS             = 'LensInfo';
+    const LENS_LR          = 'UndefinedTag:0xA434';
+    const LENS_TYPE        = 'LensType';
+    const DESCRIPTION      = 'caption';
+    const SUBJECT          = 'subject';
+    const FRAMERATE        = 'framerate';
+    const DURATION         = 'duration';
+    const CITY             = 'city';
+    const SUBLOCATION      = 'sublocation';
+    const STATE            = 'state';
+    const COUNTRY          = 'country';
 
     const SECTION_FILE      = 'FILE';
     const SECTION_COMPUTED  = 'COMPUTED';
@@ -103,6 +118,7 @@ class Native implements MapperInterface
         self::DATETIMEORIGINAL => Exif::CREATION_DATE,
         self::EXPOSURETIME     => Exif::EXPOSURE,
         self::FILESIZE         => Exif::FILESIZE,
+        self::FILENAME         => Exif::FILENAME,
         self::FOCALLENGTH      => Exif::FOCAL_LENGTH,
         self::ISOSPEEDRATINGS  => Exif::ISO,
         self::MIMETYPE         => Exif::MIMETYPE,
@@ -110,8 +126,23 @@ class Native implements MapperInterface
         self::SOFTWARE         => Exif::SOFTWARE,
         self::XRESOLUTION      => Exif::HORIZONTAL_RESOLUTION,
         self::YRESOLUTION      => Exif::VERTICAL_RESOLUTION,
-        self::GPSLATITUDE      => Exif::GPS,
-        self::GPSLONGITUDE     => Exif::GPS,
+        self::GPSLATITUDE      => Exif::LATITUDE,
+        self::GPSLONGITUDE     => Exif::LONGITUDE,
+        self::GPSALTITUDE      => Exif::ALTITUDE,
+        self::IMGDIRECTION     => Exif::IMGDIRECTION,
+        self::MAKE             => Exif::MAKE,
+        self::LENS             => Exif::LENS,
+        self::LENS_LR          => Exif::LENS,
+        self::LENS_TYPE        => Exif::LENS,
+        self::DESCRIPTION      => Exif::DESCRIPTION,
+        self::SUBJECT          => Exif::KEYWORDS,
+        self::FRAMERATE        => Exif::FRAMERATE,
+        self::DURATION         => Exif::DURATION,
+        self::SUBLOCATION      => Exif::SUBLOCATION,
+        self::CITY             => Exif::CITY,
+        self::STATE            => Exif::STATE,
+        self::COUNTRY          => Exif::COUNTRY
+
     );
 
     /**
@@ -125,6 +156,7 @@ class Native implements MapperInterface
     {
         $mappedData = array();
         $gpsData = array();
+
         foreach ($data as $field => $value) {
             if ($this->isSection($field) && is_array($value)) {
                 $subData = $this->mapRawData($value);
@@ -143,9 +175,16 @@ class Native implements MapperInterface
             // manipulate the value if necessary
             switch ($field) {
                 case self::DATETIMEORIGINAL:
+                    // Check if OffsetTimeOriginal (0x9011) is available
                     try {
-                        $value = new DateTime($value);
-                    } catch (Exception $exception) {
+                        if (isset($data['UndefinedTag:0x9011'])) {
+                            $timezone = new \DateTimeZone($data['UndefinedTag:0x9011']);
+                            $value = new \DateTime($value, $timezone);
+                        } else {
+                            $value = new \DateTime($value);
+                        }
+                    } catch (\Exception $e) {
+                        // Provided DateTimeOriginal or OffsetTimeOriginal invalid
                         continue 2;
                     }
                     break;
@@ -172,16 +211,41 @@ class Native implements MapperInterface
                         $value = (int) reset($parts) / (int) end($parts);
                     }
                     break;
+                case self::ISOSPEEDRATINGS:
+                    $value = explode(" ", $value)[0];
+                    break;
                 case self::XRESOLUTION:
                 case self::YRESOLUTION:
                     $resolutionParts = explode('/', $value);
                     $value = (int) reset($resolutionParts);
                     break;
                 case self::GPSLATITUDE:
-                    $gpsData['lat'] = $this->extractGPSCoordinate($value);
+                    $GPSLatitudeRef = (!(empty($data['GPSLatitudeRef'][0]))) ? $data['GPSLatitudeRef'][0] : '';
+                    $value = $this->extractGPSCoordinate((array)$value, $GPSLatitudeRef);
                     break;
                 case self::GPSLONGITUDE:
-                    $gpsData['lon'] = $this->extractGPSCoordinate($value);
+                    $GPSLongitudeRef = (!(empty($data['GPSLongitudeRef'][0]))) ? $data['GPSLongitudeRef'][0] : '';
+                    $value = $this->extractGPSCoordinate((array)$value, $GPSLongitudeRef);
+                    break;
+                case self::GPSALTITUDE:
+                    $flp = 1;
+                    if (!(empty($data['GPSAltitudeRef'][0]))) {
+                        $flp = ($data['GPSAltitudeRef'][0] == '1' || $data['GPSAltitudeRef'][0] == "\u{0001}") ? -1 : 1;
+                    }
+                    $value = $flp * $this->normalizeComponent($value);
+                    break;
+                case self::IMGDIRECTION:
+                    $value = $this->normalizeComponent($value);
+                    break;
+                case self::LENS_LR:
+                    if (!(empty($mappedData[Exif::LENS]))) {
+                        $mappedData[Exif::LENS] = $value;
+                    }
+                    break;
+                case self::LENS_TYPE:
+                    if (!(empty($mappedData[Exif::LENS]))) {
+                        $mappedData[Exif::LENS] = $value;
+                    }
                     break;
             }
 
@@ -190,17 +254,8 @@ class Native implements MapperInterface
         }
 
         // add GPS coordinates, if available
-        if (count($gpsData) === 2) {
-            $latitudeRef = empty($data['GPSLatitudeRef'][0]) ? 'N' : $data['GPSLatitudeRef'][0];
-            $longitudeRef = empty($data['GPSLongitudeRef'][0]) ? 'E' : $data['GPSLongitudeRef'][0];
-
-            $gpsLocation = sprintf(
-                '%s,%s',
-                (strtoupper($latitudeRef) === 'S' ? -1 : 1) * $gpsData['lat'],
-                (strtoupper($longitudeRef) === 'W' ? -1 : 1) * $gpsData['lon']
-            );
-
-            $mappedData[Exif::GPS] = $gpsLocation;
+        if ((isset($mappedData[Exif::LATITUDE])) && (isset($mappedData[Exif::LONGITUDE]))) {
+            $mappedData[Exif::GPS] = sprintf('%s,%s', $mappedData[Exif::LATITUDE], $mappedData[Exif::LONGITUDE]);
         } else {
             unset($mappedData[Exif::GPS]);
         }
@@ -249,41 +304,35 @@ class Native implements MapperInterface
     /**
      * Extract GPS coordinates from components array
      *
-     * @param array|string $components
+     * @param array $coordinate
+     * @param string $ref
      * @return float
      */
-    protected function extractGPSCoordinate($components)
+    protected function extractGPSCoordinate($coordinate, $ref)
     {
-        if (!is_array($components)) {
-            $components = array($components);
-        }
-        $components = array_map(array($this, 'normalizeComponent'), $components);
-
-        if (count($components) > 2) {
-            return floatval($components[0]) + (floatval($components[1]) / 60) + (floatval($components[2]) / 3600);
-        }
-
-        return reset($components);
+        $degrees = count($coordinate) > 0 ? $this->normalizeComponent($coordinate[0]) : 0;
+        $minutes = count($coordinate) > 1 ? $this->normalizeComponent($coordinate[1]) : 0;
+        $seconds = count($coordinate) > 2 ? $this->normalizeComponent($coordinate[2]) : 0;
+        $flip = ($ref == 'W' || $ref == 'S') ? -1 : 1;
+        return $flip * ($degrees + (float) $minutes / 60 + (float) $seconds / 3600);
     }
 
     /**
      * Normalize component
      *
-     * @param mixed $component
-     * @return int|float
+     * @param string $component
+     * @return float
      */
-    protected function normalizeComponent($component)
+    protected function normalizeComponent($rational)
     {
-        $parts = explode('/', $component);
-
-        if (count($parts) > 1) {
-            if ($parts[1]) {
-                return intval($parts[0]) / intval($parts[1]);
-            }
-
-            return 0;
+        $parts = explode('/', $rational, 2);
+        if (count($parts) == 1) {
+            return (float) $parts[0];
         }
-
-        return floatval(reset($parts));
+        // case part[1] is 0, div by 0 is forbidden.
+        if ($parts[1] == 0) {
+            return (float) 0;
+        }
+        return (float) $parts[0] / $parts[1];
     }
 }
