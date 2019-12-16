@@ -17,7 +17,6 @@
     },
     "require-dev": {
         "jakub-onderka/php-parallel-lint": "^1.0",
-        "php-coveralls/php-coveralls": "^2.2",
         "phpmd/phpmd": "^2.7",
         "phpunit/phpunit": ">=8.4",
         "sebastian/phpcpd": "^4.1",
@@ -40,7 +39,7 @@
         ],
         "run-tests": [
             "vendor/bin/phpunit -c phpunit.xml.dist",
-            "vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml"
+            "vendor/bin/phpunit --coverage-clover=coverage.xml"
         ],
         "validate-files": [
             "vendor/bin/parallel-lint --exclude vendor ."

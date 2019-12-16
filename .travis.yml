@@ -16,17 +16,17 @@ matrix:
     - env: DEPENDENCIES=beta
     - env: DEPENDENCIES=low
 
+before_script:
+  - if [ "$DEPENDENCIES" = "low" ]; then composer -vvv --prefer-lowest --prefer-stable update; else composer update; fi;
+
 script:
   - mkdir -p build/logs
   - composer validate-files
   - composer check-code-style
   - composer run-tests
 
-before_script:
-  - if [ "$DEPENDENCIES" = "low" ]; then composer -vvv --prefer-lowest --prefer-stable update; else composer update; fi;
-
-after_script:
-  - php vendor/bin/php-coveralls -v
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
 
 before_install:
   - sudo apt-get update

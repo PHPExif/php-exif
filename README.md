@@ -1,4 +1,4 @@
-# [PHPExif v0.6.4](http://github.com/PHPExif/php-exif) [![Build Status](https://travis-ci.org/PHPExif/php-exif.png?branch=master)](https://travis-ci.org/PHPExif/php-exif) [![Coverage Status](https://coveralls.io/repos/PHPExif/php-exif/badge.svg?branch=master)](https://coveralls.io/r/PHPExif/php-exif?branch=master) [![Code Climate](https://api.codeclimate.com/v1/badges/f15042d535274f36c5a2/maintainability)](https://codeclimate.com/github/LycheeOrg/php-exif/maintainability)
+# [PHPExif v0.6.5](http://github.com/LycheeOrg/php-exif) [![Build Status](https://travis-ci.org/LycheeOrg/php-exif.png?branch=master)](https://travis-ci.org/LycheeOrg/php-exif) [![Coverage Status](https://codecov.io/gh/LycheeOrg/php-exif/branch/master/graph/badge.svg)](https://codecov.io/gh/LycheeOrg/php-exif) [![Code Climate](https://api.codeclimate.com/v1/badges/f15042d535274f36c5a2/maintainability)](https://codeclimate.com/github/LycheeOrg/php-exif/maintainability)
 
 PHPExif is a library which gives you easy access to the EXIF meta-data of an image.
 
@@ -18,8 +18,6 @@ composer require lychee-org/php-exif
 
 ## Usage
 
-[Before v0.3.0](Resources/doc/usage_0.2.1.md)
-
 [v0.3.0+](Resources/doc/usage.md)
 
 ## Contributing
@@ -33,7 +31,7 @@ All contributions are welcomed and greatly appreciated.
 
 ## Feedback
 
-Have a bug or a feature request? [Please open a new issue](https://github.com/Miljar/php-exif/issues). Before opening any issue, please search for existing issues.
+Have a bug or a feature request? [Please open a new issue](https://github.com/LycheeOrg/php-exif/issues). Before opening any issue, please search for existing issues.
 
 ## Contributors
 
@@ -47,4 +45,4 @@ Have a bug or a feature request? [Please open a new issue](https://github.com/Mi
 
 ## License
 
-[MIT License](http://github.com/Miljar/php-exif/blob/master/LICENSE)
+[MIT License](http://github.com/LycheeOrg/php-exif/blob/master/LICENSE)
