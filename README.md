@@ -12,8 +12,7 @@ PHPExif serves as a wrapper around some native or CLI tools which access this EX
 ## Installation (composer)
 
 ```json
-# verify
-composer require miljar/php-exif
+composer require lychee-org/php-exif
 ```
 
 

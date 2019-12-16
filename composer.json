@@ -1,5 +1,5 @@
 {
-    "name": "LycheeOrg/php-exif",
+    "name": "lychee-org/php-exif",
     "description": "Object-Oriented EXIF parsing",
     "type": "library",
     "license": "MIT",
