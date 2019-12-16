@@ -1,5 +1,5 @@
 {
-    "name": "miljar/php-exif",
+    "name": "LycheeOrg/php-exif",
     "description": "Object-Oriented EXIF parsing",
     "type": "library",
     "license": "MIT",
@@ -12,7 +12,7 @@
     ],
     "keywords": ["EXIF", "IPTC", "jpeg", "tiff", "exiftool", "FFmpeg", "FFprobe"],
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "php-ffmpeg/php-ffmpeg": "^0.14.0"
     },
     "require-dev": {
