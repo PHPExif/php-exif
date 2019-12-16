@@ -2,11 +2,11 @@
 /**
  * @covers \PHPExif\Mapper\Native::<!public>
  */
-class NativeMapperTest extends \PHPUnit_Framework_TestCase
+class NativeMapperTest extends \PHPUnit\Framework\TestCase
 {
     protected $mapper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->mapper = new \PHPExif\Mapper\Native;
     }
@@ -49,6 +49,12 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
         unset($map[\PHPExif\Mapper\Native::YRESOLUTION]);
         unset($map[\PHPExif\Mapper\Native::GPSLATITUDE]);
         unset($map[\PHPExif\Mapper\Native::GPSLONGITUDE]);
+        unset($map[\PHPExif\Mapper\Native::FRAMERATE]);
+        unset($map[\PHPExif\Mapper\Native::DURATION]);
+        unset($map[\PHPExif\Mapper\Native::CITY]);
+        unset($map[\PHPExif\Mapper\Native::SUBLOCATION]);
+        unset($map[\PHPExif\Mapper\Native::STATE]);
+        unset($map[\PHPExif\Mapper\Native::COUNTRY]);
 
         // create raw data
         $keys = array_keys($map);
@@ -85,6 +91,64 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
             $result->format('Y:m:d H:i:s')
         );
     }
+
+
+        /**
+         * @group mapper
+         * @covers \PHPExif\Mapper\Native::mapRawData
+         */
+        public function testMapRawDataCorrectlyFormatsCreationDateWithTimeZone()
+        {
+            $rawData = array(
+                \PHPExif\Mapper\Native::DATETIMEORIGINAL => '2015:04:01 12:11:09+0200',
+            );
+
+            $mapped = $this->mapper->mapRawData($rawData);
+
+            $result = reset($mapped);
+            $this->assertInstanceOf('\\DateTime', $result);
+            $this->assertEquals(
+                '2015:04:01 12:11:09',
+                $result->format('Y:m:d H:i:s')
+            );
+            $this->assertEquals(
+                7200,
+                $result->getOffset()
+            );
+            $this->assertEquals(
+                '+02:00',
+                $result->getTimezone()->getName()
+            );
+        }
+
+        /**
+         * @group mapper
+         * @covers \PHPExif\Mapper\Native::mapRawData
+         */
+        public function testMapRawDataCorrectlyFormatsCreationDateWithTimeZone2()
+        {
+            $rawData = array(
+                \PHPExif\Mapper\Native::DATETIMEORIGINAL => '2015:04:01 12:11:09',
+                'UndefinedTag:0x9011' => '+0200',
+            );
+
+            $mapped = $this->mapper->mapRawData($rawData);
+
+            $result = reset($mapped);
+            $this->assertInstanceOf('\\DateTime', $result);
+            $this->assertEquals(
+                '2015:04:01 12:11:09',
+                $result->format('Y:m:d H:i:s')
+            );
+            $this->assertEquals(
+                7200,
+                $result->getOffset()
+            );
+            $this->assertEquals(
+                '+02:00',
+                $result->getTimezone()->getName()
+            );
+        }
 
     /**
      * @group mapper
@@ -210,7 +274,7 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Native::mapRawData
      */
-    public function testMapRawDataMacthesFieldsWithoutCaseSensibilityOnFirstLetter()
+    public function testMapRawDataMatchesFieldsWithoutCaseSensibilityOnFirstLetter()
     {
         $rawData = array(
             \PHPExif\Mapper\Native::ORIENTATION => 'Portrait',
@@ -255,8 +319,31 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
         );
 
         foreach ($expected as $key => $value) {
-            $result = $this->mapper->mapRawData($value);
-            $this->assertEquals($key, reset($result));
+		        $result = $this->mapper->mapRawData($value);
+	          $this->assertEquals($key, $result[\PHPExif\Exif::GPS]);
+        }
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
+    public function testMapRawDataCorrectlyFormatsAltitudeData()
+    {
+        $expected = array(
+            8848.0 => array(
+                'GPSAltitude'     => '8848',
+                'GPSAltitudeRef'  => '0',
+            ),
+            -10994.0 => array(
+                'GPSAltitude'     => '10994',
+                'GPSAltitudeRef'  => '1',
+            ),
+        );
+
+        foreach ($expected as $key => $value) {
+		        $result = $this->mapper->mapRawData($value);
+	          $this->assertEquals($key, $result[\PHPExif\Exif::ALTITUDE]);
         }
     }
 
@@ -315,6 +402,27 @@ class NativeMapperTest extends \PHPUnit_Framework_TestCase
             $normalized = $reflMethod->invoke($this->mapper, $value);
 
             $this->assertEquals($expected, $normalized);
+        }
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
+    public function testMapRawDataCorrectlyIsoFormats()
+    {
+        $expected = array(
+            '80' => array(
+                'ISOSpeedRatings'     => '80',
+            ),
+            '800' => array(
+                'ISOSpeedRatings'     => '800 0 0',
+            ),
+        );
+
+        foreach ($expected as $key => $value) {
+		        $result = $this->mapper->mapRawData($value);
+	          $this->assertEquals($key, reset($result));
         }
     }
 }

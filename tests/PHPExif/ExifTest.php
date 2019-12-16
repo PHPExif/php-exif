@@ -2,7 +2,7 @@
 /**
  * @covers \PHPExif\Exif::<!public>
  */
-class ExifTest extends \PHPUnit_Framework_TestCase
+class ExifTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPExif\Exif
@@ -12,7 +12,7 @@ class ExifTest extends \PHPUnit_Framework_TestCase
     /**
      * Setup function before the tests
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->exif = new \PHPExif\Exif();
     }
@@ -125,10 +125,26 @@ class ExifTest extends \PHPUnit_Framework_TestCase
      * @covers \PHPExif\Exif::getJobtitle
      * @covers \PHPExif\Exif::getMimeType
      * @covers \PHPExif\Exif::getFileSize
+     * @covers \PHPExif\Exif::getFileName
      * @covers \PHPExif\Exif::getHeadline
      * @covers \PHPExif\Exif::getColorSpace
      * @covers \PHPExif\Exif::getOrientation
      * @covers \PHPExif\Exif::getGPS
+     * @covers \PHPExif\Exif::getDescription
+     * @covers \PHPExif\Exif::getMake
+     * @covers \PHPExif\Exif::getAltitude
+     * @covers \PHPExif\Exif::getLatitude
+     * @covers \PHPExif\Exif::getLongitude
+     * @covers \PHPExif\Exif::getImgDirection
+     * @covers \PHPExif\Exif::getLens
+     * @covers \PHPExif\Exif::getContentIdentifier
+     * @covers \PHPExif\Exif::getFramerate
+     * @covers \PHPExif\Exif::getDuration
+     * @covers \PHPExif\Exif::getMicroVideoOffset
+     * @covers \PHPExif\Exif::getCity
+     * @covers \PHPExif\Exif::getSublocation
+     * @covers \PHPExif\Exif::getState
+     * @covers \PHPExif\Exif::getCountry
      * @param string $accessor
      */
     public function testUndefinedPropertiesReturnFalse($accessor)
@@ -169,10 +185,26 @@ class ExifTest extends \PHPUnit_Framework_TestCase
             array('getJobtitle'),
             array('getMimeType'),
             array('getFileSize'),
+            array('getFileName'),
             array('getHeadline'),
             array('getColorSpace'),
             array('getOrientation'),
             array('getGPS'),
+            array('getDescription'),
+            array('getMake'),
+            array('getAltitude'),
+            array('getLatitude'),
+            array('getLongitude'),
+            array('getImgDirection'),
+            array('getLens'),
+            array('getContentIdentifier'),
+            array('getFramerate'),
+            array('getDuration'),
+            array('getMicroVideoOffset'),
+            array('getCity'),
+            array('getSublocation'),
+            array('getState'),
+            array('getCountry'),
         );
     }
 
@@ -489,6 +521,18 @@ class ExifTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group exif
+     * @covers \PHPExif\Exif::getFileName
+     */
+    public function testGetFileName()
+    {
+        $expected = '27852365.jpg';
+        $data[\PHPExif\Exif::FILENAME] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getFileName());
+    }
+
+    /**
+     * @group exif
      * @covers \PHPExif\Exif::getOrientation
      */
     public function testGetOrientation()
@@ -509,6 +553,186 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         $data[\PHPExif\Exif::GPS] = $expected;
         $this->exif->setData($data);
         $this->assertEquals($expected, $this->exif->getGPS());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getDescription
+     */
+    public function testGetDescription()
+    {
+        $expected = 'Lorem ipsum';
+        $data[\PHPExif\Exif::DESCRIPTION] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getDescription());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getMake
+     */
+    public function testGetMake()
+    {
+        $expected = 'Make';
+        $data[\PHPExif\Exif::MAKE] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getMake());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getAltitude
+     */
+    public function testGetAltitude()
+    {
+        $expected = '8848';
+        $data[\PHPExif\Exif::ALTITUDE] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getAltitude());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getLatitude
+     */
+    public function testGetLatitude()
+    {
+        $expected = '40.333452380556';
+        $data[\PHPExif\Exif::LATITUDE] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getLatitude());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getLongitude
+     */
+    public function testGetLongitude()
+    {
+        $expected = '-20.167314813889';
+        $data[\PHPExif\Exif::LONGITUDE] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getLongitude());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getImgDirection
+     */
+    public function testGetImgDirection()
+    {
+        $expected = '180';
+        $data[\PHPExif\Exif::IMGDIRECTION] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getImgDirection());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getLens
+     */
+    public function testGetLens()
+    {
+        $expected = '70 - 200mm';
+        $data[\PHPExif\Exif::LENS] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getLens());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getContentIdentifier
+     */
+    public function testGetContentIdentifier()
+    {
+        $expected = 'C09DCB26-D321-4254-9F68-2E2E7FA16155';
+        $data[\PHPExif\Exif::CONTENTIDENTIFIER] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getContentIdentifier());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getFramerate
+     */
+    public function testGetFramerate()
+    {
+        $expected = '24';
+        $data[\PHPExif\Exif::FRAMERATE] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getFramerate());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getDuration
+     */
+    public function testGetDuration()
+    {
+        $expected = '1s';
+        $data[\PHPExif\Exif::DURATION] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getDuration());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getMicroVideoOffset
+     */
+    public function testGetMicroVideoOffset()
+    {
+        $expected = '3062730';
+        $data[\PHPExif\Exif::MICROVIDEOOFFSET] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getMicroVideoOffset());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getCity
+     */
+    public function testGetCity()
+    {
+        $expected = 'New York';
+        $data[\PHPExif\Exif::CITY] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getCity());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getSublocation
+     */
+    public function testGetSublocation()
+    {
+        $expected = 'sublocation';
+        $data[\PHPExif\Exif::SUBLOCATION] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getSublocation());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getState
+     */
+    public function testGetState()
+    {
+        $expected = 'New York';
+        $data[\PHPExif\Exif::STATE] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getState());
+    }
+
+    /**
+     * @group exif
+     * @covers \PHPExif\Exif::getCountry
+     */
+    public function testGetCountry()
+    {
+        $expected = 'USA';
+        $data[\PHPExif\Exif::COUNTRY] = $expected;
+        $this->exif->setData($data);
+        $this->assertEquals($expected, $this->exif->getCountry());
     }
 
     /**
@@ -535,10 +759,26 @@ class ExifTest extends \PHPUnit_Framework_TestCase
      * @covers \PHPExif\Exif::setJobtitle
      * @covers \PHPExif\Exif::setMimeType
      * @covers \PHPExif\Exif::setFileSize
+     * @covers \PHPExif\Exif::setFileName
      * @covers \PHPExif\Exif::setHeadline
      * @covers \PHPExif\Exif::setColorSpace
      * @covers \PHPExif\Exif::setOrientation
      * @covers \PHPExif\Exif::setGPS
+     * @covers \PHPExif\Exif::setDescription
+     * @covers \PHPExif\Exif::setMake
+     * @covers \PHPExif\Exif::setAltitude
+     * @covers \PHPExif\Exif::setLongitude
+     * @covers \PHPExif\Exif::setLatitude
+     * @covers \PHPExif\Exif::setImgDirection
+     * @covers \PHPExif\Exif::setLens
+     * @covers \PHPExif\Exif::setContentIdentifier
+     * @covers \PHPExif\Exif::setFramerate
+     * @covers \PHPExif\Exif::setDuration
+     * @covers \PHPExif\Exif::setMicroVideoOffset
+     * @covers \PHPExif\Exif::setCity
+     * @covers \PHPExif\Exif::setSublocation
+     * @covers \PHPExif\Exif::setState
+     * @covers \PHPExif\Exif::setCountry
      */
     public function testMutatorMethodsSetInProperty()
     {
@@ -637,4 +877,3 @@ class ExifTest extends \PHPUnit_Framework_TestCase
         }
     }
 }
-

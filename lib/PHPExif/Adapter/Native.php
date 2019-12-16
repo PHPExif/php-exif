@@ -12,6 +12,7 @@
 namespace PHPExif\Adapter;
 
 use PHPExif\Exif;
+use FFMpeg;
 
 /**
  * PHP Exif Native Reader Adapter
@@ -70,14 +71,18 @@ class Native extends AdapterAbstract
      * @var array
      */
     protected $iptcMapping = array(
-        'title'     => '2#005',
-        'keywords'  => '2#025',
-        'copyright' => '2#116',
-        'caption'   => '2#120',
-        'headline'  => '2#105',
-        'credit'    => '2#110',
-        'source'    => '2#115',
-        'jobtitle'  => '2#085'
+        'title'       => '2#005',
+        'keywords'    => '2#025',
+        'copyright'   => '2#116',
+        'caption'     => '2#120',
+        'headline'    => '2#105',
+        'credit'      => '2#110',
+        'source'      => '2#115',
+        'jobtitle'    => '2#085',
+        'city'        => '2#090',
+        'sublocation' => '2#092',
+        'state'       => '2#095',
+        'country'     => '2#101'
     );
 
 
@@ -173,6 +178,11 @@ class Native extends AdapterAbstract
      */
     public function getExifFromFile($file)
     {
+        $mimeType = mime_content_type($file);
+
+
+
+        // Photo
         $sections   = $this->getRequiredSections();
         $sections   = implode(',', $sections);
         $sections   = (empty($sections)) ? null : $sections;
@@ -191,6 +201,7 @@ class Native extends AdapterAbstract
         $xmpData = $this->getIptcData($file);
         $data = array_merge($data, array(self::SECTION_IPTC => $xmpData));
 
+
         // map the data:
         $mapper = $this->getMapper();
         $mappedData = $mapper->mapRawData($data);
@@ -203,6 +214,7 @@ class Native extends AdapterAbstract
 
         return $exif;
     }
+
 
     /**
      * Returns an array of IPTC data
