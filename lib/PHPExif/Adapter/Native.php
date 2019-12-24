@@ -200,11 +200,10 @@ class Native extends AdapterAbstract
             $data['FileSize'] = filesize($file);
             $data['FileName'] = basename($file);
             $data['MimeType'] = $mimeType;
+        } else {
+            $xmpData = $this->getIptcData($file);
+            $data = array_merge($data, array(self::SECTION_IPTC => $xmpData));
         }
-
-        $xmpData = $this->getIptcData($file);
-        $data = array_merge($data, array(self::SECTION_IPTC => $xmpData));
-
 
         // map the data:
         $mapper = $this->getMapper();
