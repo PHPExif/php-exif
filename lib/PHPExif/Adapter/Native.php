@@ -194,8 +194,12 @@ class Native extends AdapterAbstract
             $this->getIncludeThumbnail()
         );
 
+        // exif_read_data failed to read exif data (i.e. not a jpg/tiff)
         if (false === $data) {
-            return false;
+            $data = array();
+            $data['FileSize'] = filesize($file);
+            $data['FileName'] = basename($file);
+            $data['MimeType'] = $mimeType;
         }
 
         $xmpData = $this->getIptcData($file);
