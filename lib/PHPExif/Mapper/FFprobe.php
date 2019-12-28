@@ -122,6 +122,9 @@ class FFprobe implements MapperInterface
                     // only set value if QUICKTIME_DATE has not been used
                     if (!isset($mappedData[Exif::CREATION_DATE])) {
                         try {
+                            // Some cameras add a '/' between date and time
+                            // we need to remove it
+                            $value = str_replace('/', '', $value);
                             $value = new DateTime($value);
                         } catch (\Exception $e) {
                             continue 2;
