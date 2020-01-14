@@ -81,6 +81,7 @@ class Exiftool implements MapperInterface
     const FRAMERATE_QUICKTIME_3       = 'Track3:VideoFrameRate';
     const DURATION                    = 'Composite:Duration';
     const DURATION_QUICKTIME          = 'QuickTime:Duration';
+    const DATETIMEORIGINAL_PNG        = 'PNG:CreationTime';
 
     /**
      * Maps the ExifTool fields to the fields of
@@ -144,7 +145,8 @@ class Exiftool implements MapperInterface
         self::SUBLOCATION                 => Exif::SUBLOCATION,
         self::CITY                        => Exif::CITY,
         self::STATE                       => Exif::STATE,
-        self::COUNTRY                     => Exif::COUNTRY
+        self::COUNTRY                     => Exif::COUNTRY,
+        self::DATETIMEORIGINAL_PNG        => Exif::CREATION_DATE
     );
 
     /**
@@ -193,6 +195,7 @@ class Exiftool implements MapperInterface
                     $value = sprintf('%1$sm', $value);
                     break;
                 case self::DATETIMEORIGINAL:
+                case self::DATETIMEORIGINAL_PNG:
                     // QUICKTIME_DATE contains data on timezone
                     // only set value if QUICKTIME_DATE has not been used
                     if (!isset($mappedData[Exif::CREATION_DATE])) {
