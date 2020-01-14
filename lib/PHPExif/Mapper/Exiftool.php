@@ -281,7 +281,12 @@ class Exiftool implements MapperInterface
                     break;
                 case self::IMAGEHEIGHT_VIDEO:
                 case self::IMAGEWIDTH_VIDEO:
-                    $value_splitted = explode("x", $value);
+                    $value_splitted = null;
+                    if (preg_match('#^\d+x\d+$#', $value)) {
+                        $value_splitted = explode("x", $value);
+                    } else {
+                        $value_splitted = explode(" ", $value);
+                    }
                     $rotate = false;
                     if (!(empty($data['Composite:Rotation']))) {
                         if ($data['Composite:Rotation']=='90' || $data['Composite:Rotation']=='270') {
