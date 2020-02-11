@@ -109,7 +109,14 @@ class Exiftool extends AdapterAbstract
     public function getToolPath()
     {
         if (empty($this->toolPath)) {
+            // This uses which: not available on sh
             $path = exec('which ' . self::TOOL_NAME);
+            // @codeCoverageIgnoreStart
+            if ($path == '') {
+                // This uses command -v is the way to do it on sh
+                $path = exec('command -v ' . self::TOOL_NAME);
+            }
+            // @codeCoverageIgnoreEnd
             $this->setToolPath($path);
         }
 
@@ -144,13 +151,17 @@ class Exiftool extends AdapterAbstract
         );
 
         if (!mb_check_encoding($result, "utf-8")) {
+            // @codeCoverageIgnoreStart
             $result = utf8_encode($result);
+            // @codeCoverageIgnoreEnd
         }
         $data = json_decode($result, true);
         if (!is_array($data)) {
+          // @codeCoverageIgnoreStart
             throw new RuntimeException(
                 'Could not decode exiftool output'
             );
+            // @codeCoverageIgnoreEnd
         }
 
         // map the data:
