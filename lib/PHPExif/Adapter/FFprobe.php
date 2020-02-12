@@ -75,7 +75,9 @@ class FFprobe extends AdapterAbstract
     public function getToolPath()
     {
         if (empty($this->toolPath)) {
-            $path = exec('which ' . self::TOOL_NAME);
+            // Do not use "which": not available on sh
+            $path = exec('command -v ' . self::TOOL_NAME);
+            // $path = exec('which ' . self::TOOL_NAME);
             $this->setToolPath($path);
         }
 

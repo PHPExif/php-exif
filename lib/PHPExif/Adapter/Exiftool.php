@@ -109,14 +109,9 @@ class Exiftool extends AdapterAbstract
     public function getToolPath()
     {
         if (empty($this->toolPath)) {
-            // This uses which: not available on sh
-            $path = exec('which ' . self::TOOL_NAME);
-            // @codeCoverageIgnoreStart
-            if ($path == '') {
-                // This uses command -v is the way to do it on sh
-                $path = exec('command -v ' . self::TOOL_NAME);
-            }
-            // @codeCoverageIgnoreEnd
+            // Do not use "which": not available on sh
+            $path = exec('command -v ' . self::TOOL_NAME);
+            // $path = exec('which ' . self::TOOL_NAME);
             $this->setToolPath($path);
         }
 
