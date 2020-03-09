@@ -205,6 +205,17 @@ class Native extends AdapterAbstract
             $data = array_merge($data, array(self::SECTION_IPTC => $xmpData));
         }
 
+        // Check data is a valid string
+        foreach ($data as $k => $v) {
+            // @codeCoverageIgnoreStart
+            if (!mb_check_encoding($v)) {
+                $data[$k] = mb_convert_encoding($v, 'UTF-8');
+            }
+            // @codeCoverageIgnoreEnd
+        }
+        // var_dump($data);
+        // exit;
+
         // map the data:
         $mapper = $this->getMapper();
         $mappedData = $mapper->mapRawData($data);
