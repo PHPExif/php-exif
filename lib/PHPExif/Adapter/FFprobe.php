@@ -109,6 +109,8 @@ class FFprobe extends AdapterAbstract
 
         $data = array_merge($stream, $format, array('MimeType' => $mimeType, 'filesize' => filesize($file)));
 
+        // Force UTF8 encoding
+        $data = $this->convertToUTF8($data);
 
         // map the data:
         $mapper = $this->getMapper();

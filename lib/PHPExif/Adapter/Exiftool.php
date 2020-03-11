@@ -145,14 +145,12 @@ class Exiftool extends AdapterAbstract
             )
         );
 
-        if (!mb_check_encoding($result, "utf-8")) {
-            // @codeCoverageIgnoreStart
-            $result = utf8_encode($result);
-            // @codeCoverageIgnoreEnd
-        }
+        // Force UTF8 encoding
+        $result = $this->convertToUTF8($result);
+
         $data = json_decode($result, true);
         if (!is_array($data)) {
-          // @codeCoverageIgnoreStart
+            // @codeCoverageIgnoreStart
             throw new RuntimeException(
                 'Could not decode exiftool output'
             );

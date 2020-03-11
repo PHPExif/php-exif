@@ -55,7 +55,7 @@ class Exiftool implements MapperInterface
     const GPSLONGITUDE             = 'GPS:GPSLongitude';
     const GPSALTITUDE              = 'GPS:GPSAltitude';
     const IMGDIRECTION             = 'GPS:GPSImgDirection';
-    const DESCRIPTION              = 'ExifIFD:ImageDescription ';
+    const DESCRIPTION              = 'ExifIFD:ImageDescription';
     const MAKE                     = 'IFD0:Make';
     const LENS                     = 'ExifIFD:LensModel';
     const SUBJECT                  = 'XMP-dc:Subject';
@@ -303,6 +303,20 @@ class Exiftool implements MapperInterface
                             $mappedData[Exif::HEIGHT] = intval($value_splitted[0]);
                         }
                     }
+                    continue 2;
+                    break;
+
+                // Merge sources of keywords
+                case self::KEYWORDS:
+                case self::SUBJECT:
+                    if (empty($mappedData[Exif::KEYWORDS])) {
+                        $mappedData[Exif::KEYWORDS] = $value;
+                    } else {
+                        // @codeCoverageIgnoreStart
+                        $mappedData[Exif::KEYWORDS] = array_unique(array_merge($mappedData[Exif::KEYWORDS], $value));
+                        // @codeCoverageIgnoreEnd
+                    }
+
                     continue 2;
                     break;
             }
