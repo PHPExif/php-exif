@@ -517,6 +517,10 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
                             \PHPExif\Mapper\Exiftool::IMAGEHEIGHT_VIDEO  => '800x600',
                             'Composite:Rotation'                        => '180',
                         ),
+          '600'  => array(
+                            \PHPExif\Mapper\Exiftool::IMAGEHEIGHT_VIDEO  => '800 600',
+                            'Composite:Rotation'                        => '180',
+                        ),
       );
 
       foreach ($rawData as $expected => $value) {
@@ -557,6 +561,10 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
                             ),
               '800'  => array(
                                 \PHPExif\Mapper\Exiftool::IMAGEWIDTH_VIDEO  => '800x600',
+                                'Composite:Rotation'                        => '180',
+                            ),
+              '800'  => array(
+                                \PHPExif\Mapper\Exiftool::IMAGEWIDTH_VIDEO  => '800 600',
                                 'Composite:Rotation'                        => '180',
                             ),
           );
