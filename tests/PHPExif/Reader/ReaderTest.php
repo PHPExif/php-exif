@@ -146,6 +146,22 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf('\PHPExif\Adapter\FFprobe', $adapter);
     }
 
+
+    /**
+     * @group reader
+     * @covers \PHPExif\Reader\Reader::factory
+     */
+    public function testFactoryAdapterTypeImageMagick()
+    {
+        $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_IMAGICK);
+        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $reflProperty->setAccessible(true);
+
+        $adapter = $reflProperty->getValue($reader);
+
+        $this->assertInstanceOf('\PHPExif\Adapter\ImageMagick', $adapter);
+    }
+
     /**
      * @group reader
      * @covers \PHPExif\Reader\Reader::getExifFromFile
