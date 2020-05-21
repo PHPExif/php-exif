@@ -1,6 +1,6 @@
 <?php
 /**
- * PHP Exif Native Reader Adapter
+ * PHP Exif FFProbe Reader Adapter
  *
  * @link        http://github.com/miljar/PHPExif for the canonical source repository
  * @copyright   Copyright (c) 2013 Tom Van Herreweghe <tom@theanalogguy.be>
@@ -16,9 +16,9 @@ use InvalidArgumentException;
 use FFMpeg;
 
 /**
- * PHP Exif Native Reader Adapter
+ * PHP Exif FFProbe Reader Adapter
  *
- * Uses native PHP functionality to read data from a file
+ * Uses FFProbe to read data from a file
  *
  * @category    PHPExif
  * @package     Reader
@@ -107,7 +107,11 @@ class FFprobe extends AdapterAbstract
         $stream = $ffprobe->streams($file)->videos()->first()->all();
         $format = $ffprobe->format($file)->all();
 
-        $data = array_merge($stream, $format, array('MimeType' => $mimeType, 'filesize' => filesize($file)));
+        $data_filename = basename($file);
+        $data_filesize = filesize($file);
+
+        $additional_data = array('MimeType' => $mimeType, 'filesize' => $data_filesize, 'filename' => $data_filename);
+        $data = array_merge($stream, $format, $additional_data);
 
         // Force UTF8 encoding
         $data = $this->convertToUTF8($data);
