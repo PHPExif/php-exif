@@ -31,8 +31,8 @@ class ImageMagick implements MapperInterface
     const DATETIMEORIGINAL         = 'exif:DateTimeOriginal';
     const DESCRIPTION              = 'exif:ImageDescription ';
     const EXPOSURETIME             = 'exif:ExposureTime';
-    const FILESIZE                 = 'FileSize';
-    const FILENAME                 = 'FileName';
+    const FILESIZE                 = 'filesize';
+    const FILENAME                 = 'filename';
     const FOCALLENGTH              = 'exif:FocalLength';
     const GPSLATITUDE              = 'exif:GPSLatitude';
     const GPSLONGITUDE             = 'exif:GPSLongitude';

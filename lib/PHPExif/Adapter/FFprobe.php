@@ -105,7 +105,10 @@ class FFprobe extends AdapterAbstract
         $stream = $ffprobe->streams($file)->videos()->first()->all();
         $format = $ffprobe->format($file)->all();
 
-        $data = array_merge($stream, $format, array('MimeType' => $mimeType, 'filesize' => filesize($file)));
+        $data_filename = basename($file);
+        $data_filesize = filesize($file);
+
+        $data = array_merge($stream, $format, array('MimeType' => $mimeType, 'filesize' => $data_filesize, 'filename' => $data_filename));
 
 
         // map the data:

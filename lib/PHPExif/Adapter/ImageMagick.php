@@ -43,14 +43,17 @@ class ImageMagick extends AdapterAbstract
     public function getExifFromFile($file)
     {
 
-        $mimeType = mime_content_type($file);
+
 
         /* Create the object */
         $im = new Imagick($file);
 
         /* Get the EXIF information */
         $data_exif = $im->getImageProperties("*");
-        $data = array_merge($data_exif, array('MimeType' => $mimeType, 'filesize' => filesize($file)));
+        $data_filename = basename($file);
+        $data_filesize = filesize($file);
+        $mimeType = mime_content_type($file);
+        $data = array_merge($data_exif, array('MimeType' => $mimeType, 'filesize' => $data_filesize, 'filename' => $data_filename));
 
         // map the data:
         $mapper = $this->getMapper();
