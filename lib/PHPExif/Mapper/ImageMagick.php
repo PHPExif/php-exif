@@ -219,7 +219,8 @@ class ImageMagick implements MapperInterface
         if (is_numeric($coordinates) === true) {
             return ((float) $coordinates);
         } else {
-            if (!preg_match('!^([1-9][0-9]*\/[1-9][0-9]*), ([1-9][0-9]*\/[1-9][0-9]*), ([1-9][0-9]*\/[1-9][0-9]*)!', $coordinates, $matches)) {
+            $m = '!^([1-9][0-9]*\/[1-9][0-9]*), ([1-9][0-9]*\/[1-9][0-9]*), ([1-9][0-9]*\/[1-9][0-9]*)!';
+            if (!preg_match($m, $coordinates, $matches)) {
                 return false;
             }
             $degree = floatval($this->normalizeComponent($matches[1]));
