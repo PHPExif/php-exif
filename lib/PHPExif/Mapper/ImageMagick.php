@@ -42,7 +42,7 @@ class ImageMagick implements MapperInterface
     const IMAGEWIDTH               = 'exif:PixelXDimension';
     const IMAGEWIDTH_PNG           = 'png:IHDR.width,height';
     const IMGDIRECTION             = 'exif:GPSImgDirection';
-    const ISO                      = 'exif:ISOSpeedRatings';
+    const ISO                      = 'exif:PhotographicSensitivity';
     const LENS                     = 'exif:LensModel';
     const MAKE                     = 'exif:Make';
     const MIMETYPE                 = 'MimeType';
@@ -88,23 +88,6 @@ class ImageMagick implements MapperInterface
 
     );
 
-    /**
-     * @var bool
-     */
-    protected $numeric = true;
-
-    /**
-     * Mutator method for the numeric property
-     *
-     * @param bool $numeric
-     * @return \PHPExif\Mapper\Exiftool
-     */
-    public function setNumeric($numeric)
-    {
-        $this->numeric = (bool) $numeric;
-
-        return $this;
-    }
 
     /**
      * Maps the array of raw source data to the correct
@@ -128,7 +111,7 @@ class ImageMagick implements MapperInterface
             // manipulate the value if necessary
             switch ($field) {
                 case self::APERTURE:
-                    $value = sprintf('f/%01.1f', $value);
+                    $value = sprintf('f/%01.1f', $this->normalizeComponent($value));
                     break;
                 case self::CREATION_DATE:
                     if (!isset($mappedData[Exif::CREATION_DATE])) {
@@ -154,6 +137,7 @@ class ImageMagick implements MapperInterface
                     }
                     break;
                 case self::EXPOSURETIME:
+                    $value = $this->normalizeComponent($value);
                     // Based on the source code of Exiftool (PrintExposureTime subroutine):
                     // http://cpansearch.perl.org/src/EXIFTOOL/Image-ExifTool-9.90/lib/Image/ExifTool/Exif.pm
                     if ($value < 0.25001 && $value > 0) {
@@ -164,10 +148,11 @@ class ImageMagick implements MapperInterface
                     }
                     break;
                 case self::FOCALLENGTH:
-                    if (!$this->numeric || strpos($value, ' ') !== false) {
+                    if (strpos($value, ' ') !== false) {
                         $focalLengthParts = explode(' ', $value);
                         $value = reset($focalLengthParts);
                     }
+                    $value = $this->normalizeComponent($value);
                     break;
                 case self::ISO:
                     $value = explode(" ", $value)[0];
@@ -195,7 +180,7 @@ class ImageMagick implements MapperInterface
                     if (!(empty($data['exif:GPSAltitudeRef']))) {
                         $flip = ($data['exif:GPSAltitudeRef'] == '1') ? -1 : 1;
                     }
-                        $value = $flip * (float) $value;
+                    $value = $flip * (float) $this->normalizeComponent($value);
                     break;
                 case self::IMAGEHEIGHT_PNG:
                 case self::IMAGEWIDTH_PNG:
@@ -231,14 +216,36 @@ class ImageMagick implements MapperInterface
      */
     protected function extractGPSCoordinates($coordinates)
     {
-        if (is_numeric($coordinates) === true || $this->numeric === true) {
+        if (is_numeric($coordinates) === true) {
             return ((float) $coordinates);
         } else {
-            if (!preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches)) {
+            $m = '!^([1-9][0-9]*\/[1-9][0-9]*), ([1-9][0-9]*\/[1-9][0-9]*), ([1-9][0-9]*\/[1-9][0-9]*)!';
+            if (!preg_match($m, $coordinates, $matches)) {
                 return false;
             }
-
-            return floatval($matches[1]) + (floatval($matches[2]) / 60) + (floatval($matches[3]) / 3600);
+            $degree = floatval($this->normalizeComponent($matches[1]));
+            $minutes = floatval($this->normalizeComponent($matches[2]));
+            $seconds = floatval($this->normalizeComponent($matches[3]));
+            return $degree + $minutes / 60 + $seconds / 3600;
         }
+    }
+
+    /**
+     * Normalize component
+     *
+     * @param string $component
+     * @return float
+     */
+    protected function normalizeComponent($rational)
+    {
+        $parts = explode('/', $rational, 2);
+        if (count($parts) == 1) {
+            return (float) $parts[0];
+        }
+        // case part[1] is 0, div by 0 is forbidden.
+        if ($parts[1] == 0) {
+            return (float) 0;
+        }
+        return (float) $parts[0] / $parts[1];
     }
 }
