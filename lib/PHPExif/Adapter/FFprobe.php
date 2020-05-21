@@ -108,7 +108,8 @@ class FFprobe extends AdapterAbstract
         $data_filename = basename($file);
         $data_filesize = filesize($file);
 
-        $data = array_merge($stream, $format, array('MimeType' => $mimeType, 'filesize' => $data_filesize, 'filename' => $data_filename));
+        $additional_data = array('MimeType' => $mimeType, 'filesize' => $data_filesize, 'filename' => $data_filename);
+        $data = array_merge($stream, $format, $additional_data);
 
 
         // map the data:

@@ -53,7 +53,8 @@ class ImageMagick extends AdapterAbstract
         $data_filename = basename($file);
         $data_filesize = filesize($file);
         $mimeType = mime_content_type($file);
-        $data = array_merge($data_exif, array('MimeType' => $mimeType, 'filesize' => $data_filesize, 'filename' => $data_filename));
+        $additional_data = array('MimeType' => $mimeType, 'filesize' => $data_filesize, 'filename' => $data_filename);
+        $data = array_merge($data_exif, $additional_data);
 
         // map the data:
         $mapper = $this->getMapper();
