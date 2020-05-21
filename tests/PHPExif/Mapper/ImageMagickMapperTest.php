@@ -78,12 +78,12 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
     public function testMapRawDataCorrectlyFormatsAperture()
     {
         $rawData = array(
-            \PHPExif\Mapper\ImageMagick::APERTURE => 0.123,
+            \PHPExif\Mapper\ImageMagick::APERTURE => '54823/32325',
         );
 
         $mapped = $this->mapper->mapRawData($rawData);
 
-        $this->assertEquals('f/0.1', reset($mapped));
+        $this->assertEquals('f/1.7', reset($mapped));
     }
 
     /**
@@ -314,16 +314,14 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
      */
     public function testMapRawDataCorrectlyFormatsGPSData()
     {
-        $this->mapper->setNumeric(false);
         $result = $this->mapper->mapRawData(
             array(
-                \PHPExif\Mapper\ImageMagick::GPSLATITUDE  => '40 deg 20\' 0.42857" N',
-                'exif:GPSLatitudeRef'                   => 'North',
-                \PHPExif\Mapper\ImageMagick::GPSLONGITUDE => '20 deg 10\' 2.33333" W',
-                'exif:GPSLongitudeRef'                  => 'West',
+                \PHPExif\Mapper\ImageMagick::GPSLATITUDE  => '40/1, 20/1, 42857/100000',
+                'exif:GPSLatitudeRef'                   => 'N',
+                \PHPExif\Mapper\ImageMagick::GPSLONGITUDE => '20/1, 10/1, 233333/100000',
+                'exif:GPSLongitudeRef'                  => 'W',
             )
         );
-
         $expected_gps = '40.333452380556,-20.167314813889';
         $expected_lat = '40.333452380556';
         $expected_lon = '-20.167314813889';
@@ -339,16 +337,14 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
      */
     public function testMapRawDataIncorrectlyFormatedGPSData()
     {
-        $this->mapper->setNumeric(false);
         $result = $this->mapper->mapRawData(
             array(
-                \PHPExif\Mapper\ImageMagick::GPSLATITUDE  => '40 degrees 20\' 0.42857" N',
-                'GPS:GPSLatitudeRef'                   => 'North',
-                \PHPExif\Mapper\ImageMagick::GPSLONGITUDE => '20 degrees 10\' 2.33333" W',
-                'GPS:GPSLongitudeRef'                  => 'West',
+                \PHPExif\Mapper\ImageMagick::GPSLATITUDE  => '40/1 20/1 42857/100000',
+                'GPS:GPSLatitudeRef'                   => 'N',
+                \PHPExif\Mapper\ImageMagick::GPSLONGITUDE => '20/1 10/1 233333/100000',
+                'GPS:GPSLongitudeRef'                  => 'W',
             )
         );
-
         $expected_gps = false;
         $expected_lat = false;
         $expected_lon = false;
@@ -442,7 +438,7 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
     {
         $result = $this->mapper->mapRawData(
             array(
-                \PHPExif\Mapper\ImageMagick::GPSALTITUDE  => '122.053',
+                \PHPExif\Mapper\ImageMagick::GPSALTITUDE  => '122053/1000',
                 'exif:GPSAltitudeRef'                   => '0',
             )
         );
@@ -458,7 +454,7 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
     {
         $result = $this->mapper->mapRawData(
             array(
-                \PHPExif\Mapper\ImageMagick::GPSALTITUDE  => '122.053',
+                \PHPExif\Mapper\ImageMagick::GPSALTITUDE  => '122053/1000',
                 'exif:GPSAltitudeRef'                   => '1',
             )
         );
@@ -475,10 +471,10 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
         {
             $expected = array(
                 '80' => array(
-                    'exif:ISOSpeedRatings'     => '80',
+                    'exif:PhotographicSensitivity'     => '80',
                 ),
                 '800' => array(
-                    'exif:ISOSpeedRatings'     => '800 0 0',
+                    'exif:PhotographicSensitivity'     => '800 0 0',
                 ),
             );
 
@@ -490,25 +486,9 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
 
         /**
          * @group mapper
-         * @covers \PHPExif\Mapper\ImageMagick::setNumeric
-         */
-        public function testSetNumericInProperty()
-        {
-            $reflProperty = new \ReflectionProperty(get_class($this->mapper), 'numeric');
-            $reflProperty->setAccessible(true);
-
-            $expected = true;
-            $this->mapper->setNumeric($expected);
-
-            $this->assertEquals($expected, $reflProperty->getValue($this->mapper));
-        }
-
-
-        /**
-         * @group mapper
          * @covers \PHPExif\Mapper\ImageMagick::mapRawData
          */
-        public function testMapRawDataCorrectlyHeightONG()
+        public function testMapRawDataCorrectlyHeightPNG()
         {
 
           $rawData = array(
@@ -545,5 +525,30 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
             $this->assertEquals($expected, $mapped['width']);
         }
       }
+
+      /**
+       * @group mapper
+       * @covers \PHPExif\Mapper\ImageMagick::normalizeComponent
+       */
+      public function testNormalizeComponentCorrectly()
+      {
+          $reflMethod = new \ReflectionMethod('\PHPExif\Mapper\ImageMagick', 'normalizeComponent');
+          $reflMethod->setAccessible(true);
+
+          $rawData = array(
+              '2/800' => 0.0025,
+              '1/400' => 0.0025,
+              '0/1'   => 0,
+              '1/0'   => 0,
+              '0'     => 0,
+          );
+
+          foreach ($rawData as $value => $expected) {
+              $normalized = $reflMethod->invoke($this->mapper, $value);
+
+              $this->assertEquals($expected, $normalized);
+          }
+      }
+
 
 }
