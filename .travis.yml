@@ -30,15 +30,11 @@ after_success:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install ffmpeg php-imagick
+  - sudo apt-get -y install ffmpeg php-imagick libimage-exiftool-perl
   - yes | pecl install imagick
   # Show php modules
   - php -m 
   - composer self-update
-  - wget http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-11.77.tar.gz
-  - tar -zxvf Image-ExifTool-11.77.tar.gz
-  - cd Image-ExifTool-11.77 && perl Makefile.PL && make test && sudo make install
-  - cd .. && rm -rf Image-ExifTool-11.77
   # Set composer minimum-stability configuration filter to beta versions
   - if [ "$DEPENDENCIES" = "beta" ]; then perl -pi -e 's/^}$/,"minimum-stability":"beta"}/' composer.json; fi;
   # Prevent Travis throwing an out of memory error
