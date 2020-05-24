@@ -190,6 +190,9 @@ class ImageMagick implements MapperInterface
                     $mappedData[Exif::HEIGHT] = intval($value_splitted[1]);
                     continue 2;
                     break;
+                case self::IMGDIRECTION:
+                    $value = $this->normalizeComponent($value);
+                    break;
             }
             // set end result
             $mappedData[$key] = $value;
