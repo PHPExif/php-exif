@@ -205,6 +205,16 @@ class Native extends AdapterAbstract
             $data = array_merge($data, array(self::SECTION_IPTC => $xmpData));
         }
 
+        if (!(array_key_exists('height', $data)) || !(array_key_exists('width', $data))) {
+            $img_size = getimagesize($file);
+            if ($img_size !== false) {
+                if ($img_size[0] !== null && $img_size[1] !== null) {
+                    $data['width'] = $img_size[0];
+                    $data['height'] = $img_size[1];
+                }
+            }
+        }
+        
         // Force UTF8 encoding
         $data = $this->convertToUTF8($data);
 
