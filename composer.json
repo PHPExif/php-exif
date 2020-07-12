@@ -13,7 +13,7 @@
     "keywords": ["EXIF", "IPTC", "jpeg", "tiff", "exiftool", "FFmpeg", "FFprobe", "ImageMagick", "Imagick"],
     "require": {
         "php": ">=7.2",
-        "neitanod/forceutf8": "^2.0",
+        "neitanod/forceutf8": "^2.0.4",
         "php-ffmpeg/php-ffmpeg": "^0.14.0"
     },
     "require-dev": {
