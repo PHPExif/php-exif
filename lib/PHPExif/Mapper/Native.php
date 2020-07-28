@@ -238,14 +238,16 @@ class Native implements MapperInterface
                     $value = $this->normalizeComponent($value);
                     break;
                 case self::LENS_LR:
-                    if (!(empty($mappedData[Exif::LENS]))) {
+                    if (empty($mappedData[Exif::LENS])) {
                         $mappedData[Exif::LENS] = $value;
                     }
+                    continue 2;
                     break;
                 case self::LENS_TYPE:
-                    if (!(empty($mappedData[Exif::LENS]))) {
+                    if (empty($mappedData[Exif::LENS])) {
                         $mappedData[Exif::LENS] = $value;
                     }
+                    continue 2;
                     break;
             }
 
