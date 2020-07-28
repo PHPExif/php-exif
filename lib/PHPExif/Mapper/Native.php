@@ -171,6 +171,7 @@ class Native implements MapperInterface
             }
 
             $key = $this->map[$field];
+            $value = trim($value);
 
             // manipulate the value if necessary
             switch ($field) {
