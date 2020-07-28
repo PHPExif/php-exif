@@ -58,6 +58,7 @@ class Exiftool implements MapperInterface
     const DESCRIPTION              = 'ExifIFD:ImageDescription';
     const MAKE                     = 'IFD0:Make';
     const LENS                     = 'ExifIFD:LensModel';
+    const LENS_ID                  = 'Composite:LensID';
     const SUBJECT                  = 'XMP-dc:Subject';
     const CONTENTIDENTIFIER        = 'Apple:ContentIdentifier';
     const MICROVIDEOOFFSET         = 'XMP-GCamera:MicroVideoOffset';
@@ -123,6 +124,7 @@ class Exiftool implements MapperInterface
         self::MAKE                     => Exif::MAKE,
         self::IMGDIRECTION             => Exif::IMGDIRECTION,
         self::LENS                     => Exif::LENS,
+        self::LENS_ID                  => Exif::LENS,
         self::DESCRIPTION              => Exif::DESCRIPTION,
         self::SUBJECT                  => Exif::KEYWORDS,
         self::CONTENTIDENTIFIER        => Exif::CONTENTIDENTIFIER,
@@ -317,6 +319,12 @@ class Exiftool implements MapperInterface
                         // @codeCoverageIgnoreEnd
                     }
 
+                    continue 2;
+                    break;
+                case self::LENS_ID:
+                    if (empty($mappedData[Exif::LENS])) {
+                        $mappedData[Exif::LENS] = $value;
+                    }
                     continue 2;
                     break;
             }
