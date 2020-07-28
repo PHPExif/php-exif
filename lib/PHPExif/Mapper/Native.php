@@ -178,7 +178,11 @@ class Native implements MapperInterface
                     // Check if OffsetTimeOriginal (0x9011) is available
                     try {
                         if (isset($data['UndefinedTag:0x9011'])) {
-                            $timezone = new \DateTimeZone($data['UndefinedTag:0x9011']);
+                            try {
+                                $timezone = new \DateTimeZone($data['UndefinedTag:0x9011']);
+                            } catch (\Exception $e) {
+                                $timezone = null;
+                            }
                             $value = new \DateTime($value, $timezone);
                         } else {
                             $value = new \DateTime($value);

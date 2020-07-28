@@ -127,7 +127,11 @@ class ImageMagick implements MapperInterface
                 case self::DATETIMEORIGINAL:
                     try {
                         if (isset($data['exif:OffsetTimeOriginal'])) {
-                            $timezone = new \DateTimeZone($data['exif:OffsetTimeOriginal']);
+                            try {
+                                $timezone = new \DateTimeZone($data['exif:OffsetTimeOriginal']);
+                            } catch (\Exception $e) {
+                                $timezone = null;
+                            }
                             $value = new \DateTime($value, $timezone);
                         } else {
                             $value = new \DateTime($value);
