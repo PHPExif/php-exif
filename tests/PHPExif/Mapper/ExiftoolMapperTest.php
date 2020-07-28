@@ -70,6 +70,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
         unset($map[\PHPExif\Mapper\Exiftool::SUBLOCATION]);
         unset($map[\PHPExif\Mapper\Exiftool::STATE]);
         unset($map[\PHPExif\Mapper\Exiftool::COUNTRY]);
+        unset($map[\PHPExif\Mapper\Exiftool::LENS_ID]);
 
         // create raw data
         $keys = array_keys($map);
