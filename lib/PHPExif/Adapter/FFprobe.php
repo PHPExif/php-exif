@@ -111,7 +111,7 @@ class FFprobe extends AdapterAbstract
         $data_filesize = filesize($file);
 
         $additional_data = array('MimeType' => $mimeType, 'filesize' => $data_filesize, 'filename' => $data_filename);
-        $data = array_merge($stream, $format, $additional_data);
+        $data = array_replace_recursive($stream, $format, $additional_data);
 
         // Force UTF8 encoding
         $data = $this->convertToUTF8($data);
