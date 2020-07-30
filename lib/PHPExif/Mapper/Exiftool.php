@@ -66,7 +66,12 @@ class Exiftool implements MapperInterface
     const STATE                    = 'IPTC2:Province-State';
     const COUNTRY                  = 'IPTC2:Country-PrimaryLocationName';
 
-    const DATETIMEORIGINAL_QUICKTIME  = 'QuickTime:CreationDate';
+    const DATETIMEORIGINAL_QUICKTIME  = 'QuickTime:CreateDate';
+    const DATETIMEORIGINAL_AVI        = 'RIFF:DateTimeOriginal';
+    const DATETIMEORIGINAL_WEBM       = 'Matroska:DateTimeOriginal';
+    const DATETIMEORIGINAL_OGG        = 'Theora:CreationTime';
+    const DATETIMEORIGINAL_WMV        = 'ASF:CreationDate';
+    const DATETIMEORIGINAL_APPLE      = 'Keys:CreationDate';
     const IMAGEHEIGHT_VIDEO           = 'Composite:ImageSize';
     const IMAGEWIDTH_VIDEO            = 'Composite:ImageSize';
     const MAKE_QUICKTIME              = 'QuickTime:Make';
@@ -79,8 +84,12 @@ class Exiftool implements MapperInterface
     const FRAMERATE_QUICKTIME_1       = 'Track1:VideoFrameRate';
     const FRAMERATE_QUICKTIME_2       = 'Track2:VideoFrameRate';
     const FRAMERATE_QUICKTIME_3       = 'Track3:VideoFrameRate';
+    const FRAMERATE_AVI               = 'RIFF:VideoFrameRate';
+    const FRAMERATE_OGG               = 'Theora:FrameRate';
     const DURATION                    = 'Composite:Duration';
     const DURATION_QUICKTIME          = 'QuickTime:Duration';
+    const DURATION_WEBM               = 'Matroska:Duration';
+    const DURATION_WMV                = 'ASF:SendDuration';
     const DATETIMEORIGINAL_PNG        = 'PNG:CreationTime';
 
     /**
@@ -127,6 +136,11 @@ class Exiftool implements MapperInterface
         self::SUBJECT                  => Exif::KEYWORDS,
         self::CONTENTIDENTIFIER        => Exif::CONTENTIDENTIFIER,
         self::DATETIMEORIGINAL_QUICKTIME  => Exif::CREATION_DATE,
+        self::DATETIMEORIGINAL_AVI        => Exif::CREATION_DATE,
+        self::DATETIMEORIGINAL_WEBM       => Exif::CREATION_DATE,
+        self::DATETIMEORIGINAL_OGG        => Exif::CREATION_DATE,
+        self::DATETIMEORIGINAL_WMV        => Exif::CREATION_DATE,
+        self::DATETIMEORIGINAL_APPLE      => Exif::CREATION_DATE,
         self::MAKE_QUICKTIME              => Exif::MAKE,
         self::MODEL_QUICKTIME             => Exif::CAMERA,
         self::CONTENTIDENTIFIER_QUICKTIME => Exif::CONTENTIDENTIFIER,
@@ -139,8 +153,12 @@ class Exiftool implements MapperInterface
         self::FRAMERATE_QUICKTIME_1       => Exif::FRAMERATE,
         self::FRAMERATE_QUICKTIME_2       => Exif::FRAMERATE,
         self::FRAMERATE_QUICKTIME_3       => Exif::FRAMERATE,
+        self::FRAMERATE_AVI               => Exif::FRAMERATE,
+        self::FRAMERATE_OGG               => Exif::FRAMERATE,
         self::DURATION                    => Exif::DURATION,
         self::DURATION_QUICKTIME          => Exif::DURATION,
+        self::DURATION_WEBM               => Exif::DURATION,
+        self::DURATION_WMV                => Exif::DURATION,
         self::MICROVIDEOOFFSET            => Exif::MICROVIDEOOFFSET,
         self::SUBLOCATION                 => Exif::SUBLOCATION,
         self::CITY                        => Exif::CITY,
@@ -196,8 +214,13 @@ class Exiftool implements MapperInterface
                     break;
                 case self::DATETIMEORIGINAL:
                 case self::DATETIMEORIGINAL_PNG:
-                    // QUICKTIME_DATE contains data on timezone
-                    // only set value if QUICKTIME_DATE has not been used
+                case self::DATETIMEORIGINAL_QUICKTIME:
+                case self::DATETIMEORIGINAL_AVI:
+                case self::DATETIMEORIGINAL_WEBM:
+                case self::DATETIMEORIGINAL_OGG:
+                case self::DATETIMEORIGINAL_WMV:
+                    // DATETIMEORIGINAL_APPLE contains data on timezone
+                    // only set value if DATETIMEORIGINAL_APPLE has not been used
                     if (!isset($mappedData[Exif::CREATION_DATE])) {
                         try {
                             if (isset($data['ExifIFD:OffsetTimeOriginal'])) {
@@ -214,7 +237,7 @@ class Exiftool implements MapperInterface
                     }
 
                     break;
-                case self::DATETIMEORIGINAL_QUICKTIME:
+                case self::DATETIMEORIGINAL_APPLE:
                     try {
                         $value = new DateTime($value);
                     } catch (\Exception $e) {
