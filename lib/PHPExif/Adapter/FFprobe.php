@@ -94,6 +94,12 @@ class FFprobe extends AdapterAbstract
     {
         $mimeType = mime_content_type($file);
 
+        if ($mimeType === 'image/x-tga') {
+            // @codeCoverageIgnoreStart
+            $mimeType = 'video/mpeg';
+            // @codeCoverageIgnoreEnd
+        }
+
         // file is not a video -> wrong adapter
         if (strpos($mimeType, 'video') !== 0) {
             return false;

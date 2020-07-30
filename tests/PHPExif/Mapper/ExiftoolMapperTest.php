@@ -54,14 +54,24 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
         unset($map[\PHPExif\Mapper\Exiftool::KEYWORDS]);
         unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL]);
         unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_QUICKTIME]);
+        unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_AVI]);
+        unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_WEBM]);
+        unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_OGG]);
+        unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_WMV]);
+        unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_APPLE]);
+        unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_PNG]);
         unset($map[\PHPExif\Mapper\Exiftool::MAKE_QUICKTIME]);
         unset($map[\PHPExif\Mapper\Exiftool::MODEL_QUICKTIME]);
         unset($map[\PHPExif\Mapper\Exiftool::FRAMERATE]);
         unset($map[\PHPExif\Mapper\Exiftool::FRAMERATE_QUICKTIME_1]);
         unset($map[\PHPExif\Mapper\Exiftool::FRAMERATE_QUICKTIME_2]);
         unset($map[\PHPExif\Mapper\Exiftool::FRAMERATE_QUICKTIME_3]);
+        unset($map[\PHPExif\Mapper\Exiftool::FRAMERATE_AVI]);
+        unset($map[\PHPExif\Mapper\Exiftool::FRAMERATE_OGG]);
         unset($map[\PHPExif\Mapper\Exiftool::DURATION]);
         unset($map[\PHPExif\Mapper\Exiftool::DURATION_QUICKTIME]);
+        unset($map[\PHPExif\Mapper\Exiftool::DURATION_WEBM]);
+        unset($map[\PHPExif\Mapper\Exiftool::DURATION_WMV]);
         unset($map[\PHPExif\Mapper\Exiftool::GPSLATITUDE_QUICKTIME]);
         unset($map[\PHPExif\Mapper\Exiftool::GPSLONGITUDE_QUICKTIME]);
         unset($map[\PHPExif\Mapper\Exiftool::GPSALTITUDE_QUICKTIME]);
@@ -153,7 +163,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
               'ExifIFD:OffsetTimeOriginal' => '+0200',
           ),
           array(
-              \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_QUICKTIME => '2015-04-01T12:11:09+0200',
+              \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_APPLE => '2015-04-01T12:11:09+0200',
               \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL => '2015:04:01 12:11:09',
               'ExifIFD:OffsetTimeOriginal' => '+0200',
           )
@@ -231,7 +241,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
     public function testMapRawDataCorrectlyIgnoresIncorrectCreationDate2()
     {
         $rawData = array(
-            \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_QUICKTIME => '2015:04:01',
+            \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_APPLE => '2015:04:01',
         );
 
         $mapped = $this->mapper->mapRawData($rawData);
