@@ -598,4 +598,52 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
     	          $this->assertEquals($key, reset($result));
             }
         }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyLensData()
+    {
+        $data = array (
+            array(
+                \PHPExif\Mapper\Exiftool::LENS => 'LEICA DG 12-60/F2.8-4.0',
+            ),
+            array(
+                \PHPExif\Mapper\Exiftool::LENS => 'LEICA DG 12-60/F2.8-4.0',
+                \PHPExif\Mapper\Exiftool::LENS_ID => 'LUMIX G VARIO 12-32/F3.5-5.6',
+            ),
+            array(
+                \PHPExif\Mapper\Exiftool::LENS_ID => 'LUMIX G VARIO 12-32/F3.5-5.6',
+                \PHPExif\Mapper\Exiftool::LENS => 'LEICA DG 12-60/F2.8-4.0',
+          )
+        );
+
+        foreach ($data as $key => $rawData) {
+            $mapped = $this->mapper->mapRawData($rawData);
+
+            $this->assertEquals(
+                'LEICA DG 12-60/F2.8-4.0',
+                reset($mapped)
+            );
+        }
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyLensData2()
+    {
+        $rawData = array (
+            \PHPExif\Mapper\Exiftool::LENS_ID => 'LUMIX G VARIO 12-32/F3.5-5.6',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(
+            'LUMIX G VARIO 12-32/F3.5-5.6',
+            reset($mapped)
+        );
+    }
 }
