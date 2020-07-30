@@ -169,6 +169,27 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Native::mapRawData
      */
+    public function testMapRawDataCorrectlyIgnoresIncorrectTimeZone()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Native::DATETIMEORIGINAL => '2015:04:01 12:11:09',
+            'UndefinedTag:0x9011' => '   :  ',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $result = reset($mapped);
+        $this->assertInstanceOf('\\DateTime', $result);
+        $this->assertEquals(
+            '2015:04:01 12:11:09',
+            $result->format('Y:m:d H:i:s')
+        );
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
     public function testMapRawDataCorrectlyFormatsExposureTime()
     {
         $rawData = array(
