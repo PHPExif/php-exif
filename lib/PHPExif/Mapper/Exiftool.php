@@ -226,7 +226,11 @@ class Exiftool implements MapperInterface
                     if (!isset($mappedData[Exif::CREATION_DATE])) {
                         try {
                             if (isset($data['ExifIFD:OffsetTimeOriginal'])) {
-                                $timezone = new \DateTimeZone($data['ExifIFD:OffsetTimeOriginal']);
+                                try {
+                                    $timezone = new \DateTimeZone($data['ExifIFD:OffsetTimeOriginal']);
+                                } catch (\Exception $e) {
+                                    $timezone = null;
+                                }
                                 $value = new \DateTime($value, $timezone);
                             } else {
                                 $value = new \DateTime($value);

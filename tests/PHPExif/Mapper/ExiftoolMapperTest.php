@@ -253,6 +253,27 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Exiftool::mapRawData
      */
+    public function testMapRawDataCorrectlyIgnoresIncorrectTimeZone()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL => '2015:04:01 12:11:09',
+            'ExifIFD:OffsetTimeOriginal' => '   :  ',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $result = reset($mapped);
+        $this->assertInstanceOf('\\DateTime', $result);
+        $this->assertEquals(
+            '2015:04:01 12:11:09',
+            $result->format('Y:m:d H:i:s')
+        );
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
     public function testMapRawDataCorrectlyFormatsExposureTime()
     {
         $rawData = array(
