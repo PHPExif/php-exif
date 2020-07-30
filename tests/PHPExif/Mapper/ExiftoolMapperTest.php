@@ -162,7 +162,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
               'ExifIFD:OffsetTimeOriginal' => '+0200',
           ),
           array(
-              \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_QUICKTIME => '2015-04-01T12:11:09+0200',
+              \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_APPLE => '2015-04-01T12:11:09+0200',
               \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL => '2015:04:01 12:11:09',
               'ExifIFD:OffsetTimeOriginal' => '+0200',
           )
@@ -240,7 +240,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
     public function testMapRawDataCorrectlyIgnoresIncorrectCreationDate2()
     {
         $rawData = array(
-            \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_QUICKTIME => '2015:04:01',
+            \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL_APPLE => '2015:04:01',
         );
 
         $mapped = $this->mapper->mapRawData($rawData);
