@@ -49,6 +49,7 @@ class Exiftool implements MapperInterface
     const SOFTWARE                 = 'IFD0:Software';
     const SOURCE                   = 'IPTC:Source';
     const TITLE                    = 'IPTC:ObjectName';
+    const TITLE_XMP                = 'XMP-dc:Title';
     const XRESOLUTION              = 'IFD0:XResolution';
     const YRESOLUTION              = 'IFD0:YResolution';
     const GPSLATITUDE              = 'GPS:GPSLatitude';
@@ -56,6 +57,7 @@ class Exiftool implements MapperInterface
     const GPSALTITUDE              = 'GPS:GPSAltitude';
     const IMGDIRECTION             = 'GPS:GPSImgDirection';
     const DESCRIPTION              = 'ExifIFD:ImageDescription';
+    const DESCRIPTION_XMP          = 'XMP-dc:Description';
     const MAKE                     = 'IFD0:Make';
     const LENS                     = 'ExifIFD:LensModel';
     const LENS_ID                  = 'Composite:LensID';
@@ -104,6 +106,7 @@ class Exiftool implements MapperInterface
         self::ARTIST                   => Exif::AUTHOR,
         self::MODEL                    => Exif::CAMERA,
         self::CAPTION                  => Exif::CAPTION,
+        self::DESCRIPTION_XMP          => Exif::CAPTION,
         self::COLORSPACE               => Exif::COLORSPACE,
         self::COPYRIGHT                => Exif::COPYRIGHT,
         self::DATETIMEORIGINAL         => Exif::CREATION_DATE,
@@ -124,6 +127,7 @@ class Exiftool implements MapperInterface
         self::SOFTWARE                 => Exif::SOFTWARE,
         self::SOURCE                   => Exif::SOURCE,
         self::TITLE                    => Exif::TITLE,
+        self::TITLE_XMP                => Exif::TITLE,
         self::YRESOLUTION              => Exif::VERTICAL_RESOLUTION,
         self::IMAGEWIDTH               => Exif::WIDTH,
         self::CAPTIONABSTRACT          => Exif::CAPTION,

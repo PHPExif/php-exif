@@ -50,6 +50,8 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
         unset($map[\PHPExif\Mapper\Exiftool::GPSLATITUDE]);
         unset($map[\PHPExif\Mapper\Exiftool::GPSLONGITUDE]);
         unset($map[\PHPExif\Mapper\Exiftool::CAPTION]);
+        unset($map[\PHPExif\Mapper\Exiftool::TITLE]);
+        unset($map[\PHPExif\Mapper\Exiftool::DESCRIPTION_XMP]);
         unset($map[\PHPExif\Mapper\Exiftool::CONTENTIDENTIFIER]);
         unset($map[\PHPExif\Mapper\Exiftool::KEYWORDS]);
         unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL]);
