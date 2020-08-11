@@ -159,7 +159,7 @@ class ImageMagick implements MapperInterface
                     $value = $this->normalizeComponent($value);
                     break;
                 case self::ISO:
-                    $value = explode(" ", $value)[0];
+                    $value = preg_split('/([\s,]+)/', $value)[0];
                     break;
                 case self::GPSLATITUDE:
                     $latitudeRef = empty($data['exif:GPSLatitudeRef']) ? 'N' : $data['exif:GPSLatitudeRef'][0];
