@@ -219,7 +219,7 @@ class Native implements MapperInterface
                     }
                     break;
                 case self::ISOSPEEDRATINGS:
-                    $value = explode(" ", $value)[0];
+                    $value = explode(" ", (is_array($value) ? $value[0] : $value))[0];
                     break;
                 case self::XRESOLUTION:
                 case self::YRESOLUTION:
