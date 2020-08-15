@@ -497,6 +497,9 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
                 '800' => array(
                     'exif:PhotographicSensitivity'     => '800 0 0',
                 ),
+                '100' => array(
+                    'exif:PhotographicSensitivity'     => '800, 0, 0',
+                ),
             );
 
             foreach ($expected as $key => $value) {
