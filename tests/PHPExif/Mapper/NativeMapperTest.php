@@ -439,6 +439,9 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
             '800' => array(
                 'ISOSpeedRatings'     => '800 0 0',
             ),
+            '100' => array(
+                'ISOSpeedRatings'     => array('100 0 0', ''),
+            ),
         );
 
         foreach ($expected as $key => $value) {
