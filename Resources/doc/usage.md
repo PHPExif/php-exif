@@ -10,6 +10,12 @@ $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_NATIVE);
 // reader with Exiftool adapter
 //$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_EXIFTOOL);
 
+// reader with FFmpeg/FFprobe adapter
+//$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_FFPROBE);
+
+// reader with Imagick adapter
+//$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_IMAGICK);
+
 $exif = $reader->read('/path/to/file');
 
 echo 'Title: ' . $exif->getTitle() . PHP_EOL;
