@@ -6,8 +6,10 @@ PHPExif serves as a wrapper around some native or CLI tools which access this EX
 
 ## Supported tools
 
-* Native PHP functionality (exif_read_data, iptcparse)
-* [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool) adapter (wrapper for the exiftool binary)
+* Native PHP functionality (exif_read_data, iptcparse) [images]
+* [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool) adapter (wrapper for the exiftool binary) [images and videos]
+* FFmpeg adapter (wrapper for the exiftool binary) [videos]
+* Imagemagick adapter [images]
 
 ## Installation (composer)
 
