@@ -1,13 +1,15 @@
 # [PHPExif v0.6.5](http://github.com/LycheeOrg/php-exif) [![Build Status](https://travis-ci.org/LycheeOrg/php-exif.png?branch=master)](https://travis-ci.org/LycheeOrg/php-exif) [![Coverage Status](https://codecov.io/gh/LycheeOrg/php-exif/branch/master/graph/badge.svg)](https://codecov.io/gh/LycheeOrg/php-exif) [![Code Climate](https://api.codeclimate.com/v1/badges/f15042d535274f36c5a2/maintainability)](https://codeclimate.com/github/LycheeOrg/php-exif/maintainability)
 
-PHPExif is a library which gives you easy access to the EXIF meta-data of an image.
+PHPExif is a library which gives you easy access to the EXIF meta-data of an image or video.
 
-PHPExif serves as a wrapper around some native or CLI tools which access this EXIF meta-data from an image. As such, it provides a standard API for retrieving and accessing that information.
+PHPExif serves as a wrapper around some native or CLI tools which access this EXIF meta-data from an image video. As such, it provides a standard API for retrieving and accessing that information.
 
 ## Supported tools
 
-* Native PHP functionality (exif_read_data, iptcparse)
-* [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool) adapter (wrapper for the exiftool binary)
+* Native PHP functionality (exif_read_data, iptcparse) [images]
+* [Exiftool](http://www.sno.phy.queensu.ca/~phil/exiftool) adapter (wrapper for the exiftool binary) [images and videos]
+* [FFmpeg/FFprobe](https://ffmpeg.org) adapter (wrapper for the exiftool binary) [videos]
+* [Imagick](https://www.php.net/manual/de/book.imagick.php) adapter [images]
 
 ## Installation (composer)
 
