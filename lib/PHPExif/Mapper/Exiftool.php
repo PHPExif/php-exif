@@ -338,16 +338,20 @@ class Exiftool implements MapperInterface
                     }
                     continue 2;
                     break;
-
+                case self::IMGDIRECTION:
+                    // Skip cases if image direction is not numeric
+                    if (!(is_numeric($value))) {
+                        continue 2;
+                    }
+                    break;
                 // Merge sources of keywords
                 case self::KEYWORDS:
                 case self::SUBJECT:
                     if (empty($mappedData[Exif::KEYWORDS])) {
                         $mappedData[Exif::KEYWORDS] = $value;
                     } else {
-                        // @codeCoverageIgnoreStart
-                        $mappedData[Exif::KEYWORDS] = array_unique(array_merge($mappedData[Exif::KEYWORDS], $value));
-                        // @codeCoverageIgnoreEnd
+                        $tmp = array_values(array_unique(array_merge($mappedData[Exif::KEYWORDS], $value)));
+                        $mappedData[Exif::KEYWORDS] = $tmp;
                     }
 
                     continue 2;

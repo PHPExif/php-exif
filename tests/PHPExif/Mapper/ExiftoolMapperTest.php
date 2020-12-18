@@ -83,6 +83,12 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
         unset($map[\PHPExif\Mapper\Exiftool::STATE]);
         unset($map[\PHPExif\Mapper\Exiftool::COUNTRY]);
         unset($map[\PHPExif\Mapper\Exiftool::LENS_ID]);
+        unset($map[\PHPExif\Mapper\Exiftool::LENS]);
+        unset($map[\PHPExif\Mapper\Exiftool::DESCRIPTION]);
+        unset($map[\PHPExif\Mapper\Exiftool::KEYWORDS]);
+        unset($map[\PHPExif\Mapper\Exiftool::SUBJECT]);
+        unset($map[\PHPExif\Mapper\Exiftool::CONTENTIDENTIFIER]);
+        unset($map[\PHPExif\Mapper\Exiftool::CONTENTIDENTIFIER_QUICKTIME]);
 
         // create raw data
         $keys = array_keys($map);
@@ -401,6 +407,36 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyIgnoresIncorrectImageDirection()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Exiftool::IMGDIRECTION => 'undef',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(false, reset($mapped));
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectImageDirection()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Exiftool::IMGDIRECTION => '180.0',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals('180.0', reset($mapped));
+    }
+
+    /**
+     * @group mapper
      * @covers \PHPExif\Mapper\Exiftool::setNumeric
      */
     public function testSetNumericInProperty()
@@ -676,6 +712,43 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(
             'LUMIX G VARIO 12-32/F3.5-5.6',
+            reset($mapped)
+        );
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyKeywords()
+    {
+        $rawData = array (
+            \PHPExif\Mapper\Exiftool::KEYWORDS => 'Keyword_1 Keyword_2',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(
+            'Keyword_1 Keyword_2',
+            reset($mapped)
+        );
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyKeywordsAndSubject()
+    {
+        $rawData = array (
+            \PHPExif\Mapper\Exiftool::KEYWORDS => array('Keyword_1', 'Keyword_2'),
+            \PHPExif\Mapper\Exiftool::SUBJECT => array('Keyword_1', 'Keyword_3'),
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(
+            array('Keyword_1' ,'Keyword_2', 'Keyword_3'),
             reset($mapped)
         );
     }
