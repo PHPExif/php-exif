@@ -14,14 +14,14 @@
     "require": {
         "php": ">=7.2",
         "neitanod/forceutf8": "^2.0.4",
-        "php-ffmpeg/php-ffmpeg": "^0.14.0"
+        "php-ffmpeg/php-ffmpeg": "dev-master"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
-        "phpmd/phpmd": "^2.7",
+        "phpmd/phpmd": "^2.9",
         "phpunit/phpunit": ">=8.4",
-        "sebastian/phpcpd": "^4.1",
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "sebastian/phpcpd": ">=4.1",
+        "friendsofphp/php-cs-fixer": ">=2.17",
         "squizlabs/php_codesniffer": "^3.5"
     },
     "suggest": {
