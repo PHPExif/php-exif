@@ -37,7 +37,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get -y install ffmpeg php-imagick libimage-exiftool-perl libmagickwand-dev
   # pecl does not yet support imagick for php8 -> we need to build it from source
-  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "8.0" ]]; then git clone https://github.com/Imagick/imagick.git && cd imagick && phpize && ./configure && make && php -i | grep extension_dir > test.out && sudo cp modules/imagick.so $(awk 'NF>1{print $NF}' test.out ) && rm test.out && php --ini | grep 'Loaded Configuration File' >> test.out && sudo echo 'extension="imagick.so"' >> $(awk 'NF>1{print $NF}' test.out ); else yes | pecl install imagick fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:3} == "8.0" ]]; then git clone https://github.com/Imagick/imagick.git && cd imagick && phpize && ./configure && make && php -i | grep extension_dir > test.out && sudo cp modules/imagick.so $(awk 'NF>1{print $NF}' test.out ) && rm test.out && php --ini | grep 'Loaded Configuration File' >> test.out && sudo echo 'extension="imagick.so"' >> $(awk 'NF>1{print $NF}' test.out ); else yes | pecl install imagick; fi
   # Show php modules
   - php -m
   - composer self-update
