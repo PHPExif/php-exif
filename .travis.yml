@@ -41,7 +41,10 @@ before_install:
    if [[ $TRAVIS_PHP_VERSION = 'nightly' ]]; then
      git clone https://github.com/Imagick/imagick.git
      cd imagick && phpize && ./configure && make
-     echo 'Copying imagick.so to ' $(echo $(php -i | grep 'extension_dir => /home/travis/.phpenv/') | awk 'NF>1{print $NF}')
+     echo $(php -i | grep 'extension_dir')
+     echo $(php -i | grep 'extension_dir => /home/travis/.phpenv/')
+     echo 'Copying imagick.so to ' $(echo $(php -i | grep 'extension_dir => /home') | awk 'NF>1{print $NF}')
+
      sudo cp modules/imagick.so $(echo $(php -i | grep 'extension_dir => /home/travis/.phpenv/') | awk 'NF>1{print $NF}')
      echo 'Update php.ini file at ' $(echo $(php --ini | grep 'Loaded Configuration File') | awk 'NF>1{print $NF}')
      sudo echo 'extension="imagick.so"' >> $(echo $(php --ini | grep 'Loaded Configuration File') | awk 'NF>1{print $NF}')
