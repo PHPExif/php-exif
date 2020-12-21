@@ -41,7 +41,10 @@ before_install:
    if [[ $TRAVIS_PHP_VERSION = 'nightly' ]]; then
      git clone https://github.com/Imagick/imagick.git
      cd imagick && phpize && ./configure && make
-     DEST=$(echo $(php -i | grep 'extension_dir => /'))
+     DEST=$(php -i | grep 'extension_dir => /')
+     php -i | grep 'extension_dir => /'
+     php -i | grep 'extension_dir'
+     echo $DEST
      DEST2=$(echo "${DEST##* }")
      echo 'Copying imagick.so to ' $DEST2
      sudo cp modules/imagick.so $DEST2
