@@ -42,12 +42,13 @@ before_install:
      git clone https://github.com/Imagick/imagick.git
      cd imagick && phpize && ./configure && make
      php -i | grep extension_dir > test.out
-     echo test.out
+     cat test.out
      sudo cp modules/imagick.so $(awk 'NF>1{print $NF}' test.out )
      rm test.out
      php --ini | grep 'Loaded Configuration File' >> test.out
-     echo test.out
+     cat test.out
      sudo echo 'extension="imagick.so"' >> $(awk 'NF>1{print $NF}' test.out )
+     cd ..
    else
      yes | pecl install imagick
    fi
