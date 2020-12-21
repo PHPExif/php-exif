@@ -42,7 +42,7 @@ before_install:
      git clone https://github.com/Imagick/imagick.git
      cd imagick && phpize && ./configure && make
      DEST=$(echo $(php -i | grep 'extension_dir => /'))
-     DEST2=$(echo $DEST | awk 'NF>1{print $NF}')
+     DEST2=$(echo "${DEST##* }")
      echo 'Copying imagick.so to ' $DEST2
      sudo cp modules/imagick.so $DEST2
      echo 'Update php.ini file at ' $(echo $(php --ini | grep 'Loaded Configuration File') | awk 'NF>1{print $NF}')
