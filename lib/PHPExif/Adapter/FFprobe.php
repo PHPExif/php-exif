@@ -100,7 +100,8 @@ class FFprobe extends AdapterAbstract
             // @codeCoverageIgnoreEnd
         }
 
-        if ($mimeType === 'application/octet-stream' && in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['mp4', 'mp4v', 'mpg4'])) {
+        if ($mimeType === 'application/octet-stream' &&
+            in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['mp4', 'mp4v', 'mpg4'])) {
             // @codeCoverageIgnoreStart
             $mimeType = 'video/mp4';
             // @codeCoverageIgnoreEnd
