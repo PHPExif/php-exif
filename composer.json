@@ -40,7 +40,7 @@
             "vendor/bin/phpcs --standard=PSR2 ./lib/"
         ],
         "run-tests": [
-            "vendor/bin/phpunit -c phpunit.xml.dist",
+            "php -c /usr/local/lib/php-coverage.ini vendor/bin/phpunit -c phpunit.xml.dist",
             "vendor/bin/phpunit --coverage-clover=coverage.xml"
         ],
         "validate-files": [
