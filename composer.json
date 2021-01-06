@@ -44,7 +44,7 @@
             "vendor/bin/phpunit --coverage-clover=coverage.xml"
         ],
         "validate-files": [
-            "vendor/bin/parallel-lint --exclude vendor ."
+            "vendor/bin/parallel-lint --exclude vendor --exclude imagick ."
         ]
     },
     "config": {
