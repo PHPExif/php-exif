@@ -104,11 +104,11 @@ jobs:
         run: perl -pi -e 's/^}$/,"minimum-stability":"beta"}/' composer.json
 
       - name: Install Composer dependencies
-        if: ${{ matrix.dependencies != low }}
+        if: ${{ matrix.dependencies != 'low' }}
         run: composer update --no-interaction
 
       - name: Install Composer dependencies
-        if: ${{ matrix.dependencies == low }}
+        if: ${{ matrix.dependencies == 'low' }}
         run: composer update -vvv --prefer-lowest --prefer-stable --no-interaction
 
       # - name: boot test server
