@@ -83,7 +83,9 @@ jobs:
 
       - name: Set Up imagick (php7.4)
         if: ${{ matrix.php-versions != '8.0' }}
-        run: sudo apt-get -y install php-imagick
+        run: |
+          sudo apt-get -y install php-imagick
+          pecl install imagick
 
       - name: PHP Show modules
         run: php -m
