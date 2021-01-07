@@ -1,0 +1,128 @@
+name: Tests
+
+# Run this workflow every time a new commit pushed to your repository
+on:
+  push:
+
+jobs:
+  tests:
+    if: "! contains(toJSON(github.event.commits.*.msg), 'skip') && ! contains(toJSON(github.event.commits.*.msg), 'ci')" #skip ci...
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
+        php-versions: ['7.3', '7.4', '8.0']
+        dependencies: ['no', 'low', 'beta']
+        include:
+          - operating-system: ubuntu-20.04
+            php-versions: '8.0'
+            continue-on-error: true
+
+    name: PHP ${{ matrix.php-versions }} - ${{ matrix.dependencies }}
+
+    env:
+      extensions: curl json libxml dom
+      key: cache-v1 # can be any string, change to clear the extension cache.
+
+    steps:
+      - name: Install local deps
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install ffmpeg php-imagick libimage-exiftool-perl libmagickwand-dev
+
+      # Checks out a copy of your repository on the ubuntu machine
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache PHP Extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Cache Composer Dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@2.8.0
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          coverage: xdebug
+          tools: pecl, composer
+      
+      - name: Set Up imagick (php8 and php7.3)
+        if: ${{ matrix.php-versions != '7.4' }}
+        run: |
+          git clone https://github.com/Imagick/imagick.git
+          cd imagick && phpize && ./configure && make
+          DEST=$(php -i | grep 'extension_dir => /')
+          php -i | grep 'extension_dir => /'
+          php -i | grep 'extension_dir'
+          echo $DEST
+          DEST2=$(echo "${DEST##* }")
+          echo 'Copying imagick.so to ' $DEST2
+          sudo cp modules/imagick.so $DEST2
+          echo 'Update php.ini file at ' $(echo $(php --ini | grep 'Loaded Configuration File') | awk 'NF>1{print $NF}')
+          sudo echo 'extension="imagick.so"' >> $(echo $(php --ini | grep 'Loaded Configuration File') | awk 'NF>1{print $NF}')
+          cd ..
+
+      - name: Set Up imagick (php7.4)
+        if: ${{ matrix.php-versions == '7.4' }}
+        run: |
+          sudo apt-get -y install php-imagick
+
+      - name: PHP Show modules
+        run: php -m
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Fix beta
+        if: ${{ matrix.dependencies == 'beta' }}
+        run: perl -pi -e 's/^}$/,"minimum-stability":"beta"}/' composer.json
+
+      - name: Install Composer dependencies
+        if: ${{ matrix.dependencies != 'low' }}
+        run: composer update --no-interaction
+
+      - name: Install Composer dependencies
+        if: ${{ matrix.dependencies == 'low' }}
+        run: composer update -vvv --prefer-lowest --prefer-stable --no-interaction
+
+      # - name: boot test server
+      #   run: vendor/bin/http_test_server > /dev/null 2>&1 &
+
+      - name: Prepare log directory
+        run: mkdir -p build/logs
+
+      - name: Validate files
+        run: composer validate-files
+      
+      - name: Check Style
+        run: composer check-code-style
+
+      - name: Run tests
+        run: composer run-tests
