@@ -14,7 +14,7 @@
     "require": {
         "php": ">=7.2",
         "neitanod/forceutf8": "^2.0.4",
-        "php-ffmpeg/php-ffmpeg": "dev-master"
+        "php-ffmpeg/php-ffmpeg": "^0.17.0"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
