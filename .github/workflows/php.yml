@@ -82,10 +82,16 @@ jobs:
           cd ..
 
       - name: Set Up imagick (php7.4)
-        if: ${{ matrix.php-versions != '8.0' }}
+        if: ${{ matrix.php-versions == '7.4' }}
         run: |
           sudo apt-get -y install php-imagick
-          pecl install imagick
+ 
+      - name: Set Up imagick (php7.3)
+        if: ${{ matrix.php-versions == '7.3' }}
+        run: |
+          sudo apt-get -y install php-imagick
+          echo 'Update php.ini file at ' $(echo $(php --ini | grep 'Loaded Configuration File') | awk 'NF>1{print $NF}')
+          sudo echo 'extension="imagick.so"' >> $(echo $(php --ini | grep 'Loaded Configuration File') | awk 'NF>1{print $NF}')
 
       - name: PHP Show modules
         run: php -m
