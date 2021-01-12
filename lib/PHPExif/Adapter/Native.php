@@ -180,7 +180,18 @@ class Native extends AdapterAbstract
     {
         $mimeType = mime_content_type($file);
 
+        if ($mimeType === 'image/x-tga') {
+            // @codeCoverageIgnoreStart
+            $mimeType = 'video/mpeg';
+            // @codeCoverageIgnoreEnd
+        }
 
+        if ($mimeType === 'application/octet-stream' &&
+            in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['mp4', 'mp4v', 'mpg4'])) {
+            // @codeCoverageIgnoreStart
+            $mimeType = 'video/mp4';
+            // @codeCoverageIgnoreEnd
+        }
 
         // Photo
         $sections   = $this->getRequiredSections();
