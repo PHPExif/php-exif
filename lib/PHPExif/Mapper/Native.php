@@ -339,7 +339,7 @@ class Native implements MapperInterface
             return (float) $parts[0];
         }
         // case part[1] is 0, div by 0 is forbidden.
-        if ($parts[1] == 0) {
+        if ($parts[1] == 0 || !is_numeric($parts[0]) || !is_numeric($parts[1])) {
             return (float) 0;
         }
         return (float) $parts[0] / $parts[1];
