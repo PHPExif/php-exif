@@ -417,6 +417,10 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
             '1/400' => 0.0025,
             '0/1'   => 0,
             '0'     => 0,
+            'A'     => 0,
+            'A/1'     => 0,
+            '1/A'     => 0,
+            'A/A'     => 0,
         );
 
         foreach ($rawData as $value => $expected) {
