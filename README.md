@@ -1,4 +1,4 @@
-# [PHPExif v0.6.5](http://github.com/LycheeOrg/php-exif) [![Build Status](https://travis-ci.com/LycheeOrg/php-exif.png?branch=master)](https://travis-ci.com/LycheeOrg/php-exif) [![Coverage Status](https://codecov.io/gh/LycheeOrg/php-exif/branch/master/graph/badge.svg)](https://codecov.io/gh/LycheeOrg/php-exif) [![Code Climate](https://api.codeclimate.com/v1/badges/f15042d535274f36c5a2/maintainability)](https://codeclimate.com/github/LycheeOrg/php-exif/maintainability)
+# [PHPExif v0.7.2](http://github.com/LycheeOrg/php-exif) [![Build Status](https://github.com/LycheeOrg/php-exif/workflows/Tests/badge.svg)] [![Coverage Status](https://codecov.io/gh/LycheeOrg/php-exif/branch/master/graph/badge.svg)](https://codecov.io/gh/LycheeOrg/php-exif) [![Code Climate](https://api.codeclimate.com/v1/badges/f15042d535274f36c5a2/maintainability)](https://codeclimate.com/github/LycheeOrg/php-exif/maintainability)
 
 PHPExif is a library which gives you easy access to the EXIF meta-data of an image or video.
 
@@ -44,6 +44,9 @@ Have a bug or a feature request? [Please open a new issue](https://github.com/Ly
 * [Julian Gutierrez](https://github.com/juliangut)
 * [Marek Szymczuk](https://github.com/bonzai)
 * [Scott Pringle](https://github.com/Luciam91)
+* [tmp-hallenser](https://github.com/tmp-hallenser)
+* [kamil4](https://github.com/kamil4)
+* [ildyria](https://github.com/ildyria)
 
 ## License
 
