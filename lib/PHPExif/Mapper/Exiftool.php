@@ -389,7 +389,7 @@ class Exiftool implements MapperInterface
      * Extract GPS coordinates from formatted string
      *
      * @param string $coordinates
-     * @return array
+     * @return float|false
      */
     protected function extractGPSCoordinates($coordinates)
     {
