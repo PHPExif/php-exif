@@ -74,9 +74,11 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
         unset($map[\PHPExif\Mapper\Exiftool::DURATION_QUICKTIME]);
         unset($map[\PHPExif\Mapper\Exiftool::DURATION_WEBM]);
         unset($map[\PHPExif\Mapper\Exiftool::DURATION_WMV]);
+        unset($map[\PHPExif\Mapper\Exiftool::CONTENTIDENTIFIER_KEYS]);
         unset($map[\PHPExif\Mapper\Exiftool::GPSLATITUDE_QUICKTIME]);
         unset($map[\PHPExif\Mapper\Exiftool::GPSLONGITUDE_QUICKTIME]);
         unset($map[\PHPExif\Mapper\Exiftool::GPSALTITUDE_QUICKTIME]);
+        unset($map[\PHPExif\Mapper\Exiftool::MEDIA_GROUP_UUID]);
         unset($map[\PHPExif\Mapper\Exiftool::MICROVIDEOOFFSET]);
         unset($map[\PHPExif\Mapper\Exiftool::CITY]);
         unset($map[\PHPExif\Mapper\Exiftool::SUBLOCATION]);
@@ -100,7 +102,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
         $mapped = $this->mapper->mapRawData($rawData);
 
         $i = 0;
-	foreach ($mapped as $key => $value) {
+        foreach ($mapped as $key => $value) {
             $this->assertEquals($map[$keys[$i]], $key);
             $i++;
         }
@@ -162,7 +164,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
      */
     public function testMapRawDataCorrectlyFormatsCreationDateWithTimeZone()
     {
-        $data = array (
+        $data = array(
           array(
             \PHPExif\Mapper\Exiftool::DATETIMEORIGINAL => '2015:04:01 12:11:09+0200',
           ),
@@ -195,7 +197,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
                 $result->getTimezone()->getName()
             );
         }
-
     }
 
     /**
@@ -497,7 +498,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
                 'GPS:GPSAltitudeRef'                   => '0',
             )
         );
-	$expected = 122.053;
+        $expected = 122.053;
         $this->assertEquals($expected, reset($result));
     }
 
@@ -562,8 +563,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
      */
     public function testMapRawDataCorrectlyHeightVideo()
     {
-
-      $rawData = array(
+        $rawData = array(
           '600'  => array(
                             \PHPExif\Mapper\Exiftool::IMAGEHEIGHT_VIDEO  => '800x600',
                         ),
@@ -593,23 +593,22 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
                         ),
       );
 
-      foreach ($rawData as $expected => $value) {
-          $mapped = $this->mapper->mapRawData($value);
+        foreach ($rawData as $expected => $value) {
+            $mapped = $this->mapper->mapRawData($value);
 
-          $this->assertEquals($expected, $mapped['height']);
-      }
+            $this->assertEquals($expected, $mapped['height']);
+        }
     }
 
 
 
-        /**
-         * @group mapper
-         * @covers \PHPExif\Mapper\Exiftool::mapRawData
-         */
-        public function testMapRawDataCorrectlyWidthVideo()
-        {
-
-          $rawData = array(
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyWidthVideo()
+    {
+        $rawData = array(
               '800'  => array(
                                 \PHPExif\Mapper\Exiftool::IMAGEWIDTH_VIDEO  => '800x600',
                             ),
@@ -639,21 +638,21 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
                             ),
           );
 
-          foreach ($rawData as $expected => $value) {
-              $mapped = $this->mapper->mapRawData($value);
+        foreach ($rawData as $expected => $value) {
+            $mapped = $this->mapper->mapRawData($value);
 
-              $this->assertEquals($expected, $mapped['width']);
-          }
+            $this->assertEquals($expected, $mapped['width']);
         }
+    }
 
 
-        /**
-         * @group mapper
-         * @covers \PHPExif\Mapper\Exiftool::mapRawData
-         */
-        public function testMapRawDataCorrectlyIsoFormats()
-        {
-            $expected = array(
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyIsoFormats()
+    {
+        $expected = array(
                 '80' => array(
                     'ExifIFD:ISO'     => '80',
                 ),
@@ -662,11 +661,11 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
                 ),
             );
 
-            foreach ($expected as $key => $value) {
-    		        $result = $this->mapper->mapRawData($value);
-    	          $this->assertEquals($key, reset($result));
-            }
+        foreach ($expected as $key => $value) {
+            $result = $this->mapper->mapRawData($value);
+            $this->assertEquals($key, reset($result));
         }
+    }
 
     /**
      * @group mapper
@@ -674,7 +673,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
      */
     public function testMapRawDataCorrectlyLensData()
     {
-        $data = array (
+        $data = array(
             array(
                 \PHPExif\Mapper\Exiftool::LENS => 'LEICA DG 12-60/F2.8-4.0',
             ),
@@ -704,7 +703,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
      */
     public function testMapRawDataCorrectlyLensData2()
     {
-        $rawData = array (
+        $rawData = array(
             \PHPExif\Mapper\Exiftool::LENS_ID => 'LUMIX G VARIO 12-32/F3.5-5.6',
         );
 
@@ -722,7 +721,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
      */
     public function testMapRawDataCorrectlyKeywords()
     {
-        $rawData = array (
+        $rawData = array(
             \PHPExif\Mapper\Exiftool::KEYWORDS => 'Keyword_1 Keyword_2',
         );
 
@@ -740,7 +739,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
      */
     public function testMapRawDataCorrectlyKeywordsAndSubject()
     {
-        $rawData = array (
+        $rawData = array(
             \PHPExif\Mapper\Exiftool::KEYWORDS => array('Keyword_1', 'Keyword_2'),
             \PHPExif\Mapper\Exiftool::SUBJECT => array('Keyword_1', 'Keyword_3'),
         );
