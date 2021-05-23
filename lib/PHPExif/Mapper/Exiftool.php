@@ -63,6 +63,7 @@ class Exiftool implements MapperInterface
     const LENS_ID                  = 'Composite:LensID';
     const SUBJECT                  = 'XMP-dc:Subject';
     const CONTENTIDENTIFIER        = 'Apple:ContentIdentifier';
+    const MEDIA_GROUP_UUID         = 'Apple:MediaGroupUUID';
     const MICROVIDEOOFFSET         = 'XMP-GCamera:MicroVideoOffset';
     const SUBLOCATION              = 'IPTC2:Sublocation';
     const CITY                     = 'IPTC2:City';
@@ -80,6 +81,7 @@ class Exiftool implements MapperInterface
     const MAKE_QUICKTIME              = 'QuickTime:Make';
     const MODEL_QUICKTIME             = 'QuickTime:Model';
     const CONTENTIDENTIFIER_QUICKTIME = 'QuickTime:ContentIdentifier';
+    const CONTENTIDENTIFIER_KEYS      = 'Keys:ContentIdentifier';
     const GPSLATITUDE_QUICKTIME       = 'Composite:GPSLatitude';
     const GPSLONGITUDE_QUICKTIME      = 'Composite:GPSLongitude';
     const GPSALTITUDE_QUICKTIME       = 'Composite:GPSAltitude';
@@ -141,6 +143,7 @@ class Exiftool implements MapperInterface
         self::DESCRIPTION              => Exif::DESCRIPTION,
         self::SUBJECT                  => Exif::KEYWORDS,
         self::CONTENTIDENTIFIER        => Exif::CONTENTIDENTIFIER,
+        self::MEDIA_GROUP_UUID         => Exif::CONTENTIDENTIFIER,
         self::DATETIMEORIGINAL_QUICKTIME  => Exif::CREATION_DATE,
         self::DATETIMEORIGINAL_AVI        => Exif::CREATION_DATE,
         self::DATETIMEORIGINAL_WEBM       => Exif::CREATION_DATE,
@@ -150,6 +153,7 @@ class Exiftool implements MapperInterface
         self::MAKE_QUICKTIME              => Exif::MAKE,
         self::MODEL_QUICKTIME             => Exif::CAMERA,
         self::CONTENTIDENTIFIER_QUICKTIME => Exif::CONTENTIDENTIFIER,
+        self::CONTENTIDENTIFIER_KEYS      => Exif::CONTENTIDENTIFIER,
         self::GPSLATITUDE_QUICKTIME       => Exif::LATITUDE,
         self::GPSLONGITUDE_QUICKTIME      => Exif::LONGITUDE,
         self::GPSALTITUDE_QUICKTIME       => Exif::ALTITUDE,
