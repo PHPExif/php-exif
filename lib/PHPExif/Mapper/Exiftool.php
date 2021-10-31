@@ -27,7 +27,6 @@ class Exiftool implements MapperInterface
     const APERTURE                 = 'Composite:Aperture';
     const APPROXIMATEFOCUSDISTANCE = 'XMP-aux:ApproximateFocusDistance';
     const ARTIST                   = 'IFD0:Artist';
-    const CAPTION                  = 'XMP-acdsee';
     const CAPTIONABSTRACT          = 'IPTC:Caption-Abstract';
     const COLORSPACE               = 'ExifIFD:ColorSpace';
     const COPYRIGHT                = 'IFD0:Copyright';
@@ -56,7 +55,7 @@ class Exiftool implements MapperInterface
     const GPSLONGITUDE             = 'GPS:GPSLongitude';
     const GPSALTITUDE              = 'GPS:GPSAltitude';
     const IMGDIRECTION             = 'GPS:GPSImgDirection';
-    const DESCRIPTION              = 'ExifIFD:ImageDescription';
+    const DESCRIPTION              = 'IFD0:ImageDescription';
     const DESCRIPTION_XMP          = 'XMP-dc:Description';
     const MAKE                     = 'IFD0:Make';
     const LENS                     = 'ExifIFD:LensModel';
@@ -107,8 +106,6 @@ class Exiftool implements MapperInterface
         self::APERTURE                 => Exif::APERTURE,
         self::ARTIST                   => Exif::AUTHOR,
         self::MODEL                    => Exif::CAMERA,
-        self::CAPTION                  => Exif::CAPTION,
-        self::DESCRIPTION_XMP          => Exif::CAPTION,
         self::COLORSPACE               => Exif::COLORSPACE,
         self::COPYRIGHT                => Exif::COPYRIGHT,
         self::DATETIMEORIGINAL         => Exif::CREATION_DATE,
@@ -141,6 +138,7 @@ class Exiftool implements MapperInterface
         self::LENS                     => Exif::LENS,
         self::LENS_ID                  => Exif::LENS,
         self::DESCRIPTION              => Exif::DESCRIPTION,
+        self::DESCRIPTION_XMP          => Exif::DESCRIPTION,
         self::SUBJECT                  => Exif::KEYWORDS,
         self::CONTENTIDENTIFIER        => Exif::CONTENTIDENTIFIER,
         self::MEDIA_GROUP_UUID         => Exif::CONTENTIDENTIFIER,
