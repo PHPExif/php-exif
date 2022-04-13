@@ -229,7 +229,7 @@ class Exiftool implements MapperInterface
                 case self::DATETIMEORIGINAL_WMV:
                     // DATETIMEORIGINAL_APPLE contains data on timezone
                     // only set value if DATETIMEORIGINAL_APPLE has not been used
-                    if (!isset($mappedData[Exif::CREATION_DATE])) {
+                    if (!isset($mappedData[Exif::CREATION_DATE]) && $value !== '0000:00:00 00:00:00' && $value !== '0000:00:00 00:00:00Z') {
                         try {
                             if (isset($data['ExifIFD:OffsetTimeOriginal'])) {
                                 try {

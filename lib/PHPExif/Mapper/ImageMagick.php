@@ -114,6 +114,9 @@ class ImageMagick implements MapperInterface
                     $value = sprintf('f/%01.1f', $this->normalizeComponent($value));
                     break;
                 case self::CREATION_DATE:
+                    if ($value === '0000:00:00 00:00:00') {
+                        continue 2;
+                    }
                     if (!isset($mappedData[Exif::CREATION_DATE])) {
                         try {
                             $value = new \DateTime($value);
@@ -125,6 +128,9 @@ class ImageMagick implements MapperInterface
                     }
                     break;
                 case self::DATETIMEORIGINAL:
+                    if ($value === '0000:00:00 00:00:00') {
+                        continue 2;
+                    }
                     try {
                         if (isset($data['exif:OffsetTimeOriginal'])) {
                             try {
