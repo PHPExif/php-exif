@@ -178,6 +178,9 @@ class Native implements MapperInterface
             // manipulate the value if necessary
             switch ($field) {
                 case self::DATETIMEORIGINAL:
+                    if (preg_match('/^0000[-:]00[-:]00.00:00:00/', $value) === 1) {
+                        continue 2;
+                    }
                     // Check if OffsetTimeOriginal (0x9011) is available
                     try {
                         if (isset($data['UndefinedTag:0x9011'])) {
