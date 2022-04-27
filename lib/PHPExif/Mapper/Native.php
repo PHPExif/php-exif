@@ -12,8 +12,6 @@
 namespace PHPExif\Mapper;
 
 use PHPExif\Exif;
-use DateTime;
-use Exception;
 
 /**
  * PHP Exif Native Mapper
@@ -82,7 +80,7 @@ class Native implements MapperInterface
      *
      * @var array
      */
-    protected $sections = array(
+    protected array $sections = array(
         self::SECTION_FILE,
         self::SECTION_COMPUTED,
         self::SECTION_IFD0,
@@ -99,7 +97,7 @@ class Native implements MapperInterface
      *
      * @var array
      */
-    protected $map = array(
+    protected array $map = array(
         self::APERTUREFNUMBER  => Exif::APERTURE,
         self::FOCUSDISTANCE    => Exif::FOCAL_DISTANCE,
         self::HEIGHT           => Exif::HEIGHT,
@@ -152,10 +150,9 @@ class Native implements MapperInterface
      * @param array $data
      * @return array
      */
-    public function mapRawData(array $data)
+    public function mapRawData(array $data) : array
     {
         $mappedData = array();
-        $gpsData = array();
 
         foreach ($data as $field => $value) {
             if ($this->isSection($field) && is_array($value)) {
@@ -281,7 +278,7 @@ class Native implements MapperInterface
      * @param string $field
      * @return bool
      */
-    protected function isSection($field)
+    protected function isSection(string $field) : bool
     {
         return (in_array($field, $this->sections));
     }
@@ -294,7 +291,7 @@ class Native implements MapperInterface
      * @param  string  &$field
      * @return bool
      */
-    protected function isFieldKnown(&$field)
+    protected function isFieldKnown(string &$field) : bool
     {
         $lcfField = lcfirst($field);
         if (array_key_exists($lcfField, $this->map)) {
@@ -320,7 +317,7 @@ class Native implements MapperInterface
      * @param string $ref
      * @return float
      */
-    protected function extractGPSCoordinate($coordinate, $ref)
+    protected function extractGPSCoordinate(array $coordinate, string $ref) : float
     {
         $degrees = count($coordinate) > 0 ? $this->normalizeComponent($coordinate[0]) : 0;
         $minutes = count($coordinate) > 1 ? $this->normalizeComponent($coordinate[1]) : 0;
@@ -335,7 +332,7 @@ class Native implements MapperInterface
      * @param string $component
      * @return float
      */
-    protected function normalizeComponent($rational)
+    protected function normalizeComponent(string $rational) : float
     {
         $parts = explode('/', $rational, 2);
         if (count($parts) == 1) {

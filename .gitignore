@@ -4,3 +4,5 @@ tests/log
 vendor
 composer.phar
 .DS_Store
+.idea
+.phpunit.result.cache

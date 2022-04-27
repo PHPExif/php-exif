@@ -13,6 +13,8 @@
 
 namespace PHPExif\Reader;
 
+use PHPExif\Exif;
+
 /**
  * PHP Exif Reader
  *
@@ -29,5 +31,5 @@ interface ReaderInterface
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function read($file);
+    public function read(string $file) : Exif|false|string;
 }

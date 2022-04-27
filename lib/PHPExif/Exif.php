@@ -11,6 +11,8 @@
 
 namespace PHPExif;
 
+use DateTime;
+
 /**
  * PHP Exif Reader
  *
@@ -69,17 +71,13 @@ class Exif
 
     /**
      * The mapped EXIF data
-     *
-     * @var array
      */
-    protected $data = array();
+    protected array $data = array();
 
     /**
      * The raw EXIF data
-     *
-     * @var array
      */
-    protected $rawData = array();
+    protected array $rawData = array();
 
     /**
      * Class constructor
@@ -97,7 +95,7 @@ class Exif
      * @param array $data The data to set
      * @return \PHPExif\Exif Current instance for chaining
      */
-    public function setRawData(array $data)
+    public function setRawData(array $data) : Exif
     {
         $this->rawData = $data;
 
@@ -109,7 +107,7 @@ class Exif
      *
      * @return array
      */
-    public function getRawData()
+    public function getRawData() : array
     {
         return $this->rawData;
     }
@@ -120,7 +118,7 @@ class Exif
      * @param array $data The data to set
      * @return \PHPExif\Exif Current instance for chaining
      */
-    public function setData(array $data)
+    public function setData(array $data) : Exif
     {
         $this->data = $data;
 
@@ -132,7 +130,7 @@ class Exif
      *
      * @return array
      */
-    public function getData()
+    public function getData() : array
     {
         return $this->data;
     }
@@ -142,7 +140,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getAperture()
+    public function getAperture() : string|false
     {
         if (!isset($this->data[self::APERTURE])) {
             return false;
@@ -157,7 +155,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setAperture($value)
+    public function setAperture(string $value) : Exif
     {
         $this->data[self::APERTURE] = $value;
 
@@ -169,7 +167,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getAuthor()
+    public function getAuthor() : string|false
     {
         if (!isset($this->data[self::AUTHOR])) {
             return false;
@@ -184,7 +182,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setAuthor($value)
+    public function setAuthor(string $value) : Exif
     {
         $this->data[self::AUTHOR] = $value;
 
@@ -196,7 +194,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getHeadline()
+    public function getHeadline() : string|false
     {
         if (!isset($this->data[self::HEADLINE])) {
             return false;
@@ -211,7 +209,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setHeadline($value)
+    public function setHeadline(string $value) : Exif
     {
         $this->data[self::HEADLINE] = $value;
 
@@ -223,7 +221,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getCredit()
+    public function getCredit() : string|false
     {
         if (!isset($this->data[self::CREDIT])) {
             return false;
@@ -238,7 +236,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setCredit($value)
+    public function setCredit(string $value) : Exif
     {
         $this->data[self::CREDIT] = $value;
 
@@ -250,7 +248,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getSource()
+    public function getSource() : string|false
     {
         if (!isset($this->data[self::SOURCE])) {
             return false;
@@ -265,7 +263,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setSource($value)
+    public function setSource(string $value) : Exif
     {
         $this->data[self::SOURCE] = $value;
 
@@ -277,7 +275,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getJobtitle()
+    public function getJobtitle() : string|false
     {
         if (!isset($this->data[self::JOB_TITLE])) {
             return false;
@@ -292,7 +290,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setJobtitle($value)
+    public function setJobtitle(string $value) : Exif
     {
         $this->data[self::JOB_TITLE] = $value;
 
@@ -302,9 +300,9 @@ class Exif
     /**
      * Returns the ISO speed
      *
-     * @return int|boolean
+     * @return string|boolean
      */
-    public function getIso()
+    public function getIso() : string|false
     {
         if (!isset($this->data[self::ISO])) {
             return false;
@@ -316,10 +314,10 @@ class Exif
     /**
      * Sets the ISO
      *
-     * @param int $value
+     * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setIso($value)
+    public function setIso(string $value) : Exif
     {
         $this->data[self::ISO] = $value;
 
@@ -331,7 +329,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getExposure()
+    public function getExposure() : string|false
     {
         if (!isset($this->data[self::EXPOSURE])) {
             return false;
@@ -346,7 +344,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setExposure($value)
+    public function setExposure(string $value) : Exif
     {
         $this->data[self::EXPOSURE] = $value;
 
@@ -358,7 +356,7 @@ class Exif
      *
      * @return float|boolean
      */
-    public function getExposureMilliseconds()
+    public function getExposureMilliseconds() : float|false
     {
         if (!isset($this->data[self::EXPOSURE])) {
             return false;
@@ -378,7 +376,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getFocusDistance()
+    public function getFocusDistance() : string|false
     {
         if (!isset($this->data[self::FOCAL_DISTANCE])) {
             return false;
@@ -393,7 +391,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setFocusDistance($value)
+    public function setFocusDistance(string $value) : Exif
     {
         $this->data[self::FOCAL_DISTANCE] = $value;
 
@@ -403,9 +401,9 @@ class Exif
     /**
      * Returns the width in pixels, if it exists
      *
-     * @return int|boolean
+     * @return string|boolean
      */
-    public function getWidth()
+    public function getWidth() : string|false
     {
         if (!isset($this->data[self::WIDTH])) {
             return false;
@@ -417,10 +415,10 @@ class Exif
     /**
      * Sets the width
      *
-     * @param int $value
+     * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setWidth($value)
+    public function setWidth(string $value) : Exif
     {
         $this->data[self::WIDTH] = $value;
 
@@ -430,9 +428,9 @@ class Exif
     /**
      * Returns the height in pixels, if it exists
      *
-     * @return int|boolean
+     * @return string|boolean
      */
-    public function getHeight()
+    public function getHeight() : string|false
     {
         if (!isset($this->data[self::HEIGHT])) {
             return false;
@@ -444,10 +442,10 @@ class Exif
     /**
      * Sets the height
      *
-     * @param int $value
+     * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setHeight($value)
+    public function setHeight(string $value) : Exif
     {
         $this->data[self::HEIGHT] = $value;
 
@@ -459,7 +457,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getTitle()
+    public function getTitle() : string|false
     {
         if (!isset($this->data[self::TITLE])) {
             return false;
@@ -474,7 +472,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setTitle($value)
+    public function setTitle(string $value) : Exif
     {
         $this->data[self::TITLE] = $value;
 
@@ -486,7 +484,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getCaption()
+    public function getCaption() : string|false
     {
         if (!isset($this->data[self::CAPTION])) {
             return false;
@@ -501,7 +499,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setCaption($value)
+    public function setCaption(string $value) : Exif
     {
         $this->data[self::CAPTION] = $value;
 
@@ -513,7 +511,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getCopyright()
+    public function getCopyright() : string|false
     {
         if (!isset($this->data[self::COPYRIGHT])) {
             return false;
@@ -528,7 +526,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setCopyright($value)
+    public function setCopyright(string $value) : Exif
     {
         $this->data[self::COPYRIGHT] = $value;
 
@@ -540,7 +538,7 @@ class Exif
      *
      * @return array|boolean
      */
-    public function getKeywords()
+    public function getKeywords() : array|false
     {
         if (!isset($this->data[self::KEYWORDS])) {
             return false;
@@ -552,10 +550,10 @@ class Exif
     /**
      * Sets the keywords
      *
-     * @param array $value
+     * @param string|array $value
      * @return \PHPExif\Exif
      */
-    public function setKeywords($value)
+    public function setKeywords(string|array $value) : Exif
     {
         $this->data[self::KEYWORDS] = $value;
 
@@ -567,7 +565,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getCamera()
+    public function getCamera() : string|false
     {
         if (!isset($this->data[self::CAMERA])) {
             return false;
@@ -582,7 +580,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setCamera($value)
+    public function setCamera(string $value) : Exif
     {
         $this->data[self::CAMERA] = $value;
 
@@ -592,9 +590,9 @@ class Exif
     /**
      * Returns the horizontal resolution in DPI, if it exists
      *
-     * @return int|boolean
+     * @return string|boolean
      */
-    public function getHorizontalResolution()
+    public function getHorizontalResolution() : string|false
     {
         if (!isset($this->data[self::HORIZONTAL_RESOLUTION])) {
             return false;
@@ -606,10 +604,10 @@ class Exif
     /**
      * Sets the horizontal resolution in DPI
      *
-     * @param int $value
+     * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setHorizontalResolution($value)
+    public function setHorizontalResolution(string $value) : Exif
     {
         $this->data[self::HORIZONTAL_RESOLUTION] = $value;
 
@@ -619,9 +617,9 @@ class Exif
     /**
      * Returns the vertical resolution in DPI, if it exists
      *
-     * @return int|boolean
+     * @return string|boolean
      */
-    public function getVerticalResolution()
+    public function getVerticalResolution() : string|false
     {
         if (!isset($this->data[self::VERTICAL_RESOLUTION])) {
             return false;
@@ -633,10 +631,10 @@ class Exif
     /**
      * Sets the vertical resolution in DPI
      *
-     * @param int $value
+     * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setVerticalResolution($value)
+    public function setVerticalResolution(string $value) : Exif
     {
         $this->data[self::VERTICAL_RESOLUTION] = $value;
 
@@ -648,7 +646,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getSoftware()
+    public function getSoftware() : string|false
     {
         if (!isset($this->data[self::SOFTWARE])) {
             return false;
@@ -663,7 +661,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setSoftware($value)
+    public function setSoftware(string $value) : Exif
     {
         $this->data[self::SOFTWARE] = trim($value);
 
@@ -673,9 +671,9 @@ class Exif
     /**
      * Returns the focal length in mm, if it exists
      *
-     * @return float|boolean
+     * @return string|boolean
      */
-    public function getFocalLength()
+    public function getFocalLength() : string|false
     {
         if (!isset($this->data[self::FOCAL_LENGTH])) {
             return false;
@@ -687,10 +685,10 @@ class Exif
     /**
      * Sets the focal length in mm
      *
-     * @param float $value
+     * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setFocalLength($value)
+    public function setFocalLength(string $value) : Exif
     {
         $this->data[self::FOCAL_LENGTH] = $value;
 
@@ -700,9 +698,9 @@ class Exif
     /**
      * Returns the creation datetime, if it exists
      *
-     * @return \DateTime|boolean
+     * @return DateTime|boolean
      */
-    public function getCreationDate()
+    public function getCreationDate() : DateTime|false
     {
         if (!isset($this->data[self::CREATION_DATE])) {
             return false;
@@ -717,7 +715,7 @@ class Exif
      * @param \DateTime $value
      * @return \PHPExif\Exif
      */
-    public function setCreationDate(\DateTime $value)
+    public function setCreationDate(DateTime $value) : Exif
     {
         $this->data[self::CREATION_DATE] = $value;
 
@@ -729,7 +727,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getColorSpace()
+    public function getColorSpace() : string|false
     {
         if (!isset($this->data[self::COLORSPACE])) {
             return false;
@@ -744,7 +742,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setColorSpace($value)
+    public function setColorSpace(string $value) : Exif
     {
         $this->data[self::COLORSPACE] = $value;
 
@@ -756,7 +754,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getMimeType()
+    public function getMimeType() : string|false
     {
         if (!isset($this->data[self::MIMETYPE])) {
             return false;
@@ -771,7 +769,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setMimeType($value)
+    public function setMimeType(string $value) : Exif
     {
         $this->data[self::MIMETYPE] = $value;
 
@@ -783,7 +781,7 @@ class Exif
      *
      * @return int|boolean
      */
-    public function getFileSize()
+    public function getFileSize() : int|false
     {
         if (!isset($this->data[self::FILESIZE])) {
             return false;
@@ -795,10 +793,10 @@ class Exif
     /**
      * Sets the filesize
      *
-     * @param int $value
+     * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setFileSize($value)
+    public function setFileSize(string $value) : Exif
     {
         $this->data[self::FILESIZE] = $value;
 
@@ -810,7 +808,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getFileName()
+    public function getFileName() : string|false
     {
         if (!isset($this->data[self::FILENAME])) {
             return false;
@@ -825,7 +823,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setFileName($value)
+    public function setFileName(string $value) : Exif
     {
         $this->data[self::FILENAME] = $value;
 
@@ -835,9 +833,9 @@ class Exif
     /**
      * Returns the orientation, if it exists
      *
-     * @return int|boolean
+     * @return string|boolean
      */
-    public function getOrientation()
+    public function getOrientation() : string|false
     {
         if (!isset($this->data[self::ORIENTATION])) {
             return false;
@@ -849,10 +847,10 @@ class Exif
     /**
      * Sets the orientation
      *
-     * @param int $value
+     * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setOrientation($value)
+    public function setOrientation(string $value) : Exif
     {
         $this->data[self::ORIENTATION] = $value;
 
@@ -862,9 +860,9 @@ class Exif
     /**
      * Returns GPS coordinates, if it exists
      *
-     * @return array|boolean
+     * @return string|boolean
      */
-    public function getGPS()
+    public function getGPS() : string|false
     {
         if (!isset($this->data[self::GPS])) {
             return false;
@@ -879,7 +877,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setGPS($value)
+    public function setGPS(string $value) : Exif
     {
         $this->data[self::GPS] = $value;
 
@@ -892,7 +890,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setDescription($value)
+    public function setDescription(string $value) : Exif
     {
         $this->data[self::DESCRIPTION] = $value;
 
@@ -904,7 +902,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getDescription()
+    public function getDescription() : string|false
     {
         if (!isset($this->data[self::DESCRIPTION])) {
             return false;
@@ -920,7 +918,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setMake($value)
+    public function setMake(string $value) : Exif
     {
         $this->data[self::MAKE] = $value;
 
@@ -932,7 +930,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getMake()
+    public function getMake() : string|false
     {
         if (!isset($this->data[self::MAKE])) {
             return false;
@@ -947,7 +945,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setAltitude($value)
+    public function setAltitude(string $value) : Exif
     {
         $this->data[self::ALTITUDE] = $value;
 
@@ -959,7 +957,7 @@ class Exif
      *
      * @return float|boolean
      */
-    public function getAltitude()
+    public function getAltitude() : float|false
     {
         if (!isset($this->data[self::ALTITUDE])) {
             return false;
@@ -974,7 +972,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setLongitude($value)
+    public function setLongitude(string $value) : Exif
     {
         $this->data[self::LONGITUDE] = $value;
 
@@ -986,7 +984,7 @@ class Exif
      *
      * @return float|boolean
      */
-    public function getLongitude()
+    public function getLongitude() : float|false
     {
         if (!isset($this->data[self::LONGITUDE])) {
             return false;
@@ -1001,7 +999,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setLatitude($value)
+    public function setLatitude(string $value) : Exif
     {
         $this->data[self::LATITUDE] = $value;
 
@@ -1013,7 +1011,7 @@ class Exif
      *
      * @return float|boolean
      */
-    public function getLatitude()
+    public function getLatitude() : float|false
     {
         if (!isset($this->data[self::LATITUDE])) {
             return false;
@@ -1028,7 +1026,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setImgDirection($value)
+    public function setImgDirection(string $value) : Exif
     {
         $this->data[self::IMGDIRECTION] = $value;
 
@@ -1040,7 +1038,7 @@ class Exif
      *
      * @return float|boolean
      */
-    public function getImgDirection()
+    public function getImgDirection() : float|false
     {
         if (!isset($this->data[self::IMGDIRECTION])) {
             return false;
@@ -1056,7 +1054,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setLens($value)
+    public function setLens(string $value) : Exif
     {
         $this->data[self::LENS] = $value;
 
@@ -1068,7 +1066,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getLens()
+    public function getLens() : string|false
     {
         if (!isset($this->data[self::LENS])) {
             return false;
@@ -1083,7 +1081,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setContentIdentifier($value)
+    public function setContentIdentifier(string $value) : Exif
     {
         $this->data[self::CONTENTIDENTIFIER] = $value;
 
@@ -1095,7 +1093,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getContentIdentifier()
+    public function getContentIdentifier() : string|false
     {
         if (!isset($this->data[self::CONTENTIDENTIFIER])) {
             return false;
@@ -1111,7 +1109,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setFramerate($value)
+    public function setFramerate(string $value) : Exif
     {
         $this->data[self::FRAMERATE] = $value;
 
@@ -1123,7 +1121,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getFramerate()
+    public function getFramerate() : string|false
     {
         if (!isset($this->data[self::FRAMERATE])) {
             return false;
@@ -1139,7 +1137,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setDuration($value)
+    public function setDuration(string $value) : Exif
     {
         $this->data[self::DURATION] = $value;
 
@@ -1151,7 +1149,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getDuration()
+    public function getDuration() : string|false
     {
         if (!isset($this->data[self::DURATION])) {
             return false;
@@ -1165,7 +1163,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setMicroVideoOffset($value)
+    public function setMicroVideoOffset(string $value) : Exif
     {
         $this->data[self::MICROVIDEOOFFSET] = $value;
 
@@ -1177,7 +1175,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getMicroVideoOffset()
+    public function getMicroVideoOffset() : string|false
     {
         if (!isset($this->data[self::MICROVIDEOOFFSET])) {
             return false;
@@ -1192,7 +1190,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setSublocation($value)
+    public function setSublocation(string $value) : Exif
     {
         $this->data[self::SUBLOCATION] = $value;
 
@@ -1204,7 +1202,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getSublocation()
+    public function getSublocation() : string|false
     {
         if (!isset($this->data[self::SUBLOCATION])) {
             return false;
@@ -1219,7 +1217,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setCity($value)
+    public function setCity(string $value) : Exif
     {
         $this->data[self::CITY] = $value;
 
@@ -1231,7 +1229,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getCity()
+    public function getCity() : string|false
     {
         if (!isset($this->data[self::CITY])) {
             return false;
@@ -1246,7 +1244,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setState($value)
+    public function setState(string $value) : Exif
     {
         $this->data[self::STATE] = $value;
 
@@ -1258,7 +1256,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getState()
+    public function getState() : string|false
     {
         if (!isset($this->data[self::STATE])) {
             return false;
@@ -1273,7 +1271,7 @@ class Exif
      * @param string $value
      * @return \PHPExif\Exif
      */
-    public function setCountry($value)
+    public function setCountry(string $value) : Exif
     {
         $this->data[self::COUNTRY] = $value;
 
@@ -1285,7 +1283,7 @@ class Exif
      *
      * @return string|boolean
      */
-    public function getCountry()
+    public function getCountry() : string|false
     {
         if (!isset($this->data[self::COUNTRY])) {
             return false;

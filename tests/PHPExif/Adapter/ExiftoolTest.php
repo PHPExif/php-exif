@@ -1,13 +1,13 @@
 <?php
+
+use PHPExif\Adapter\Exiftool;
+
 /**
  * @covers \PHPExif\Adapter\Exiftool::<!public>
  */
 class ExiftoolTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var \PHPExif\Adapter\Exiftool
-     */
-    protected $adapter;
+    protected Exiftool $adapter;
 
     public function setUp(): void
     {

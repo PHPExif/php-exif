@@ -1,4 +1,7 @@
 <?php
+
+use PHPExif\Reader\Reader;
+
 /**
  * @covers \PHPExif\Reader\Reader::<!public>
  * @covers \PHPExif\Adapter\NoAdapterException
@@ -8,13 +11,14 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     /**
      * @var \PHPExif\Reader\Reader
      */
-    protected $reader;
+    protected Reader $reader;
 
     /**
      * Setup function before the tests
      */
     public function setUp() : void
     {
+        /** @var \PHPExif\Adapter\AdapterInterface */
         $adapter = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
         $this->reader = new \PHPExif\Reader\Reader($adapter);
     }
@@ -25,6 +29,7 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
      */
     public function testConstructorWithAdapter()
     {
+        /** @var \PHPExif\Adapter\AdapterInterface */
         $mock = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
@@ -169,7 +174,7 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     public function testGetExifFromFileCallsReadMethod()
     {
         $mock = $this->getMockBuilder('\\PHPExif\\Reader\\Reader')
-            ->setMethods(array('read'))
+            ->onlyMethods(array('read'))
             ->disableOriginalConstructor()
             ->getMock();
 

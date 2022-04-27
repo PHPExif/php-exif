@@ -12,7 +12,6 @@
 namespace PHPExif\Adapter;
 
 use PHPExif\Exif;
-use FFMpeg;
 
 /**
  * PHP Exif Native Reader Adapter
@@ -44,33 +43,24 @@ class Native extends AdapterAbstract
      *
      * @var array
      */
-    protected $requiredSections = array();
+    protected array $requiredSections = array();
 
     /**
      * Include the thumbnail in the EXIF data?
-     *
-     * @var boolean
      */
-    protected $includeThumbnail = self::NO_THUMBNAIL;
+    protected bool $includeThumbnail = self::NO_THUMBNAIL;
 
     /**
      * Parse the sections as arrays?
-     *
-     * @var boolean
      */
-    protected $sectionsAsArrays = self::SECTIONS_FLAT;
+    protected bool $sectionsAsArrays = self::SECTIONS_FLAT;
 
-    /**
-     * @var string
-     */
-    protected $mapperClass = '\\PHPExif\\Mapper\\Native';
+    protected string $mapperClass = '\\PHPExif\\Mapper\\Native';
 
     /**
      * Contains the mapping of names to IPTC field numbers
-     *
-     * @var array
      */
-    protected $iptcMapping = array(
+    protected array $iptcMapping = array(
         'title'       => '2#005',
         'keywords'    => '2#025',
         'copyright'   => '2#116',
@@ -91,7 +81,7 @@ class Native extends AdapterAbstract
      *
      * @return array
      */
-    public function getRequiredSections()
+    public function getRequiredSections() : array
     {
         return $this->requiredSections;
     }
@@ -102,7 +92,7 @@ class Native extends AdapterAbstract
      * @param array $sections List of EXIF sections
      * @return \PHPExif\Adapter\Native Current instance for chaining
      */
-    public function setRequiredSections(array $sections)
+    public function setRequiredSections(array $sections) : Native
     {
         $this->requiredSections = $sections;
 
@@ -115,7 +105,7 @@ class Native extends AdapterAbstract
      * @param string $section
      * @return \PHPExif\Adapter\Native Current instance for chaining
      */
-    public function addRequiredSection($section)
+    public function addRequiredSection(string $section) : Native
     {
         if (!in_array($section, $this->requiredSections)) {
             array_push($this->requiredSections, $section);
@@ -130,7 +120,7 @@ class Native extends AdapterAbstract
      * @param boolean $value
      * @return \PHPExif\Adapter\Native Current instance for chaining
      */
-    public function setIncludeThumbnail($value)
+    public function setIncludeThumbnail(bool $value) : Native
     {
         $this->includeThumbnail = $value;
 
@@ -142,7 +132,7 @@ class Native extends AdapterAbstract
      *
      * @return boolean
      */
-    public function getIncludeThumbnail()
+    public function getIncludeThumbnail() : bool
     {
         return $this->includeThumbnail;
     }
@@ -153,7 +143,7 @@ class Native extends AdapterAbstract
      * @param boolean $value
      * @return \PHPExif\Adapter\Native Current instance for chaining
      */
-    public function setSectionsAsArrays($value)
+    public function setSectionsAsArrays(bool $value) : Native
     {
         $this->sectionsAsArrays = (bool) $value;
 
@@ -165,7 +155,7 @@ class Native extends AdapterAbstract
      *
      * @return boolean
      */
-    public function getSectionsAsArrays()
+    public function getSectionsAsArrays() : bool
     {
         return $this->sectionsAsArrays;
     }
@@ -174,9 +164,9 @@ class Native extends AdapterAbstract
      * Reads & parses the EXIF data from given file
      *
      * @param string $file
-     * @return \PHPExif\Exif|boolean Instance of Exif object with data
+     * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function getExifFromFile($file)
+    public function getExifFromFile(string $file) : Exif
     {
         $mimeType = mime_content_type($file);
 
@@ -249,7 +239,7 @@ class Native extends AdapterAbstract
      * @param string $file The file to read the IPTC data from
      * @return array
      */
-    public function getIptcData($file)
+    public function getIptcData(string $file) : array
     {
         getimagesize($file, $info);
         $arrData = array();

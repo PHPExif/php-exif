@@ -25,20 +25,13 @@ use FFMpeg;
  */
 class FFprobe extends AdapterAbstract
 {
-
-    const TOOL_NAME = 'ffprobe';
+    public const TOOL_NAME = 'ffprobe';
 
     /**
      * Path to the exiftool binary
-     *
-     * @var string
      */
-    protected $toolPath;
-
-    /**
-     * @var string
-     */
-    protected $mapperClass = '\\PHPExif\\Mapper\\FFprobe';
+    protected string $toolPath = '';
+    protected string $mapperClass = '\\PHPExif\\Mapper\\FFprobe';
 
 
     /**
@@ -48,7 +41,7 @@ class FFprobe extends AdapterAbstract
      * @return \PHPExif\Adapter\FFprobe Current instance
      * @throws \InvalidArgumentException When path is invalid
      */
-    public function setToolPath($path)
+    public function setToolPath(string $path): FFprobe
     {
         if (!file_exists($path)) {
             throw new InvalidArgumentException(
@@ -72,7 +65,7 @@ class FFprobe extends AdapterAbstract
      *
      * @return string
      */
-    public function getToolPath()
+    public function getToolPath(): string
     {
         if (empty($this->toolPath)) {
             // Do not use "which": not available on sh
@@ -90,7 +83,7 @@ class FFprobe extends AdapterAbstract
      * @param string $file
      * @return \PHPExif\Exif|boolean Instance of Exif object with data
      */
-    public function getExifFromFile($file)
+    public function getExifFromFile(string $file): Exif|false
     {
         $mimeType = mime_content_type($file);
 

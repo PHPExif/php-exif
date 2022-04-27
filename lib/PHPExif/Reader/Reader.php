@@ -17,6 +17,7 @@ use PHPExif\Adapter\Exiftool as ExiftoolAdapter;
 use PHPExif\Adapter\FFprobe as FFprobeAdapter;
 use PHPExif\Adapter\ImageMagick as ImageMagickAdapter;
 use PHPExif\Adapter\Native as NativeAdapter;
+use PHPExif\Exif;
 
 /**
  * PHP Exif Reader
@@ -36,10 +37,8 @@ class Reader implements ReaderInterface
 
     /**
      * The current adapter
-     *
-     * @var \PHPExif\Adapter\AdapterInterface
      */
-    protected $adapter;
+    protected ?AdapterInterface $adapter;
 
     /**
      * Reader constructor
@@ -57,7 +56,7 @@ class Reader implements ReaderInterface
      * @return \PHPExif\Adapter\AdapterInterface
      * @throws NoAdapterException When no adapter is set
      */
-    public function getAdapter()
+    public function getAdapter() : AdapterInterface
     {
         if (empty($this->adapter)) {
             throw new NoAdapterException('No adapter set in the reader');
@@ -73,7 +72,7 @@ class Reader implements ReaderInterface
      * @return $this
      * @throws \InvalidArgumentException When given type is invalid
      */
-    public static function factory($type)
+    public static function factory(string $type) : Reader
     {
         $classname = get_called_class();
         switch ($type) {
@@ -103,7 +102,7 @@ class Reader implements ReaderInterface
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function read($file)
+    public function read(string $file) : Exif|string|false
     {
         return $this->getAdapter()->getExifFromFile($file);
     }
@@ -114,7 +113,7 @@ class Reader implements ReaderInterface
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function getExifFromFile($file)
+    public function getExifFromFile(string $file) : Exif|string|false
     {
         return $this->read($file);
     }

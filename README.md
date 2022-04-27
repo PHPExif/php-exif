@@ -1,4 +1,12 @@
-# [PHPExif v0.7.2](http://github.com/LycheeOrg/php-exif) [![Build Status](https://github.com/LycheeOrg/php-exif/workflows/Tests/badge.svg)] [![Coverage Status](https://codecov.io/gh/LycheeOrg/php-exif/branch/master/graph/badge.svg)](https://codecov.io/gh/LycheeOrg/php-exif) [![Code Climate](https://api.codeclimate.com/v1/badges/f15042d535274f36c5a2/maintainability)](https://codeclimate.com/github/LycheeOrg/php-exif/maintainability)
+# [PHPExif v0.7.4](http://github.com/LycheeOrg/php-exif)
+
+[![GitHub Release][release-shield]](https://github.com/LycheeOrg/php-exif/releases)
+[![PHP 8.0 & 8.1][php-shield]](https://github.com/LycheeOrg/php-exif#installation-composer)
+[![MIT License][license-shield]](https://github.com/LycheeOrg/php-exif/blob/master/LICENSE)
+<br>
+[![Build Status](https://github.com/LycheeOrg/php-exif/workflows/Tests/badge.svg)](https://github.com/LycheeOrg/php-exif/actions)
+[![Coverage Status](https://codecov.io/gh/LycheeOrg/php-exif/branch/master/graph/badge.svg)](https://codecov.io/gh/LycheeOrg/php-exif)
+[![Code Climate](https://api.codeclimate.com/v1/badges/f15042d535274f36c5a2/maintainability)](https://codeclimate.com/github/LycheeOrg/php-exif/maintainability)
 
 PHPExif is a library which gives you easy access to the EXIF meta-data of an image or video.
 
@@ -47,7 +55,13 @@ Have a bug or a feature request? [Please open a new issue](https://github.com/Ly
 * [tmp-hallenser](https://github.com/tmp-hallenser)
 * [kamil4](https://github.com/kamil4)
 * [ildyria](https://github.com/ildyria)
+* [nagmat84](https://github.com/nagmat84)
 
 ## License
 
 [MIT License](http://github.com/LycheeOrg/php-exif/blob/master/LICENSE)
+
+
+[release-shield]: https://img.shields.io/github/release-pre/LycheeOrg/php-exif.svg
+[php-shield]: https://img.shields.io/badge/PHP-8.0%20|%208.1-blue
+[license-shield]: https://img.shields.io/github/license/LycheeOrg/Lychee.svg

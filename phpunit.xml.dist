@@ -1,29 +1,23 @@
-<phpunit backupGlobals="false"
-    backupStaticAttributes="false"
-    bootstrap="tests/bootstrap.php"
-    colors="true">
-
-    <testsuites>
-        <testsuite name="PHPExif">
-            <directory>tests</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory suffix=".php">./lib</directory>
-            <exclude>
-                <file>./autoload.php</file>
-                <file>*Interface.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
-
-    <logging>
-        <log type="coverage-html"
-            target="tests/log/report"
-            lowUpperBound="40"
-            highLowerBound="70" />
-        <log type="testdox-html" target="tests/log/testdox.html" />
-    </logging>
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false" bootstrap="tests/bootstrap.php" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage>
+    <include>
+      <directory suffix=".php">./lib</directory>
+    </include>
+    <exclude>
+      <file>./autoload.php</file>
+      <file>*Interface.php</file>
+    </exclude>
+    <report>
+      <html outputDirectory="tests/log/report" lowUpperBound="40" highLowerBound="70"/>
+    </report>
+  </coverage>
+  <testsuites>
+    <testsuite name="PHPExif">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <logging>
+    <testdoxHtml outputFile="tests/log/testdox.html"/>
+  </logging>
 </phpunit>

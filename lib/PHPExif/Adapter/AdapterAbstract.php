@@ -25,25 +25,10 @@ use ForceUTF8\Encoding;
  */
 abstract class AdapterAbstract implements AdapterInterface
 {
-    /**
-     * @var string
-     */
-    protected $hydratorClass = '\\PHPExif\\Hydrator\\Mutator';
-
-    /**
-     * @var \PHPExif\Mapper\MapperInterface
-     */
-    protected $mapper;
-
-    /**
-     * @var \PHPExif\Hydrator\HydratorInterface
-     */
-    protected $hydrator;
-
-    /**
-     * @var string
-     */
-    protected $mapperClass = '';
+    protected string $hydratorClass = '\\PHPExif\\Hydrator\\Mutator';
+    protected ?MapperInterface $mapper = null;
+    protected ?HydratorInterface $hydrator = null;
+    protected string $mapperClass = '';
 
     /**
      * Class constructor
@@ -63,7 +48,7 @@ abstract class AdapterAbstract implements AdapterInterface
      * @param \PHPExif\Mapper\MapperInterface $mapper
      * @return \PHPExif\Adapter\AdapterInterface
      */
-    public function setMapper(MapperInterface $mapper)
+    public function setMapper(MapperInterface $mapper) : AdapterInterface
     {
         $this->mapper = $mapper;
 
@@ -75,7 +60,7 @@ abstract class AdapterAbstract implements AdapterInterface
      *
      * @return \PHPExif\Mapper\MapperInterface
      */
-    public function getMapper()
+    public function getMapper() : MapperInterface
     {
         if (null === $this->mapper) {
             // lazy load one
@@ -93,7 +78,7 @@ abstract class AdapterAbstract implements AdapterInterface
      * @param \PHPExif\Hydrator\HydratorInterface $hydrator
      * @return \PHPExif\Adapter\AdapterInterface
      */
-    public function setHydrator(HydratorInterface $hydrator)
+    public function setHydrator(HydratorInterface $hydrator) : AdapterInterface
     {
         $this->hydrator = $hydrator;
 
@@ -105,7 +90,7 @@ abstract class AdapterAbstract implements AdapterInterface
      *
      * @return \PHPExif\Hydrator\HydratorInterface
      */
-    public function getHydrator()
+    public function getHydrator() : HydratorInterface
     {
         if (null === $this->hydrator) {
             // lazy load one
@@ -123,7 +108,7 @@ abstract class AdapterAbstract implements AdapterInterface
      * @param array $options
      * @return \PHPExif\Reader\AdapterAbstract
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options) : AdapterInterface
     {
         $hydrator = $this->getHydrator();
         $hydrator->hydrate($this, $options);
@@ -134,12 +119,12 @@ abstract class AdapterAbstract implements AdapterInterface
     /**
      * Encodes an array of strings into UTF8
      *
-     * @param array $data
+     * @param array|string $data
      * @return array
      */
     // @codeCoverageIgnoreStart
     // this is fine because we use it directly in our tests for Exiftool and Native
-    public function convertToUTF8($data)
+    public function convertToUTF8($data) : array|string
     {
         if (is_array($data)) {
             foreach ($data as $k => $v) {

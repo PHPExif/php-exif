@@ -29,5 +29,5 @@ interface MapperInterface
      * @param array $data
      * @return array
      */
-    public function mapRawData(array $data);
+    public function mapRawData(array $data) : array;
 }

@@ -12,6 +12,8 @@
 
 namespace PHPExif\Adapter;
 
+use PHPExif\Exif;
+
 /**
  * PHP Exif Reader Adapter
  *
@@ -29,5 +31,5 @@ interface AdapterInterface
      * @return \PHPExif\Exif Instance of Exif object with data
      * @throws \RuntimeException If the EXIF data could not be read
      */
-    public function getExifFromFile($file);
+    public function getExifFromFile(string $file) : Exif|false;
 }

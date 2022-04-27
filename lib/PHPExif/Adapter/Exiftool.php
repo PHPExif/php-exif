@@ -29,25 +29,11 @@ class Exiftool extends AdapterAbstract
 
     /**
      * Path to the exiftool binary
-     *
-     * @var string
      */
-    protected $toolPath;
-
-    /**
-     * @var boolean
-     */
-    protected $numeric = true;
-
-    /**
-     * @var array
-     */
-    protected $encoding = array();
-
-    /**
-     * @var string
-     */
-    protected $mapperClass = '\\PHPExif\\Mapper\\Exiftool';
+    protected string $toolPath = '';
+    protected bool $numeric = true;
+    protected array $encoding = array();
+    protected string $mapperClass = '\\PHPExif\\Mapper\\Exiftool';
 
     /**
      * Setter for the exiftool binary path
@@ -56,7 +42,7 @@ class Exiftool extends AdapterAbstract
      * @return \PHPExif\Adapter\Exiftool Current instance
      * @throws \InvalidArgumentException When path is invalid
      */
-    public function setToolPath($path)
+    public function setToolPath(string $path) : Exiftool
     {
         if (!file_exists($path)) {
             throw new InvalidArgumentException(
@@ -75,7 +61,7 @@ class Exiftool extends AdapterAbstract
     /**
      * @param boolean $numeric
      */
-    public function setNumeric($numeric)
+    public function setNumeric(bool $numeric) : void
     {
         $this->numeric = $numeric;
     }
@@ -84,7 +70,7 @@ class Exiftool extends AdapterAbstract
      * @see  http://www.sno.phy.queensu.ca/~phil/exiftool/faq.html#Q10
      * @param array $encoding encoding parameters in an array eg. ["exif" => "UTF-8"]
      */
-    public function setEncoding($encoding)
+    public function setEncoding(array $encoding) : void
     {
         $possible_keys = array("exif", "iptc", "id3", "photoshop", "quicktime",);
         $possible_values = array("UTF8", "cp65001", "UTF-8", "Thai", "cp874", "Latin", "cp1252",
@@ -106,7 +92,7 @@ class Exiftool extends AdapterAbstract
      *
      * @return string
      */
-    public function getToolPath()
+    public function getToolPath() : string
     {
         if (empty($this->toolPath)) {
             // Do not use "which": not available on sh
@@ -125,7 +111,7 @@ class Exiftool extends AdapterAbstract
      * @return \PHPExif\Exif Instance of Exif object with data
      * @throws \RuntimeException If the EXIF data could not be read
      */
-    public function getExifFromFile($file)
+    public function getExifFromFile(string $file) : Exif
     {
         $encoding = '';
         if (!empty($this->encoding)) {
@@ -134,6 +120,9 @@ class Exiftool extends AdapterAbstract
                 $encoding .= escapeshellarg($key).'='.escapeshellarg($value);
             }
         }
+        /**
+         * @var string
+         */
         $result = $this->getCliOutput(
             sprintf(
                 '%1$s%3$s -j -a -G1 %5$s -c %4$s %2$s',
@@ -145,7 +134,9 @@ class Exiftool extends AdapterAbstract
             )
         );
 
-        // Force UTF8 encoding
+        /**
+         * @var string
+         */
         $result = $this->convertToUTF8($result);
 
         $data = json_decode($result, true);
@@ -158,6 +149,9 @@ class Exiftool extends AdapterAbstract
         }
 
         // map the data:
+        /**
+         * @var \PHPExif\Mapper\Exiftool
+         */
         $mapper = $this->getMapper();
         $mapper->setNumeric($this->numeric);
         $mappedData = $mapper->mapRawData(reset($data));
@@ -175,10 +169,10 @@ class Exiftool extends AdapterAbstract
      * Returns the output from given cli command
      *
      * @param string $command
-     * @return mixed
+     * @return string|false
      * @throws RuntimeException If the command can't be executed
      */
-    protected function getCliOutput($command)
+    protected function getCliOutput(string $command) : string|false
     {
         $descriptorspec = array(
             0 => array('pipe', 'r'),

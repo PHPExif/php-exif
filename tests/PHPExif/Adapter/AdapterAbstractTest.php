@@ -1,4 +1,8 @@
 <?php
+
+use PHPExif\Adapter\Exiftool;
+use PHPExif\Adapter\Native;
+
 /**
  * @covers \PHPExif\Adapter\AdapterAbstract::<!public>
  */
@@ -7,7 +11,7 @@ class AdapterAbstractTest extends PHPUnit\Framework\TestCase
     /**
      * @var \PHPExif\Adapter\Exiftool|\PHPExif\Adapter\Native
      */
-    protected $adapter;
+    protected Exiftool|Native $adapter;
 
     protected function setUp(): void
     {

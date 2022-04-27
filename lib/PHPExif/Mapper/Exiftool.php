@@ -99,10 +99,8 @@ class Exiftool implements MapperInterface
     /**
      * Maps the ExifTool fields to the fields of
      * the \PHPExif\Exif class
-     *
-     * @var array
      */
-    protected $map = array(
+    protected array $map = array(
         self::APERTURE                 => Exif::APERTURE,
         self::ARTIST                   => Exif::AUTHOR,
         self::MODEL                    => Exif::CAMERA,
@@ -175,10 +173,7 @@ class Exiftool implements MapperInterface
         self::DATETIMEORIGINAL_PNG        => Exif::CREATION_DATE
     );
 
-    /**
-     * @var bool
-     */
-    protected $numeric = true;
+    protected bool $numeric = true;
 
     /**
      * Mutator method for the numeric property
@@ -186,7 +181,7 @@ class Exiftool implements MapperInterface
      * @param bool $numeric
      * @return \PHPExif\Mapper\Exiftool
      */
-    public function setNumeric($numeric)
+    public function setNumeric(bool $numeric) : Exiftool
     {
         $this->numeric = (bool) $numeric;
 
@@ -200,10 +195,10 @@ class Exiftool implements MapperInterface
      * @param array $data
      * @return array
      */
-    public function mapRawData(array $data)
+    public function mapRawData(array $data) : array
     {
         $mappedData = array();
-        $gpsData = array();
+        
         foreach ($data as $field => $value) {
             if (!array_key_exists($field, $this->map)) {
                 // silently ignore unknown fields
@@ -394,7 +389,7 @@ class Exiftool implements MapperInterface
      * @param string $coordinates
      * @return float|false
      */
-    protected function extractGPSCoordinates($coordinates)
+    protected function extractGPSCoordinates(string $coordinates) : float|false
     {
         if (is_numeric($coordinates) === true || $this->numeric === true) {
             return ((float) $coordinates);

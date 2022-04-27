@@ -25,13 +25,9 @@ use imagick;
  */
 class ImageMagick extends AdapterAbstract
 {
-
     const TOOL_NAME = 'imagick';
 
-    /**
-     * @var string
-     */
-    protected $mapperClass = '\\PHPExif\\Mapper\\ImageMagick';
+    protected string $mapperClass = '\\PHPExif\\Mapper\\ImageMagick';
 
 
     /**
@@ -40,11 +36,8 @@ class ImageMagick extends AdapterAbstract
      * @param string $file
      * @return \PHPExif\Exif|boolean Instance of Exif object with data
      */
-    public function getExifFromFile($file)
+    public function getExifFromFile(string $file) : Exif
     {
-
-
-
         /* Create the object */
         $im = new Imagick($file);
 

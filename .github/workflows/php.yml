@@ -12,38 +12,30 @@ on:
 jobs:
   tests:
     runs-on: ${{ matrix.operating-system }}
+    # We want to run on external PRs, but not on our own internal PRs as they'll be run by the push to the branch.
     if: (github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository)
 
     strategy:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-20.04]
-        php-versions: ['7.4', '8.0']
+        php-versions: ['8.0', '8.1']
         dependencies: ['no', 'low', 'beta']
-        include:
-          - operating-system: ubuntu-20.04
-            php-versions: '8.0'
-            continue-on-error: true
 
     name: PHP ${{ matrix.php-versions }} - ${{ matrix.dependencies }}
 
     env:
-      extensions: curl json libxml dom
+      extensions: curl, dom, imagick, json, libxml, mbstring
       key: cache-v1 # can be any string, change to clear the extension cache.
 
     steps:
-      - name: Install local deps
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install ffmpeg php-imagick libimage-exiftool-perl libmagickwand-dev
-
       # Checks out a copy of your repository on the ubuntu machine
       - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Setup cache environment
         id: extcache
-        uses: shivammathur/cache-extensions@v1
+        uses: shivammathur/cache-extensions@1.6.2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.extensions }}
@@ -57,42 +49,24 @@ jobs:
           restore-keys: ${{ steps.extcache.outputs.key }}
 
       - name: Cache Composer Dependencies
-        uses: actions/cache@v1
+        uses: actions/cache@v2.1.6
         with:
           path: ~/.composer/cache/files
           key: dependencies-composer-${{ hashFiles('composer.json') }}
 
       - name: Setup PHP Action
-        uses: shivammathur/setup-php@2.8.0
+        uses: shivammathur/setup-php@2.15.0
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.extensions }}
           coverage: xdebug
           tools: pecl, composer
-      
-      - name: Set Up imagick (php8 and php7.3)
-        if: ${{ matrix.php-versions != '7.4' }}
-        run: |
-          git clone https://github.com/Imagick/imagick.git
-          cd imagick && phpize && ./configure && make
-          DEST=$(php -i | grep 'extension_dir => /')
-          php -i | grep 'extension_dir => /'
-          php -i | grep 'extension_dir'
-          echo $DEST
-          DEST2=$(echo "${DEST##* }")
-          echo 'Copying imagick.so to ' $DEST2
-          sudo cp modules/imagick.so $DEST2
-          echo 'Update php.ini file at ' $(echo $(php --ini | grep 'Loaded Configuration File') | awk 'NF>1{print $NF}')
-          sudo echo 'extension="imagick.so"' >> $(echo $(php --ini | grep 'Loaded Configuration File') | awk 'NF>1{print $NF}')
-          cd ..
 
-      - name: Set Up imagick (php7.4)
-        if: ${{ matrix.php-versions == '7.4' }}
+      - name: Set Up Imagick, FFmpeg & Exiftools
         run: |
-          sudo apt-get -y install php-imagick
-
-      - name: PHP Show modules
-        run: php -m
+          sudo apt-get update
+          sudo apt-get --fix-broken install
+          sudo apt-get -y install ffmpeg libimage-exiftool-perl libmagickwand-dev
 
       - name: Get composer cache directory
         id: composer-cache
@@ -109,11 +83,11 @@ jobs:
         if: ${{ matrix.dependencies == 'beta' }}
         run: perl -pi -e 's/^}$/,"minimum-stability":"beta"}/' composer.json
 
-      - name: Install Composer dependencies
+      - name: Install Composer dependencies (normal)
         if: ${{ matrix.dependencies != 'low' }}
         run: composer update --no-interaction
 
-      - name: Install Composer dependencies
+      - name: Install Composer dependencies (low)
         if: ${{ matrix.dependencies == 'low' }}
         run: composer update -vvv --prefer-lowest --prefer-stable --no-interaction
 
