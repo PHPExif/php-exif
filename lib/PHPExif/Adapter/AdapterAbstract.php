@@ -120,11 +120,11 @@ abstract class AdapterAbstract implements AdapterInterface
      * Encodes an array of strings into UTF8
      *
      * @param array|string $data
-     * @return array
+     * @return array|string|null
      */
     // @codeCoverageIgnoreStart
     // this is fine because we use it directly in our tests for Exiftool and Native
-    public function convertToUTF8($data) : array|string
+    public function convertToUTF8($data) : array|string|null
     {
         if (is_array($data)) {
             foreach ($data as $k => $v) {
