@@ -1,4 +1,4 @@
-# [PHPExif v0.7.4](http://github.com/LycheeOrg/php-exif)
+# [PHPExif v0.7.5](http://github.com/LycheeOrg/php-exif)
 
 [![GitHub Release][release-shield]](https://github.com/LycheeOrg/php-exif/releases)
 [![PHP 8.0 & 8.1][php-shield]](https://github.com/LycheeOrg/php-exif#installation-composer)
@@ -21,7 +21,7 @@ PHPExif serves as a wrapper around some native or CLI tools which access this EX
 
 ## Installation (composer)
 
-```json
+```sh
 composer require lychee-org/php-exif
 ```
 
