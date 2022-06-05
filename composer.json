@@ -15,7 +15,7 @@
         "php": "^8.0",
         "ext-fileinfo": "*",
         "neitanod/forceutf8": "^2.0.4",
-        "php-ffmpeg/php-ffmpeg": "^0.17.0"
+        "php-ffmpeg/php-ffmpeg": "^1.0"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
