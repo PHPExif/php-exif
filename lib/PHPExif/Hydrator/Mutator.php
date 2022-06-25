@@ -36,7 +36,7 @@ class Mutator implements HydratorInterface
             $mutator = $this->determineMutator($property);
 
             if (method_exists($object, $mutator)) {
-                $object->$mutator($value);
+                $object->$mutator($value); // @phpstan-ignore-line, PhpStan does not like variadic calls
             }
         }
     }

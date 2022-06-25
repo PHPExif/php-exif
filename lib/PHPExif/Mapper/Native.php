@@ -12,6 +12,10 @@
 namespace PHPExif\Mapper;
 
 use PHPExif\Exif;
+use Safe\DateTime;
+
+use function Safe\preg_match;
+use function Safe\preg_replace;
 
 /**
  * PHP Exif Native Mapper
@@ -186,9 +190,9 @@ class Native implements MapperInterface
                             } catch (\Exception $e) {
                                 $timezone = null;
                             }
-                            $value = new \DateTime($value, $timezone);
+                            $value = new DateTime($value, $timezone);
                         } else {
-                            $value = new \DateTime($value);
+                            $value = new DateTime($value);
                         }
                     } catch (\Exception $e) {
                         // Provided DateTimeOriginal or OffsetTimeOriginal invalid
@@ -227,16 +231,22 @@ class Native implements MapperInterface
                     $value = (int) reset($resolutionParts);
                     break;
                 case self::GPSLATITUDE:
-                    $GPSLatitudeRef = (!(empty($data['GPSLatitudeRef'][0]))) ? $data['GPSLatitudeRef'][0] : '';
+                    $GPSLatitudeRef = '';
+                    if (array_key_exists('GPSLatitudeRef', $data) && $data['GPSLatitudeRef'][0] !== '') {
+                        $GPSLatitudeRef = $data['GPSLatitudeRef'][0];
+                    }
                     $value = $this->extractGPSCoordinate((array)$value, $GPSLatitudeRef);
                     break;
                 case self::GPSLONGITUDE:
-                    $GPSLongitudeRef = (!(empty($data['GPSLongitudeRef'][0]))) ? $data['GPSLongitudeRef'][0] : '';
+                    $GPSLongitudeRef = '';
+                    if (array_key_exists('GPSLongitudeRef', $data) && $data['GPSLongitudeRef'][0] !== '') {
+                        $GPSLongitudeRef = $data['GPSLongitudeRef'][0];
+                    }
                     $value = $this->extractGPSCoordinate((array)$value, $GPSLongitudeRef);
                     break;
                 case self::GPSALTITUDE:
                     $flp = 1;
-                    if (!(empty($data['GPSAltitudeRef'][0]))) {
+                    if (array_key_exists('GPSAltitudeRef', $data) && $data['GPSAltitudeRef'][0] !== '') {
                         $flp = ($data['GPSAltitudeRef'][0] == '1' || $data['GPSAltitudeRef'][0] == "\u{0001}") ? -1 : 1;
                     }
                     $value = $flp * $this->normalizeComponent($value);
@@ -245,17 +255,15 @@ class Native implements MapperInterface
                     $value = $this->normalizeComponent($value);
                     break;
                 case self::LENS_LR:
-                    if (empty($mappedData[Exif::LENS])) {
+                    if (!array_key_exists(Exif::LENS, $mappedData)) {
                         $mappedData[Exif::LENS] = $value;
                     }
                     continue 2;
-                    break;
                 case self::LENS_TYPE:
-                    if (empty($mappedData[Exif::LENS])) {
+                    if (!array_key_exists(Exif::LENS, $mappedData)) {
                         $mappedData[Exif::LENS] = $value;
                     }
                     continue 2;
-                    break;
             }
 
             // set end result
@@ -280,7 +288,7 @@ class Native implements MapperInterface
      */
     protected function isSection(string $field) : bool
     {
-        return (in_array($field, $this->sections));
+        return (in_array($field, $this->sections, true));
     }
 
     /**
@@ -329,7 +337,7 @@ class Native implements MapperInterface
     /**
      * Normalize component
      *
-     * @param string $component
+     * @param string $rational
      * @return float
      */
     protected function normalizeComponent(string $rational) : float

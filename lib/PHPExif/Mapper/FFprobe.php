@@ -12,8 +12,9 @@
 namespace PHPExif\Mapper;
 
 use PHPExif\Exif;
-use DateTime;
-use Exception;
+use Safe\DateTime;
+
+use function Safe\preg_match;
 
 /**
  * PHP Exif Native Mapper
@@ -153,8 +154,8 @@ class FFprobe implements MapperInterface
                     $matches = [];
                     preg_match('/^([+-][0-9\.]+)([+-][0-9\.]+)\/$/', $value, $matches);
                     if (count($matches) == 3 &&
-                        !preg_match('/^\+0+\.0+$/', $matches[1]) &&
-                        !preg_match('/^\+0+\.0+$/', $matches[2])) {
+                        preg_match('/^\+0+\.0+$/', $matches[1]) === 0 &&
+                        preg_match('/^\+0+\.0+$/', $matches[2]) === 0) {
                         $mappedData[Exif::LATITUDE] = $matches[1];
                         $mappedData[Exif::LONGITUDE] = $matches[2];
                     }
@@ -200,7 +201,7 @@ class FFprobe implements MapperInterface
      */
     protected function isSection(string $field) : bool
     {
-        return (in_array($field, $this->sections));
+        return (in_array($field, $this->sections, true));
     }
 
     /**
@@ -233,7 +234,7 @@ class FFprobe implements MapperInterface
     /**
      * Normalize component
      *
-     * @param string $component
+     * @param string $rational
      * @return float
      */
     protected function normalizeComponent(string $rational) : float
@@ -257,11 +258,11 @@ class FFprobe implements MapperInterface
      * to decimal format for latitude and longitude
      * See https://github.com/seanson/python-iso6709.git.
      *
-     * @param string sign
-     * @param string degrees
-     * @param string minutes
-     * @param string seconds
-     * @param string fraction
+     * @param string $sign
+     * @param string $degrees
+     * @param string $minutes
+     * @param string $seconds
+     * @param string $fraction
      *
      * @return float
      */
@@ -293,7 +294,7 @@ class FFprobe implements MapperInterface
      * of a GPS coordiante formattet with ISO6709
      * See https://github.com/seanson/python-iso6709.git.
      *
-     * @param string val_ISO6709
+     * @param string $val_ISO6709
      *
      * @return array
      */

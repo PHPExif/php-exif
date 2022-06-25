@@ -15,6 +15,11 @@ use PHPExif\Exif;
 use InvalidArgumentException;
 use FFMpeg;
 
+use function Safe\exec;
+use function Safe\mime_content_type;
+use function Safe\filesize;
+use function Safe\array_replace_recursive;
+
 /**
  * PHP Exif FFProbe Reader Adapter
  *
@@ -67,7 +72,7 @@ class FFprobe extends AdapterAbstract
      */
     public function getToolPath(): string
     {
-        if (empty($this->toolPath)) {
+        if ($this->toolPath === '') {
             // Do not use "which": not available on sh
             $path = exec('command -v ' . self::TOOL_NAME);
             // $path = exec('which ' . self::TOOL_NAME);
@@ -81,7 +86,7 @@ class FFprobe extends AdapterAbstract
      * Reads & parses the EXIF data from given file
      *
      * @param string $file
-     * @return \PHPExif\Exif|boolean Instance of Exif object with data
+     * @return \PHPExif\Exif|false Instance of Exif object with data
      */
     public function getExifFromFile(string $file): Exif|false
     {
@@ -94,7 +99,7 @@ class FFprobe extends AdapterAbstract
         }
 
         if ($mimeType === 'application/octet-stream' &&
-            in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['mp4', 'mp4v', 'mpg4'])) {
+            in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['mp4', 'mp4v', 'mpg4'], true)) {
             // @codeCoverageIgnoreStart
             $mimeType = 'video/mp4';
             // @codeCoverageIgnoreEnd
@@ -120,6 +125,7 @@ class FFprobe extends AdapterAbstract
         $data = array_replace_recursive($stream, $format, $additional_data);
 
         // Force UTF8 encoding
+        /** @var array */
         $data = $this->convertToUTF8($data);
 
         // map the data:

@@ -38,7 +38,7 @@ class Reader implements ReaderInterface
     /**
      * The current adapter
      */
-    protected ?AdapterInterface $adapter;
+    protected ?AdapterInterface $adapter = null;
 
     /**
      * Reader constructor
@@ -58,7 +58,7 @@ class Reader implements ReaderInterface
      */
     public function getAdapter() : AdapterInterface
     {
-        if (empty($this->adapter)) {
+        if ($this->adapter === null) {
             throw new NoAdapterException('No adapter set in the reader');
         }
 
@@ -69,7 +69,7 @@ class Reader implements ReaderInterface
      * Factory for the reader
      *
      * @param string $type
-     * @return $this
+     * @return Reader
      * @throws \InvalidArgumentException When given type is invalid
      */
     public static function factory(string $type) : Reader

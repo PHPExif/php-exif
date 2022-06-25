@@ -12,6 +12,13 @@
 namespace PHPExif\Adapter;
 
 use PHPExif\Exif;
+use Safe\Exceptions\ImageException;
+use Throwable;
+
+use function Safe\mime_content_type;
+use function Safe\filesize;
+use function Safe\getimagesize;
+use function Safe\iptcparse;
 
 /**
  * PHP Exif Native Reader Adapter
@@ -107,7 +114,7 @@ class Native extends AdapterAbstract
      */
     public function addRequiredSection(string $section) : Native
     {
-        if (!in_array($section, $this->requiredSections)) {
+        if (!in_array($section, $this->requiredSections, true)) {
             array_push($this->requiredSections, $section);
         }
 
@@ -145,7 +152,7 @@ class Native extends AdapterAbstract
      */
     public function setSectionsAsArrays(bool $value) : Native
     {
-        $this->sectionsAsArrays = (bool) $value;
+        $this->sectionsAsArrays = $value;
 
         return $this;
     }
@@ -177,7 +184,7 @@ class Native extends AdapterAbstract
         }
 
         if ($mimeType === 'application/octet-stream' &&
-            in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['mp4', 'mp4v', 'mpg4'])) {
+            in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['mp4', 'mp4v', 'mpg4'], true)) {
             // @codeCoverageIgnoreStart
             $mimeType = 'video/mp4';
             // @codeCoverageIgnoreEnd
@@ -186,14 +193,18 @@ class Native extends AdapterAbstract
         // Photo
         $sections   = $this->getRequiredSections();
         $sections   = implode(',', $sections);
-        $sections   = (empty($sections)) ? null : $sections;
+        $sections   = $sections === '' ? null : $sections;
 
-        $data = @exif_read_data(
-            $file,
-            $sections,
-            $this->getSectionsAsArrays(),
-            $this->getIncludeThumbnail()
-        );
+        try {
+            $data = exif_read_data(
+                $file,
+                $sections,
+                $this->getSectionsAsArrays(),
+                $this->getIncludeThumbnail()
+            );
+        } catch (\Throwable) {
+            $data = false;
+        }
 
         // exif_read_data failed to read exif data (i.e. not a jpg/tiff)
         if (false === $data) {
@@ -207,12 +218,14 @@ class Native extends AdapterAbstract
         }
 
         if (!(array_key_exists('height', $data)) || !(array_key_exists('width', $data))) {
-            $img_size = getimagesize($file);
-            if ($img_size !== false) {
+            try {
+                $img_size = getimagesize($file);
                 if ($img_size[0] !== null && $img_size[1] !== null) {
                     $data['width'] = $img_size[0];
                     $data['height'] = $img_size[1];
                 }
+            } catch (ImageException) {
+                // Fail silently
             }
         }
         

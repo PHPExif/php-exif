@@ -12,7 +12,10 @@
 namespace PHPExif\Mapper;
 
 use PHPExif\Exif;
-use DateTime;
+use Safe\DateTime;
+
+use function Safe\preg_match;
+use function Safe\preg_replace;
 
 /**
  * PHP Exif Exiftool Mapper
@@ -183,7 +186,7 @@ class Exiftool implements MapperInterface
      */
     public function setNumeric(bool $numeric) : Exiftool
     {
-        $this->numeric = (bool) $numeric;
+        $this->numeric = $numeric;
 
         return $this;
     }
@@ -233,9 +236,9 @@ class Exiftool implements MapperInterface
                                 } catch (\Exception $e) {
                                     $timezone = null;
                                 }
-                                $value = new \DateTime($value, $timezone);
+                                $value = new DateTime($value, $timezone);
                             } else {
-                                $value = new \DateTime($value);
+                                $value = new DateTime($value);
                             }
                         } catch (\Exception $e) {
                             continue 2;
@@ -279,7 +282,8 @@ class Exiftool implements MapperInterface
                     $value  = $this->extractGPSCoordinates($value);
                     break;
                 case self::GPSLATITUDE:
-                    $latitudeRef = empty($data['GPS:GPSLatitudeRef']) ? 'N' : $data['GPS:GPSLatitudeRef'][0];
+                    $latitudeRef = !array_key_exists('GPS:GPSLatitudeRef', $data) ?
+                        'N' : $data['GPS:GPSLatitudeRef'][0];
                     $value = $this->extractGPSCoordinates($value);
                     if ($value !== false) {
                         $value = (strtoupper($latitudeRef) === 'S' ? -1.0 : 1.0) * $value;
@@ -292,7 +296,8 @@ class Exiftool implements MapperInterface
                     $value  = $this->extractGPSCoordinates($value);
                     break;
                 case self::GPSLONGITUDE:
-                    $longitudeRef = empty($data['GPS:GPSLongitudeRef']) ? 'E' : $data['GPS:GPSLongitudeRef'][0];
+                    $longitudeRef = !array_key_exists('GPS:GPSLongitudeRef', $data) ?
+                        'E' : $data['GPS:GPSLongitudeRef'][0];
                     $value  = $this->extractGPSCoordinates($value);
                     if ($value !== false) {
                         $value  = (strtoupper($longitudeRef) === 'W' ? -1 : 1) * $value;
@@ -301,14 +306,14 @@ class Exiftool implements MapperInterface
                     break;
                 case self::GPSALTITUDE:
                     $flip = 1;
-                    if (!(empty($data['GPS:GPSAltitudeRef']))) {
+                    if (array_key_exists('GPS:GPSAltitudeRef', $data)) {
                         $flip = ($data['GPS:GPSAltitudeRef'] == '1') ? -1 : 1;
                     }
                         $value = $flip * (float) $value;
                     break;
                 case self::GPSALTITUDE_QUICKTIME:
                     $flip = 1;
-                    if (!(empty($data['Composite:GPSAltitudeRef']))) {
+                    if (array_key_exists('Composite:GPSAltitudeRef', $data)) {
                         $flip = ($data['Composite:GPSAltitudeRef'] == '1') ? -1 : 1;
                     }
                     $value = $flip * (float) $value;
@@ -318,19 +323,19 @@ class Exiftool implements MapperInterface
                     preg_match("#^(\d+)[^\d]+(\d+)$#", $value, $matches);
                     $value_splitted = array_slice($matches, 1);
                     $rotate = false;
-                    if (!(empty($data['Composite:Rotation']))) {
+                    if (array_key_exists('Composite:Rotation', $data)) {
                         if ($data['Composite:Rotation']=='90' || $data['Composite:Rotation']=='270') {
                             $rotate = true;
                         }
                     }
-                    if (empty($mappedData[Exif::WIDTH])) {
+                    if (!array_key_exists(Exif::WIDTH, $mappedData)) {
                         if (!($rotate)) {
                             $mappedData[Exif::WIDTH]  = intval($value_splitted[0]);
                         } else {
                             $mappedData[Exif::WIDTH]  = intval($value_splitted[1]);
                         }
                     }
-                    if (empty($mappedData[Exif::HEIGHT])) {
+                    if (!array_key_exists(Exif::HEIGHT, $mappedData)) {
                         if (!($rotate)) {
                             $mappedData[Exif::HEIGHT] = intval($value_splitted[1]);
                         } else {
@@ -338,7 +343,6 @@ class Exiftool implements MapperInterface
                         }
                     }
                     continue 2;
-                    break;
                 case self::IMGDIRECTION:
                     // Skip cases if image direction is not numeric
                     if (!(is_numeric($value))) {
@@ -349,7 +353,7 @@ class Exiftool implements MapperInterface
                 case self::KEYWORDS:
                 case self::SUBJECT:
                     $xval = is_array($value) ? $value : [$value];
-                    if (empty($mappedData[Exif::KEYWORDS])) {
+                    if (!array_key_exists(Exif::KEYWORDS, $mappedData)) {
                         $mappedData[Exif::KEYWORDS] = $xval;
                     } else {
                         $tmp = array_values(array_unique(array_merge($mappedData[Exif::KEYWORDS], $xval)));
@@ -357,13 +361,11 @@ class Exiftool implements MapperInterface
                     }
 
                     continue 2;
-                    break;
                 case self::LENS_ID:
-                    if (empty($mappedData[Exif::LENS])) {
+                    if (!array_key_exists(Exif::LENS, $mappedData)) {
                         $mappedData[Exif::LENS] = $value;
                     }
                     continue 2;
-                    break;
             }
             // set end result
             $mappedData[$key] = $value;
@@ -394,7 +396,7 @@ class Exiftool implements MapperInterface
         if (is_numeric($coordinates) === true || $this->numeric === true) {
             return ((float) $coordinates);
         } else {
-            if (!preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches)) {
+            if (preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches) === 0) {
                 return false;
             }
 

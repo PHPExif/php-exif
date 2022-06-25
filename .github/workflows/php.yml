@@ -20,9 +20,15 @@ jobs:
       matrix:
         operating-system: [ubuntu-20.04]
         php-versions: ['8.0', '8.1']
-        dependencies: ['no', 'low', 'beta']
+        beta: ['beta', '']
+        dependencies: ['locked', 'lowest', 'highest']
+        exclude:
+          - beta: 'beta'
+            dependencies: 'locked'
+          - beta: 'beta'
+            dependencies: 'lowest'
 
-    name: PHP ${{ matrix.php-versions }} - ${{ matrix.dependencies }}
+    name: PHP ${{ matrix.php-versions }} -- ${{ matrix.beta }} ${{ matrix.dependencies }}
 
     env:
       extensions: curl, dom, imagick, json, libxml, mbstring
@@ -31,28 +37,13 @@ jobs:
     steps:
       # Checks out a copy of your repository on the ubuntu machine
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Setup cache environment
-        id: extcache
-        uses: shivammathur/cache-extensions@1.6.2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: ${{ env.extensions }}
-          key: ${{ env.key }}
-
-      - name: Cache PHP Extensions
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.extcache.outputs.dir }}
-          key: ${{ steps.extcache.outputs.key }}
-          restore-keys: ${{ steps.extcache.outputs.key }}
-
-      - name: Cache Composer Dependencies
-        uses: actions/cache@v2.1.6
-        with:
-          path: ~/.composer/cache/files
-          key: dependencies-composer-${{ hashFiles('composer.json') }}
+      - name: Set Up Imagick, FFmpeg & Exiftools
+        run: |
+          sudo apt-get update
+          sudo apt-get --fix-broken install
+          sudo apt-get -y install ffmpeg libimage-exiftool-perl libmagickwand-dev
 
       - name: Setup PHP Action
         uses: shivammathur/setup-php@2.15.0
@@ -62,34 +53,17 @@ jobs:
           coverage: xdebug
           tools: pecl, composer
 
-      - name: Set Up Imagick, FFmpeg & Exiftools
-        run: |
-          sudo apt-get update
-          sudo apt-get --fix-broken install
-          sudo apt-get -y install ffmpeg libimage-exiftool-perl libmagickwand-dev
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
       - name: Fix beta
-        if: ${{ matrix.dependencies == 'beta' }}
+        if: ${{ matrix.beta == 'beta' }}
         run: perl -pi -e 's/^}$/,"minimum-stability":"beta"}/' composer.json
 
-      - name: Install Composer dependencies (normal)
-        if: ${{ matrix.dependencies != 'low' }}
-        run: composer update --no-interaction
-
-      - name: Install Composer dependencies (low)
-        if: ${{ matrix.dependencies == 'low' }}
-        run: composer update -vvv --prefer-lowest --prefer-stable --no-interaction
+      # Install dependencies and handle caching in one go.
+      # Dependencies need to be installed to make sure the PHPUnit classes are recognized.
+      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v2"
+        with:
+          dependency-versions: "${{ matrix.dependencies }}"
 
       # - name: boot test server
       #   run: vendor/bin/http_test_server > /dev/null 2>&1 &

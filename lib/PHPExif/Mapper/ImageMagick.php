@@ -12,6 +12,11 @@
 namespace PHPExif\Mapper;
 
 use PHPExif\Exif;
+use Safe\DateTime;
+
+use function Safe\preg_match;
+use function Safe\preg_replace;
+use function Safe\preg_split;
 
 /**
  * PHP Exif Imagick Mapper
@@ -115,7 +120,7 @@ class ImageMagick implements MapperInterface
                     if (!isset($mappedData[Exif::CREATION_DATE])
                             && preg_match('/^0000[-:]00[-:]00.00:00:00/', $value) === 0) {
                         try {
-                            $value = new \DateTime($value);
+                            $value = new DateTime($value);
                         } catch (\Exception $e) {
                             continue 2;
                         }
@@ -134,9 +139,9 @@ class ImageMagick implements MapperInterface
                             } catch (\Exception $e) {
                                 $timezone = null;
                             }
-                            $value = new \DateTime($value, $timezone);
+                            $value = new DateTime($value, $timezone);
                         } else {
-                            $value = new \DateTime($value);
+                            $value = new DateTime($value);
                         }
                     } catch (\Exception $e) {
                         continue 2;
@@ -164,7 +169,8 @@ class ImageMagick implements MapperInterface
                     $value = preg_split('/([\s,]+)/', $value)[0];
                     break;
                 case self::GPSLATITUDE:
-                    $latitudeRef = empty($data['exif:GPSLatitudeRef']) ? 'N' : $data['exif:GPSLatitudeRef'][0];
+                    $latitudeRef = !array_key_exists('exif:GPSLatitudeRef', $data) ?
+                        'N' : $data['exif:GPSLatitudeRef'][0];
                     $value = $this->extractGPSCoordinates($value);
                     if ($value !== false) {
                         $value = (strtoupper($latitudeRef) === 'S' ? -1.0 : 1.0) * $value;
@@ -174,7 +180,8 @@ class ImageMagick implements MapperInterface
 
                     break;
                 case self::GPSLONGITUDE:
-                    $longitudeRef = empty($data['exif:GPSLongitudeRef']) ? 'E' : $data['exif:GPSLongitudeRef'][0];
+                    $longitudeRef = !array_key_exists('exif:GPSLongitudeRef', $data) ?
+                        'E' : $data['exif:GPSLongitudeRef'][0];
                     $value  = $this->extractGPSCoordinates($value);
                     if ($value !== false) {
                         $value  = (strtoupper($longitudeRef) === 'W' ? -1 : 1) * $value;
@@ -183,10 +190,10 @@ class ImageMagick implements MapperInterface
                     break;
                 case self::GPSALTITUDE:
                     $flip = 1;
-                    if (!(empty($data['exif:GPSAltitudeRef']))) {
+                    if (array_key_exists('exif:GPSAltitudeRef', $data)) {
                         $flip = ($data['exif:GPSAltitudeRef'] == '1') ? -1 : 1;
                     }
-                    $value = $flip * (float) $this->normalizeComponent($value);
+                    $value = $flip * $this->normalizeComponent($value);
                     break;
                 case self::IMAGEHEIGHT_PNG:
                 case self::IMAGEWIDTH_PNG:
@@ -195,7 +202,6 @@ class ImageMagick implements MapperInterface
                     $mappedData[Exif::WIDTH]  = intval($value_splitted[0]);
                     $mappedData[Exif::HEIGHT] = intval($value_splitted[1]);
                     continue 2;
-                    break;
                 case self::IMGDIRECTION:
                     $value = $this->normalizeComponent($value);
                     break;
@@ -229,7 +235,7 @@ class ImageMagick implements MapperInterface
             return ((float) $coordinates);
         } else {
             $m = '!^([1-9][0-9]*\/[1-9][0-9]*), ([1-9][0-9]*\/[1-9][0-9]*), ([1-9][0-9]*\/[1-9][0-9]*)!';
-            if (!preg_match($m, $coordinates, $matches)) {
+            if (preg_match($m, $coordinates, $matches) === 0) {
                 return false;
             }
             $degree = floatval($this->normalizeComponent($matches[1]));
@@ -242,7 +248,7 @@ class ImageMagick implements MapperInterface
     /**
      * Normalize component
      *
-     * @param string $component
+     * @param string $rational
      * @return float
      */
     protected function normalizeComponent(string $rational) : float

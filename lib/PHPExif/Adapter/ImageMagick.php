@@ -12,8 +12,10 @@
 namespace PHPExif\Adapter;
 
 use PHPExif\Exif;
-use InvalidArgumentException;
-use imagick;
+use Imagick;
+
+use function Safe\filesize;
+use function Safe\mime_content_type;
 
 /**
  * PHP Imagick Reader Adapter
@@ -34,7 +36,7 @@ class ImageMagick extends AdapterAbstract
      * Reads & parses the EXIF data from given file
      *
      * @param string $file
-     * @return \PHPExif\Exif|boolean Instance of Exif object with data
+     * @return \PHPExif\Exif Instance of Exif object with data
      */
     public function getExifFromFile(string $file) : Exif
     {
