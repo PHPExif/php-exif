@@ -216,7 +216,7 @@ class Native implements MapperInterface
                 case self::FOCALLENGTH:
                     $parts = explode('/', $value);
                     // Avoid division by zero if focal length is invalid
-                    if (end($parts) == '0') {
+                    if (end($parts) === '0') {
                         $value = 0;
                     } else {
                         $value = (int) reset($parts) / (int) end($parts);
@@ -247,7 +247,10 @@ class Native implements MapperInterface
                 case self::GPSALTITUDE:
                     $flp = 1;
                     if (array_key_exists('GPSAltitudeRef', $data) && $data['GPSAltitudeRef'][0] !== '') {
-                        $flp = ($data['GPSAltitudeRef'][0] == '1' || $data['GPSAltitudeRef'][0] == "\u{0001}") ? -1 : 1;
+                        $flp = (
+                            $data['GPSAltitudeRef'][0] === '1'
+                            || $data['GPSAltitudeRef'][0] === "\u{0001}"
+                        ) ? -1 : 1;
                     }
                     $value = $flp * $this->normalizeComponent($value);
                     break;
@@ -330,7 +333,7 @@ class Native implements MapperInterface
         $degrees = count($coordinate) > 0 ? $this->normalizeComponent($coordinate[0]) : 0;
         $minutes = count($coordinate) > 1 ? $this->normalizeComponent($coordinate[1]) : 0;
         $seconds = count($coordinate) > 2 ? $this->normalizeComponent($coordinate[2]) : 0;
-        $flip = ($ref == 'W' || $ref == 'S') ? -1 : 1;
+        $flip = ($ref === 'W' || $ref === 'S') ? -1 : 1;
         return $flip * ($degrees + (float) $minutes / 60 + (float) $seconds / 3600);
     }
 
@@ -343,11 +346,11 @@ class Native implements MapperInterface
     protected function normalizeComponent(string $rational) : float
     {
         $parts = explode('/', $rational, 2);
-        if (count($parts) == 1) {
+        if (count($parts) === 1) {
             return (float) $parts[0];
         }
         // case part[1] is 0, div by 0 is forbidden.
-        if ($parts[1] == 0 || !is_numeric($parts[0]) || !is_numeric($parts[1])) {
+        if ($parts[1] === '0' || !is_numeric($parts[0]) || !is_numeric($parts[1])) {
             return (float) 0;
         }
         return (float) $parts[0] / $parts[1];

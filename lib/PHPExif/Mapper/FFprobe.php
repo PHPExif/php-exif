@@ -153,7 +153,7 @@ class FFprobe implements MapperInterface
                 case self::GPSLONGITUDE:
                     $matches = [];
                     preg_match('/^([+-][0-9\.]+)([+-][0-9\.]+)\/$/', $value, $matches);
-                    if (count($matches) == 3 &&
+                    if (count($matches) === 3 &&
                         preg_match('/^\+0+\.0+$/', $matches[1]) === 0 &&
                         preg_match('/^\+0+\.0+$/', $matches[2]) === 0) {
                         $mappedData[Exif::LATITUDE] = $matches[1];
@@ -240,12 +240,12 @@ class FFprobe implements MapperInterface
     protected function normalizeComponent(string $rational) : float
     {
         $parts = explode('/', $rational, 2);
-        if (count($parts) == 1) {
+        if (count($parts) === 1) {
             return (float) $parts[0];
         }
         // case part[1] is 0, div by 0 is forbidden.
         // Catch case of one entry not being numeric
-        if ($parts[1] == 0 || !is_numeric($parts[0]) || !is_numeric($parts[1])) {
+        if ($parts[1] === '0' || !is_numeric($parts[0]) || !is_numeric($parts[1])) {
             return (float) 0;
         }
         return (float) $parts[0] / $parts[1];
@@ -283,7 +283,7 @@ class FFprobe implements MapperInterface
             }
         }
         $decimal = floatval($degrees) + floatval($minutes) / 60.0 + floatval($seconds) / 3600.0;
-        if ($sign == '-') {
+        if ($sign === '-') {
             $decimal = -1.0 * $decimal;
         }
         return $decimal;

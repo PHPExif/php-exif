@@ -191,7 +191,7 @@ class ImageMagick implements MapperInterface
                 case self::GPSALTITUDE:
                     $flip = 1;
                     if (array_key_exists('exif:GPSAltitudeRef', $data)) {
-                        $flip = ($data['exif:GPSAltitudeRef'] == '1') ? -1 : 1;
+                        $flip = ($data['exif:GPSAltitudeRef'] === '1') ? -1 : 1;
                     }
                     $value = $flip * $this->normalizeComponent($value);
                     break;
@@ -254,12 +254,12 @@ class ImageMagick implements MapperInterface
     protected function normalizeComponent(string $rational) : float
     {
         $parts = explode('/', $rational, 2);
-        if (count($parts) == 1) {
+        if (count($parts) === 1) {
             return (float) $parts[0];
         }
         // case part[1] is 0, div by 0 is forbidden.
         // Catch case of one entry not being numeric
-        if ($parts[1] == 0 || !is_numeric($parts[0]) || !is_numeric($parts[1])) {
+        if ($parts[1] === '0' || !is_numeric($parts[0]) || !is_numeric($parts[1])) {
             return (float) 0;
         }
         return (float) $parts[0] / $parts[1];

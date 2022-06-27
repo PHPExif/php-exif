@@ -307,14 +307,14 @@ class Exiftool implements MapperInterface
                 case self::GPSALTITUDE:
                     $flip = 1;
                     if (array_key_exists('GPS:GPSAltitudeRef', $data)) {
-                        $flip = ($data['GPS:GPSAltitudeRef'] == '1') ? -1 : 1;
+                        $flip = ($data['GPS:GPSAltitudeRef'] === '1') ? -1 : 1;
                     }
                         $value = $flip * (float) $value;
                     break;
                 case self::GPSALTITUDE_QUICKTIME:
                     $flip = 1;
                     if (array_key_exists('Composite:GPSAltitudeRef', $data)) {
-                        $flip = ($data['Composite:GPSAltitudeRef'] == '1') ? -1 : 1;
+                        $flip = ($data['Composite:GPSAltitudeRef'] === '1') ? -1 : 1;
                     }
                     $value = $flip * (float) $value;
                     break;
@@ -324,7 +324,7 @@ class Exiftool implements MapperInterface
                     $value_splitted = array_slice($matches, 1);
                     $rotate = false;
                     if (array_key_exists('Composite:Rotation', $data)) {
-                        if ($data['Composite:Rotation']=='90' || $data['Composite:Rotation']=='270') {
+                        if ($data['Composite:Rotation'] === '90' || $data['Composite:Rotation'] === '270') {
                             $rotate = true;
                         }
                     }

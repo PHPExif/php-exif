@@ -1,22 +1,7 @@
 includes:
-	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
-	- vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
-	- vendor/phpstan/phpstan-strict-rules/rules.neon
-
-services:
-	-
-		class: Ergebnis\PHPStan\Rules\Expressions\NoErrorSuppressionRule
-		tags:
-			- phpstan.rules.rule
-	-
-		class: SlamPhpStan\UnusedVariableRule
-		tags:
-			- phpstan.rules.rule
+	- vendor/lychee-org/phpstan-lychee/phpstan.neon
 
 parameters:
-	level: 7
-	reportMaybesInPropertyPhpDocTypes: false
-	checkMissingIterableValueType: false
 	paths:
 		- lib
 	ignoreErrors:
