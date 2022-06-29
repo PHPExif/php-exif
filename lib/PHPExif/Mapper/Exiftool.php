@@ -16,6 +16,7 @@ use Safe\DateTime;
 
 use function Safe\preg_match;
 use function Safe\preg_replace;
+use function Safe\sprintf;
 
 /**
  * PHP Exif Exiftool Mapper
@@ -201,7 +202,7 @@ class Exiftool implements MapperInterface
     public function mapRawData(array $data) : array
     {
         $mappedData = array();
-        
+
         foreach ($data as $field => $value) {
             if (!array_key_exists($field, $this->map)) {
                 // silently ignore unknown fields

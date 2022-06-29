@@ -16,6 +16,7 @@ use Safe\DateTime;
 
 use function Safe\preg_match;
 use function Safe\preg_replace;
+use function Safe\sprintf;
 
 /**
  * PHP Exif Native Mapper

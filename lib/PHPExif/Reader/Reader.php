@@ -18,6 +18,7 @@ use PHPExif\Adapter\FFprobe as FFprobeAdapter;
 use PHPExif\Adapter\ImageMagick as ImageMagickAdapter;
 use PHPExif\Adapter\Native as NativeAdapter;
 use PHPExif\Exif;
+use function Safe\sprintf;
 
 /**
  * PHP Exif Reader

@@ -15,7 +15,7 @@ use PHPExif\Exif;
 use InvalidArgumentException;
 use FFMpeg;
 
-use function Safe\exec;
+use function Safe\sprintf;
 use function Safe\mime_content_type;
 use function Safe\filesize;
 use function Safe\array_replace_recursive;
@@ -76,7 +76,9 @@ class FFprobe extends AdapterAbstract
             // Do not use "which": not available on sh
             $path = exec('command -v ' . self::TOOL_NAME);
             // $path = exec('which ' . self::TOOL_NAME);
-            $this->setToolPath($path);
+            if ($path !== false) {
+                $this->setToolPath($path);
+            }
         }
 
         return $this->toolPath;

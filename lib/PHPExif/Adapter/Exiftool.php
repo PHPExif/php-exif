@@ -15,10 +15,10 @@ use PHPExif\Exif;
 use InvalidArgumentException;
 use RuntimeException;
 
-use function Safe\exec;
 use function Safe\json_decode;
 use function Safe\stream_get_contents;
 use function Safe\fclose;
+use function Safe\sprintf;
 
 /**
  * PHP Exif Exiftool Reader Adapter
@@ -102,8 +102,10 @@ class Exiftool extends AdapterAbstract
         if ($this->toolPath === '') {
             // Do not use "which": not available on sh
             $path = exec('command -v ' . self::TOOL_NAME);
-            // $path = exec('which ' . self::TOOL_NAME);
-            $this->setToolPath($path);
+            if ($path !== false) {
+                // $path = exec('which ' . self::TOOL_NAME);
+                $this->setToolPath($path);
+            }
         }
 
         return $this->toolPath;

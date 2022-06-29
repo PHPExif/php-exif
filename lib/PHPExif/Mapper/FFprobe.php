@@ -13,6 +13,7 @@ namespace PHPExif\Mapper;
 
 use PHPExif\Exif;
 use Safe\DateTime;
+use function Safe\sprintf;
 
 use function Safe\preg_match;
 
