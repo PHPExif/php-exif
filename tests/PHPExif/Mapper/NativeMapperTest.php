@@ -326,9 +326,9 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
                 'GPSLongitudeRef' => 'W',
             ),
             '0,-0' => array(
-                'GPSLatitude'     => array('0/0', '0/0', '0/0'),
+                'GPSLatitude'     => array('0/1', '0/1', '0/1'),
                 'GPSLatitudeRef'  => 'N',
-                'GPSLongitude'    => array('0/0', '0/0', '0/0'),
+                'GPSLongitude'    => array('0/1', '0/1', '0/1'),
                 'GPSLongitudeRef' => 'W',
             ),
             '71.706936,-42.604303' => array(
@@ -340,8 +340,8 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
         );
 
         foreach ($expected as $key => $value) {
-		        $result = $this->mapper->mapRawData($value);
-	          $this->assertEquals($key, $result[\PHPExif\Exif::GPS]);
+            $result = $this->mapper->mapRawData($value);
+            $this->assertEquals($key, $result[\PHPExif\Exif::GPS]);
         }
     }
 
@@ -363,8 +363,8 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
         );
 
         foreach ($expected as $key => $value) {
-		        $result = $this->mapper->mapRawData($value);
-	          $this->assertEquals($key, $result[\PHPExif\Exif::ALTITUDE]);
+            $result = $this->mapper->mapRawData($value);
+            $this->assertEquals($key, $result[\PHPExif\Exif::ALTITUDE]);
         }
     }
 
@@ -449,8 +449,8 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
         );
 
         foreach ($expected as $key => $value) {
-		        $result = $this->mapper->mapRawData($value);
-	          $this->assertEquals($key, reset($result));
+            $result = $this->mapper->mapRawData($value);
+            $this->assertEquals($key, reset($result));
         }
     }
 

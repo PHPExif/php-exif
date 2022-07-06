@@ -50,7 +50,8 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
         unset($map[\PHPExif\Mapper\ImageMagick::DATETIMEORIGINAL]);
         unset($map[\PHPExif\Mapper\ImageMagick::ISO]);
         unset($map[\PHPExif\Mapper\ImageMagick::LENS]);
-        unset($map[\PHPExif\Mapper\ImageMagick::IMAGEWIDTH]);
+        unset($map[\PHPExif\Mapper\ImageMagick::WIDTH]);
+        unset($map[\PHPExif\Mapper\ImageMagick::HEIGHT]);
         unset($map[\PHPExif\Mapper\ImageMagick::IMAGEHEIGHT_PNG]);
         unset($map[\PHPExif\Mapper\ImageMagick::IMAGEWIDTH_PNG]);
         unset($map[\PHPExif\Mapper\ImageMagick::CREATION_DATE]);
@@ -61,11 +62,10 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
         $values = array_pad($values, count($keys), 'foo');
         $rawData = array_combine($keys, $values);
 
-
         $mapped = $this->mapper->mapRawData($rawData);
 
         $i = 0;
-	      foreach ($mapped as $key => $value) {
+        foreach ($mapped as $key => $value) {
             $this->assertEquals($map[$keys[$i]], $key);
             $i++;
         }
@@ -366,13 +366,7 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
                 'GPS:GPSLongitudeRef'                  => 'W',
             )
         );
-        $expected_gps = false;
-        $expected_lat = false;
-        $expected_lon = false;
-        $this->assertCount(3, $result);
-        $this->assertEquals($expected_gps, $result['gps']);
-        $this->assertEquals($expected_lat, $result['latitude']);
-        $this->assertEquals($expected_lon, $result['longitude']);
+        $this->assertCount(0, $result);
     }
 
     /**
@@ -463,7 +457,7 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
                 'exif:GPSAltitudeRef'                   => '0',
             )
         );
-	$expected = 122.053;
+        $expected = 122.053;
         $this->assertEquals($expected, reset($result));
     }
 
@@ -503,8 +497,8 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
             );
 
             foreach ($expected as $key => $value) {
-    		        $result = $this->mapper->mapRawData($value);
-    	          $this->assertEquals($key, reset($result));
+                $result = $this->mapper->mapRawData($value);
+                $this->assertEquals($key, reset($result));
             }
         }
 

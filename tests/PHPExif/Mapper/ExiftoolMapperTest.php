@@ -357,13 +357,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
             )
         );
 
-        $expected_gps = false;
-        $expected_lat = false;
-        $expected_lon = false;
-        $this->assertCount(3, $result);
-        $this->assertEquals($expected_gps, $result['gps']);
-        $this->assertEquals($expected_lat, $result['latitude']);
-        $this->assertEquals($expected_lon, $result['longitude']);
+        $this->assertCount(0, $result);
     }
 
     /**

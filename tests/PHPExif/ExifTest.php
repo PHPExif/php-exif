@@ -793,11 +793,26 @@ class ExifTest extends \PHPUnit\Framework\TestCase
             $setter = 'set' . ucfirst($value);
 
             switch ($value) {
+                case 'altitude':
+                case 'imgDirection':
+                case 'latitude':
+                case 'longitude':
+                    $coord = 1.2345;
+                    $this->exif->$setter($coord);
+                    $propertyValue = $reflProp->getValue($this->exif);
+                    $this->assertEquals($coord, $propertyValue[$value]);
+                    break;
                 case 'creationdate':
                     $now = new \DateTime();
                     $this->exif->$setter($now);
                     $propertyValue = $reflProp->getValue($this->exif);
                     $this->assertSame($now, $propertyValue[$value]);
+                    break;
+                case 'FileSize':
+                    $size = 10123456;
+                    $this->exif->$setter($size);
+                    $propertyValue = $reflProp->getValue($this->exif);
+                    $this->assertEquals($size, $propertyValue[$value]);
                     break;
                 case 'gps':
                     $coords = '40.333452380556,-20.167314813889';

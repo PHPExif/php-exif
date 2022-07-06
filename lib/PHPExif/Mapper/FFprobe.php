@@ -149,6 +149,9 @@ class FFprobe implements MapperInterface
                     break;
                 case self::FRAMERATE:
                     $value = $this->normalizeComponent($value);
+                    if ($value === false) {
+                        continue 2;
+                    }
                     break;
                 case self::GPSLATITUDE:
                 case self::GPSLONGITUDE:
@@ -168,7 +171,6 @@ class FFprobe implements MapperInterface
                     $mappedData[Exif::LATITUDE]  = $location_data['latitude'];
                     $mappedData[Exif::LONGITUDE] = $location_data['longitude'];
                     $mappedData[Exif::ALTITUDE]  = $location_data['altitude'];
-                    //$value = $this->normalizeComponent($value);
                     continue 2;
             }
 
@@ -179,8 +181,6 @@ class FFprobe implements MapperInterface
         // add GPS coordinates, if available
         if ((isset($mappedData[Exif::LATITUDE])) && (isset($mappedData[Exif::LONGITUDE]))) {
             $mappedData[Exif::GPS] = sprintf('%s,%s', $mappedData[Exif::LATITUDE], $mappedData[Exif::LONGITUDE]);
-        } else {
-            unset($mappedData[Exif::GPS]);
         }
 
         // Swap width and height if needed
@@ -236,9 +236,9 @@ class FFprobe implements MapperInterface
      * Normalize component
      *
      * @param string $rational
-     * @return float
+     * @return float|false
      */
-    protected function normalizeComponent(string $rational) : float
+    protected function normalizeComponent(string $rational) : float|false
     {
         $parts = explode('/', $rational, 2);
         if (count($parts) === 1) {
@@ -247,7 +247,7 @@ class FFprobe implements MapperInterface
         // case part[1] is 0, div by 0 is forbidden.
         // Catch case of one entry not being numeric
         if ($parts[1] === '0' || !is_numeric($parts[0]) || !is_numeric($parts[1])) {
-            return (float) 0;
+            return false;
         }
         return (float) $parts[0] / $parts[1];
     }

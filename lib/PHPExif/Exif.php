@@ -793,10 +793,10 @@ class Exif
     /**
      * Sets the filesize
      *
-     * @param string $value
+     * @param int $value
      * @return Exif
      */
-    public function setFileSize(string $value) : Exif
+    public function setFileSize(int $value) : Exif
     {
         $this->data[self::FILESIZE] = $value;
 
@@ -942,10 +942,10 @@ class Exif
     /**
      * Sets the altitude value
      *
-     * @param string $value
+     * @param float $value
      * @return Exif
      */
-    public function setAltitude(string $value) : Exif
+    public function setAltitude(float $value) : Exif
     {
         $this->data[self::ALTITUDE] = $value;
 
@@ -969,10 +969,10 @@ class Exif
     /**
      * Sets the altitude value
      *
-     * @param string $value
+     * @param float $value
      * @return Exif
      */
-    public function setLongitude(string $value) : Exif
+    public function setLongitude(float $value) : Exif
     {
         $this->data[self::LONGITUDE] = $value;
 
@@ -996,10 +996,10 @@ class Exif
     /**
      * Sets the latitude value
      *
-     * @param string $value
+     * @param float $value
      * @return Exif
      */
-    public function setLatitude(string $value) : Exif
+    public function setLatitude(float $value) : Exif
     {
         $this->data[self::LATITUDE] = $value;
 
@@ -1023,10 +1023,10 @@ class Exif
     /**
      * Sets the imgDirection value
      *
-     * @param string $value
+     * @param float $value
      * @return Exif
      */
-    public function setImgDirection(string $value) : Exif
+    public function setImgDirection(float $value) : Exif
     {
         $this->data[self::IMGDIRECTION] = $value;
 
