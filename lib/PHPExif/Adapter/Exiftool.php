@@ -14,11 +14,12 @@ namespace PHPExif\Adapter;
 use PHPExif\Exif;
 use InvalidArgumentException;
 use RuntimeException;
+use Safe\Exceptions\ExecException;
 
+use function Safe\exec;
 use function Safe\json_decode;
 use function Safe\stream_get_contents;
 use function Safe\fclose;
-use function Safe\sprintf;
 
 /**
  * PHP Exif Exiftool Reader Adapter
@@ -100,8 +101,12 @@ class Exiftool extends AdapterAbstract
     public function getToolPath() : string
     {
         if ($this->toolPath === '') {
-            // Do not use "which": not available on sh
-            $path = exec('command -v ' . self::TOOL_NAME);
+            try {
+                // Do not use "which": not available on sh
+                $path = exec('command -v ' . self::TOOL_NAME);
+            } catch (ExecException) {
+                $path = false;
+            }
             if ($path !== false) {
                 // $path = exec('which ' . self::TOOL_NAME);
                 $this->setToolPath($path);
