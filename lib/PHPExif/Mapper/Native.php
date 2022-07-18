@@ -235,8 +235,9 @@ class Native implements MapperInterface
                     $value = (int) reset($resolutionParts);
                     break;
                 case self::GPSLATITUDE:
-                    $GPSLatitudeRef = '';
-                    if (array_key_exists('GPSLatitudeRef', $data) && $data['GPSLatitudeRef'][0] !== '') {
+                    $GPSLatitudeRef = 'N';
+                    if (array_key_exists('GPSLatitudeRef', $data)
+                        && $data['GPSLatitudeRef'] !== null && $data['GPSLatitudeRef'][0] !== '') {
                         $GPSLatitudeRef = $data['GPSLatitudeRef'][0];
                     }
                     $value = $this->extractGPSCoordinate((array)$value, $GPSLatitudeRef);
@@ -245,8 +246,9 @@ class Native implements MapperInterface
                     }
                     break;
                 case self::GPSLONGITUDE:
-                    $GPSLongitudeRef = '';
-                    if (array_key_exists('GPSLongitudeRef', $data) && $data['GPSLongitudeRef'][0] !== '') {
+                    $GPSLongitudeRef = 'E';
+                    if (array_key_exists('GPSLongitudeRef', $data)
+                        && $data['GPSLongitudeRef'] !== null && $data['GPSLongitudeRef'][0] !== '') {
                         $GPSLongitudeRef = $data['GPSLongitudeRef'][0];
                     }
                     $value = $this->extractGPSCoordinate((array)$value, $GPSLongitudeRef);
@@ -255,16 +257,16 @@ class Native implements MapperInterface
                     }
                     break;
                 case self::GPSALTITUDE:
+                    $value = $this->normalizeComponent($value);
+                    if ($value === false) {
+                        continue 2;
+                    }
                     $flp = 1;
                     if (array_key_exists('GPSAltitudeRef', $data) && $data['GPSAltitudeRef'][0] !== '') {
                         $flp = (
                             $data['GPSAltitudeRef'][0] === '1'
                             || $data['GPSAltitudeRef'][0] === "\u{0001}"
                         ) ? -1 : 1;
-                    }
-                    $value = $this->normalizeComponent($value);
-                    if ($value === false) {
-                        continue 2;
                     }
                     $value *= $flp;
                     break;

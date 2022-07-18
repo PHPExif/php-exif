@@ -286,12 +286,13 @@ class Exiftool implements MapperInterface
                     }
                     break;
                 case self::GPSLATITUDE:
-                    $latitudeRef = !array_key_exists('GPS:GPSLatitudeRef', $data) ?
-                        'N' : $data['GPS:GPSLatitudeRef'][0];
                     $value = $this->extractGPSCoordinates($value);
                     if ($value === false) {
                         continue 2;
                     }
+                    $latitudeRef = !array_key_exists('GPS:GPSLatitudeRef', $data)
+                        || $data['GPS:GPSLatitudeRef'] === null || $data['GPS:GPSLatitudeRef'] === '' ?
+                        'N' : $data['GPS:GPSLatitudeRef'][0];
                     $value *= strtoupper($latitudeRef) === 'S' ? -1 : 1;
                     break;
                 case self::GPSLONGITUDE_QUICKTIME:
@@ -301,12 +302,13 @@ class Exiftool implements MapperInterface
                     }
                     break;
                 case self::GPSLONGITUDE:
-                    $longitudeRef = !array_key_exists('GPS:GPSLongitudeRef', $data) ?
-                        'E' : $data['GPS:GPSLongitudeRef'][0];
                     $value = $this->extractGPSCoordinates($value);
                     if ($value === false) {
                         continue 2;
                     }
+                    $longitudeRef = !array_key_exists('GPS:GPSLongitudeRef', $data)
+                        || $data['GPS:GPSLongitudeRef'] === null || $data['GPS:GPSLongitudeRef'] === '' ?
+                        'E' : $data['GPS:GPSLongitudeRef'][0];
                     $value *= strtoupper($longitudeRef) === 'W' ? -1 : 1;
                     break;
                 case self::GPSALTITUDE:

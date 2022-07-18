@@ -404,6 +404,24 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Exiftool::mapRawData
      */
+    public function testMapRawDataCorrectlyIgnoresEmptyGPSData()
+    {
+        $result = $this->mapper->mapRawData(
+            array(
+                \PHPExif\Mapper\Exiftool::GPSLATITUDE  => '',
+                'GPS:GPSLatitudeRef'                   => '',
+                \PHPExif\Mapper\Exiftool::GPSLONGITUDE => '',
+                'GPS:GPSLongitudeRef'                  => '',
+            )
+        );
+
+        $this->assertEquals(false, reset($result));
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
     public function testMapRawDataCorrectlyIgnoresIncorrectImageDirection()
     {
         $rawData = array(
@@ -510,6 +528,21 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
         );
         $expected = '-122.053';
         $this->assertEquals($expected, reset($result));
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Exiftool::mapRawData
+     */
+    public function testMapRawDataCorrectlyIgnoresIncorrectAltitude()
+    {
+        $result = $this->mapper->mapRawData(
+            array(
+                \PHPExif\Mapper\Exiftool::GPSALTITUDE  => 'undef',
+                'GPS:GPSAltitudeRef'                   => '0',
+            )
+        );
+        $this->assertEquals(false, reset($result));
     }
 
     /**

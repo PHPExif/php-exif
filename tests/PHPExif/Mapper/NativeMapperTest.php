@@ -349,6 +349,24 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
      * @group mapper
      * @covers \PHPExif\Mapper\Native::mapRawData
      */
+    public function testMapRawDataCorrectlyIgnoresEmptyGPSData()
+    {
+        $result = $this->mapper->mapRawData(
+            array(
+                'GPSLatitude'     => array('0/0', '0/0', '0/0'),
+                'GPSLatitudeRef'  => null,
+                'GPSLongitude'    => array('0/0', '0/0', '0/0'),
+                'GPSLongitudeRef' => null,
+            )
+        );
+
+        $this->assertEquals(false, reset($result));
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
     public function testMapRawDataCorrectlyFormatsAltitudeData()
     {
         $expected = array(
@@ -366,6 +384,21 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
             $result = $this->mapper->mapRawData($value);
             $this->assertEquals($key, $result[\PHPExif\Exif::ALTITUDE]);
         }
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
+    public function testMapRawDataCorrectlyIgnoresIncorrectAltitude()
+    {
+        $result = $this->mapper->mapRawData(
+            array(
+                'GPSAltitude'     => "0/0",
+                'GPSAltitudeRef'  => chr(0),
+            )
+        );
+        $this->assertEquals(false, reset($result));
     }
 
     public function testMapRawDataCorrectlyFormatsDifferentDateTimeString()

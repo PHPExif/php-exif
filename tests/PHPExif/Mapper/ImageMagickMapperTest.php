@@ -361,9 +361,9 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
         $result = $this->mapper->mapRawData(
             array(
                 \PHPExif\Mapper\ImageMagick::GPSLATITUDE  => '40/1 20/1 42857/100000',
-                'GPS:GPSLatitudeRef'                   => 'N',
+                'exif:GPSLatitudeRef'                     => 'N',
                 \PHPExif\Mapper\ImageMagick::GPSLONGITUDE => '20/1 10/1 233333/100000',
-                'GPS:GPSLongitudeRef'                  => 'W',
+                'exif:GPSLongitudeRef'                    => 'W',
             )
         );
         $this->assertCount(0, $result);
@@ -402,11 +402,29 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
         $result = $this->mapper->mapRawData(
             array(
                 \PHPExif\Mapper\ImageMagick::GPSLATITUDE => '40.333452381',
-                'GPS:GPSLatitudeRef'                  => 'North',
+                'exif:GPSLatitudeRef'                    => 'North',
             )
         );
 
         $this->assertCount(1, $result);
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\ImageMagick::mapRawData
+     */
+    public function testMapRawDataCorrectlyIgnoresEmptyGPSData()
+    {
+        $result = $this->mapper->mapRawData(
+            array(
+                \PHPExif\Mapper\ImageMagick::GPSLATITUDE  => '0/0, 0/0, 0/0',
+                'exif:GPSLatitudeRef'                     => '',
+                \PHPExif\Mapper\ImageMagick::GPSLONGITUDE => '0/0, 0/0, 0/0',
+                'exif:GPSLongitudeRef'                    => '',
+            )
+        );
+
+        $this->assertEquals(false, reset($result));
     }
 
 
@@ -475,6 +493,21 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
         );
         $expected = '-122.053';
         $this->assertEquals($expected, reset($result));
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\ImageMagick::mapRawData
+     */
+    public function testMapRawDataCorrectlyIgnoresIncorrectAltitude()
+    {
+        $result = $this->mapper->mapRawData(
+            array(
+                \PHPExif\Mapper\ImageMagick::GPSALTITUDE  => '0/0',
+                'exif:GPSAltitudeRef'                     => '0',
+            )
+        );
+        $this->assertEquals(false, reset($result));
     }
 
 
