@@ -61,10 +61,41 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
         $hydrator = new \PHPExif\Hydrator\Mutator;
         $hydrator->hydrate($mock, $input);
     }
+
+    /**
+     * @group hydrator
+     * @covers \PHPExif\Hydrator\Mutator::hydrate
+     */
+    public function testHydrateCallsEmptyValues()
+    {
+        // input data
+        $input = array(
+            'foo' => null,
+            'bar' => '',
+        );
+
+        // create mock
+        $mock = $this->getMockBuilder('TestClass')
+            ->setMethods(array('setFoo', 'setBar'))
+            ->getMock();
+
+        $mock->expects($this->exactly(0))
+            ->method('setFoo');
+        $mock->expects($this->exactly(0))
+            ->method('setBar');
+
+        // do the test
+        $hydrator = new \PHPExif\Hydrator\Mutator;
+        $hydrator->hydrate($mock, $input);
+    }
 }
 
 class TestClass
 {
+    public function setFoo()
+    {
+    }
+
     public function setBar()
     {
     }
