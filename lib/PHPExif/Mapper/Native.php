@@ -276,6 +276,18 @@ class Native implements MapperInterface
                         continue 2;
                     }
                     break;
+                // Merge sources of keywords
+                case self::KEYWORDS:
+                case self::SUBJECT:
+                    $xval = is_array($value) ? $value : [$value];
+                    if (!array_key_exists(Exif::KEYWORDS, $mappedData)) {
+                        $mappedData[Exif::KEYWORDS] = $xval;
+                    } else {
+                        $tmp = array_values(array_unique(array_merge($mappedData[Exif::KEYWORDS], $xval)));
+                        $mappedData[Exif::KEYWORDS] = $tmp;
+                    }
+
+                    continue 2;
                 case self::LENS_LR:
                     if (!array_key_exists(Exif::LENS, $mappedData)) {
                         $mappedData[Exif::LENS] = $value;

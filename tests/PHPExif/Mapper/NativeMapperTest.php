@@ -546,4 +546,41 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
             );
         }
     }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
+    public function testMapRawDataCorrectlyKeywords()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Native::KEYWORDS => 'Keyword_1 Keyword_2',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(
+            ['Keyword_1 Keyword_2'],
+            reset($mapped)
+        );
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\Native::mapRawData
+     */
+    public function testMapRawDataCorrectlyKeywordsAndSubject()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\Native::KEYWORDS => array('Keyword_1', 'Keyword_2'),
+            \PHPExif\Mapper\Native::SUBJECT => array('Keyword_1', 'Keyword_3'),
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(
+            array('Keyword_1' ,'Keyword_2', 'Keyword_3'),
+            reset($mapped)
+        );
+    }
 }

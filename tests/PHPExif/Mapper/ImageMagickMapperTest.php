@@ -605,5 +605,69 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
           }
       }
 
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\ImageMagick::mapRawData
+     */
+    public function testMapRawDataCorrectlyKeywords()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\ImageMagick::KEYWORDS => 'Keyword_1 Keyword_2',
+        );
 
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(
+            ['Keyword_1 Keyword_2'],
+            reset($mapped)
+        );
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\ImageMagick::mapRawData
+     */
+    public function testMapRawDataCorrectlyKeywordsAndSubject()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\ImageMagick::KEYWORDS => array('Keyword_1', 'Keyword_2'),
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(
+            array('Keyword_1' ,'Keyword_2'),
+            reset($mapped)
+        );
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\ImageMagick::mapRawData
+     */
+    public function testMapRawDataCorrectlyFormatsXResolution()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\ImageMagick::XRESOLUTION => '1500/300',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(1500, reset($mapped));
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\ImageMagick::mapRawData
+     */
+    public function testMapRawDataCorrectlyFormatsYResolution()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\ImageMagick::YRESOLUTION => '1500/300',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(1500, reset($mapped));
+    }
 }

@@ -871,10 +871,12 @@ class ExifTest extends \PHPUnit\Framework\TestCase
         );
 
         $adapter_exiftool = new \PHPExif\Adapter\Exiftool();
+        $adapter_imagemagick = new \PHPExif\Adapter\ImageMagick();
         $adapter_native = new \PHPExif\Adapter\Native();
 
         foreach ($testfiles as $file) {
             $result_exiftool = $adapter_exiftool->getExifFromFile($file);
+            $result_imagemagick = $adapter_imagemagick->getExifFromFile($file);
             $result_native = $adapter_native->getExifFromFile($file);
 
             // find all Getter methods on the results and compare its output
@@ -886,6 +888,11 @@ class ExifTest extends \PHPUnit\Framework\TestCase
                 $this->assertEquals(
                     call_user_func(array($result_native, $name)),
                     call_user_func(array($result_exiftool, $name)),
+                    'Adapter difference detected in method "' . $name . '" on image "' . basename($file) . '"'
+                );
+                $this->assertEquals(
+                    call_user_func(array($result_native, $name)),
+                    call_user_func(array($result_imagemagick, $name)),
                     'Adapter difference detected in method "' . $name . '" on image "' . basename($file) . '"'
                 );
             }

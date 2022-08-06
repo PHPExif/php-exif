@@ -15,6 +15,7 @@ use PHPExif\Exif;
 use Imagick;
 
 use function Safe\filesize;
+use function Safe\iptcparse;
 use function Safe\mime_content_type;
 
 /**
@@ -31,6 +32,23 @@ class ImageMagick extends AdapterAbstract
 
     protected string $mapperClass = '\\PHPExif\\Mapper\\ImageMagick';
 
+    /**
+     * Contains the mapping of names to IPTC field numbers
+     */
+    protected array $iptcMapping = array(
+        'iptc:title'       => '2#005',
+        'iptc:keywords'    => '2#025',
+        'iptc:copyright'   => '2#116',
+        'iptc:caption'     => '2#120',
+        'iptc:headline'    => '2#105',
+        'iptc:credit'      => '2#110',
+        'iptc:source'      => '2#115',
+        'iptc:jobtitle'    => '2#085',
+        'iptc:city'        => '2#090',
+        'iptc:sublocation' => '2#092',
+        'iptc:state'       => '2#095',
+        'iptc:country'     => '2#101'
+    );
 
     /**
      * Reads & parses the EXIF data from given file
@@ -57,8 +75,13 @@ class ImageMagick extends AdapterAbstract
             'width' => $data_width,
             'height' => $data_height
         ];
+        $profiles = $im->getImageProfiles('iptc');
+        $data_iptc = [];
+        if (array_key_exists('iptc', $profiles)) {
+            $data_iptc = $this->getIptcData($profiles['iptc']);
+        }
 
-        $data = array_merge($data_exif, $additional_data);
+        $data = array_merge($data_exif, $data_iptc, $additional_data);
 
         // map the data:
         $mapper = $this->getMapper();
@@ -71,5 +94,31 @@ class ImageMagick extends AdapterAbstract
         $exif->setRawData($data);
 
         return $exif;
+    }
+
+    /**
+     * Returns an array of IPTC data
+     *
+     * @param string $profile Raw IPTC data
+     * @return array
+     */
+    public function getIptcData(string $profile) : array
+    {
+        $arrData = [];
+        $iptc = iptcparse($profile);
+
+        foreach ($this->iptcMapping as $name => $field) {
+            if (!isset($iptc[$field])) {
+                continue;
+            }
+
+            if (count($iptc[$field]) === 1) {
+                $arrData[$name] = reset($iptc[$field]);
+            } else {
+                $arrData[$name] = $iptc[$field];
+            }
+        }
+
+        return $arrData;
     }
 }

@@ -57,6 +57,19 @@ class ImageMagick implements MapperInterface
     const SOFTWARE                 = 'exif:Software';
     const XRESOLUTION              = 'exif:XResolution';
     const YRESOLUTION              = 'exif:YResolution';
+    const TITLE                    = 'iptc:title';
+    const KEYWORDS                 = 'iptc:keywords';
+    const COPYRIGHT                = 'iptc:copyright';
+    const CAPTION                  = 'iptc:caption';
+    const HEADLINE                 = 'iptc:headline';
+    const CREDIT                   = 'iptc:credit';
+    const SOURCE                   = 'iptc:source';
+    const JOBTITLE                 = 'iptc:jobtitle';
+    const CITY                     = 'iptc:city';
+    const SUBLOCATION              = 'iptc:sublocation';
+    const STATE                    = 'iptc:state';
+    const COUNTRY                  = 'iptc:country';
+
 
     /**
      * Maps the ExifTool fields to the fields of
@@ -91,8 +104,20 @@ class ImageMagick implements MapperInterface
         self::MODEL                    => Exif::CAMERA,
         self::ORIENTATION              => Exif::ORIENTATION,
         self::SOFTWARE                 => Exif::SOFTWARE,
+        self::XRESOLUTION              => Exif::HORIZONTAL_RESOLUTION,
         self::YRESOLUTION              => Exif::VERTICAL_RESOLUTION,
-
+        self::TITLE                    => Exif::TITLE,
+        self::KEYWORDS                 => Exif::KEYWORDS,
+        self::COPYRIGHT                => Exif::COPYRIGHT,
+        self::CAPTION                  => Exif::CAPTION,
+        self::HEADLINE                 => Exif::HEADLINE,
+        self::CREDIT                   => Exif::CREDIT,
+        self::SOURCE                   => Exif::SOURCE,
+        self::JOBTITLE                 => EXIF::JOB_TITLE,
+        self::CITY                     => Exif::CITY,
+        self::SUBLOCATION              => Exif::SUBLOCATION,
+        self::STATE                    => Exif::STATE,
+        self::COUNTRY                  => Exif::COUNTRY
 
     );
 
@@ -183,6 +208,11 @@ class ImageMagick implements MapperInterface
                 case self::ISO:
                     $value = preg_split('/([\s,]+)/', $value)[0];
                     break;
+                case self::XRESOLUTION:
+                case self::YRESOLUTION:
+                    $resolutionParts = explode('/', $value);
+                    $value = (int) reset($resolutionParts);
+                    break;
                 case self::GPSLATITUDE:
                     $value = $this->extractGPSCoordinates($value);
                     if ($value === false) {
@@ -227,6 +257,11 @@ class ImageMagick implements MapperInterface
                         continue 2;
                     }
                     break;
+                case self::KEYWORDS:
+                    if (!is_array($value)) {
+                        $value = [$value];
+                    }
+                    break;
             }
             // set end result
             $mappedData[$key] = $value;
@@ -250,13 +285,13 @@ class ImageMagick implements MapperInterface
         if (is_numeric($coordinates) === true) {
             return ((float) $coordinates);
         } else {
-            $m = '!^([0-9]+\/[1-9][0-9]*), ([0-9]+\/[1-9][0-9]*), ([0-9]+\/[1-9][0-9]*)!';
+            $m = '!^([0-9]+\/[1-9][0-9]*)(?:, ([0-9]+\/[1-9][0-9]*))?(?:, ([0-9]+\/[1-9][0-9]*))?$!';
             if (preg_match($m, $coordinates, $matches) === 0) {
                 return false;
             }
             $degrees = $this->normalizeComponent($matches[1]);
-            $minutes = $this->normalizeComponent($matches[2]);
-            $seconds = $this->normalizeComponent($matches[3]);
+            $minutes = $this->normalizeComponent($matches[2] ?? 0);
+            $seconds = $this->normalizeComponent($matches[3] ?? 0);
             if ($degrees === false || $minutes === false || $seconds === false) {
                 return false;
             }
