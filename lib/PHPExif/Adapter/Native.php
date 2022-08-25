@@ -258,7 +258,11 @@ class Native extends AdapterAbstract
         getimagesize($file, $info);
         $arrData = array();
         if (isset($info['APP13'])) {
-            $iptc = iptcparse($info['APP13']);
+            try {
+                $iptc = iptcparse($info['APP13']);
+            } catch (ImageException) {
+                return $arrData;
+            }
 
             foreach ($this->iptcMapping as $name => $field) {
                 if (!isset($iptc[$field])) {

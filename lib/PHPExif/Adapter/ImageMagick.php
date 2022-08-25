@@ -13,6 +13,7 @@ namespace PHPExif\Adapter;
 
 use PHPExif\Exif;
 use Imagick;
+use Safe\Exceptions\ImageException;
 
 use function Safe\filesize;
 use function Safe\iptcparse;
@@ -105,7 +106,11 @@ class ImageMagick extends AdapterAbstract
     public function getIptcData(string $profile) : array
     {
         $arrData = [];
-        $iptc = iptcparse($profile);
+        try {
+            $iptc = iptcparse($profile);
+        } catch (ImageException) {
+            return $arrData;
+        }
 
         foreach ($this->iptcMapping as $name => $field) {
             if (!isset($iptc[$field])) {

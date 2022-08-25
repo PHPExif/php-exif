@@ -27,4 +27,15 @@ class ImageMagickTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEmpty($result->getRawData());
     }
 
+    /**
+     * @group ImageMagick
+     * @covers \PHPExif\Adapter\ImageMagick::getIptcData
+     */
+    public function testGetEmptyIptcData()
+    {
+        $result = $this->adapter->getIptcData("");
+
+        $this->assertEquals([], $result);
+    }
+
 }

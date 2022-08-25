@@ -147,6 +147,18 @@ class NativeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group native
+     * @covers \PHPExif\Adapter\Native::getIptcData
+     */
+    public function testGetEmptyIptcData()
+    {
+        $file = PHPEXIF_TEST_ROOT . '/files/empty_iptc.jpg';
+        $result = $this->adapter->getIptcData($file);
+
+        $this->assertEquals([], $result);
+    }
+
+    /**
+     * @group native
      * @covers \PHPExif\Adapter\Native::setSectionsAsArrays
      */
     public function testSetSectionsAsArrayInProperty()
