@@ -401,7 +401,7 @@ class Exiftool implements MapperInterface
                 return false;
             }
 
-            return floatval($matches[1]) + (floatval($matches[2]) / 60) + (floatval($matches[3]) / 3600);
+            return round(floatval($matches[1]) + (floatval($matches[2]) / 60) + (floatval($matches[3]) / 3600), 12);
         }
     }
 }

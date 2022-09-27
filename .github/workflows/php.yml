@@ -59,7 +59,7 @@ jobs:
 
       # Install dependencies and handle caching in one go.
       # Dependencies need to be installed to make sure the PHPUnit classes are recognized.
-      # @link https://github.com/marketplace/actions/install-composer-dependencies
+      # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
         uses: "ramsey/composer-install@v2"
         with:
@@ -73,7 +73,7 @@ jobs:
 
       - name: Validate files
         run: composer validate-files
-      
+
       - name: Check Style
         run: composer check-code-style
 
