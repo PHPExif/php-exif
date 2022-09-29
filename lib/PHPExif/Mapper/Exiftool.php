@@ -28,77 +28,77 @@ use function Safe\sprintf;
  */
 class Exiftool implements MapperInterface
 {
-    const APERTURE                 = 'Composite:Aperture';
-    const APPROXIMATEFOCUSDISTANCE = 'XMP-aux:ApproximateFocusDistance';
-    const ARTIST                   = 'IFD0:Artist';
-    const CAPTIONABSTRACT          = 'IPTC:Caption-Abstract';
-    const COLORSPACE               = 'ExifIFD:ColorSpace';
-    const COPYRIGHT                = 'IFD0:Copyright';
-    const DATETIMEORIGINAL         = 'ExifIFD:DateTimeOriginal';
-    const CREDIT                   = 'IPTC:Credit';
-    const EXPOSURETIME             = 'ExifIFD:ExposureTime';
-    const FILESIZE                 = 'System:FileSize';
-    const FILENAME                 = 'System:FileName';
-    const FOCALLENGTH              = 'ExifIFD:FocalLength';
-    const HEADLINE                 = 'IPTC:Headline';
-    const IMAGEHEIGHT              = 'File:ImageHeight';
-    const IMAGEWIDTH               = 'File:ImageWidth';
-    const ISO                      = 'ExifIFD:ISO';
-    const JOBTITLE                 = 'IPTC:By-lineTitle';
-    const KEYWORDS                 = 'IPTC:Keywords';
-    const MIMETYPE                 = 'File:MIMEType';
-    const MODEL                    = 'IFD0:Model';
-    const ORIENTATION              = 'IFD0:Orientation';
-    const SOFTWARE                 = 'IFD0:Software';
-    const SOURCE                   = 'IPTC:Source';
-    const TITLE                    = 'IPTC:ObjectName';
-    const TITLE_XMP                = 'XMP-dc:Title';
-    const XRESOLUTION              = 'IFD0:XResolution';
-    const YRESOLUTION              = 'IFD0:YResolution';
-    const GPSLATITUDE              = 'GPS:GPSLatitude';
-    const GPSLONGITUDE             = 'GPS:GPSLongitude';
-    const GPSALTITUDE              = 'GPS:GPSAltitude';
-    const IMGDIRECTION             = 'GPS:GPSImgDirection';
-    const DESCRIPTION              = 'IFD0:ImageDescription';
-    const DESCRIPTION_XMP          = 'XMP-dc:Description';
-    const MAKE                     = 'IFD0:Make';
-    const LENS                     = 'ExifIFD:LensModel';
-    const LENS_ID                  = 'Composite:LensID';
-    const SUBJECT                  = 'XMP-dc:Subject';
-    const CONTENTIDENTIFIER        = 'Apple:ContentIdentifier';
-    const MEDIA_GROUP_UUID         = 'Apple:MediaGroupUUID';
-    const MICROVIDEOOFFSET         = 'XMP-GCamera:MicroVideoOffset';
-    const SUBLOCATION              = 'IPTC2:Sublocation';
-    const CITY                     = 'IPTC2:City';
-    const STATE                    = 'IPTC2:Province-State';
-    const COUNTRY                  = 'IPTC2:Country-PrimaryLocationName';
+    public const APERTURE                 = 'Composite:Aperture';
+    public const APPROXIMATEFOCUSDISTANCE = 'XMP-aux:ApproximateFocusDistance';
+    public const ARTIST                   = 'IFD0:Artist';
+    public const CAPTIONABSTRACT          = 'IPTC:Caption-Abstract';
+    public const COLORSPACE               = 'ExifIFD:ColorSpace';
+    public const COPYRIGHT                = 'IFD0:Copyright';
+    public const DATETIMEORIGINAL         = 'ExifIFD:DateTimeOriginal';
+    public const CREDIT                   = 'IPTC:Credit';
+    public const EXPOSURETIME             = 'ExifIFD:ExposureTime';
+    public const FILESIZE                 = 'System:FileSize';
+    public const FILENAME                 = 'System:FileName';
+    public const FOCALLENGTH              = 'ExifIFD:FocalLength';
+    public const HEADLINE                 = 'IPTC:Headline';
+    public const IMAGEHEIGHT              = 'File:ImageHeight';
+    public const IMAGEWIDTH               = 'File:ImageWidth';
+    public const ISO                      = 'ExifIFD:ISO';
+    public const JOBTITLE                 = 'IPTC:By-lineTitle';
+    public const KEYWORDS                 = 'IPTC:Keywords';
+    public const MIMETYPE                 = 'File:MIMEType';
+    public const MODEL                    = 'IFD0:Model';
+    public const ORIENTATION              = 'IFD0:Orientation';
+    public const SOFTWARE                 = 'IFD0:Software';
+    public const SOURCE                   = 'IPTC:Source';
+    public const TITLE                    = 'IPTC:ObjectName';
+    public const TITLE_XMP                = 'XMP-dc:Title';
+    public const XRESOLUTION              = 'IFD0:XResolution';
+    public const YRESOLUTION              = 'IFD0:YResolution';
+    public const GPSLATITUDE              = 'GPS:GPSLatitude';
+    public const GPSLONGITUDE             = 'GPS:GPSLongitude';
+    public const GPSALTITUDE              = 'GPS:GPSAltitude';
+    public const IMGDIRECTION             = 'GPS:GPSImgDirection';
+    public const DESCRIPTION              = 'IFD0:ImageDescription';
+    public const DESCRIPTION_XMP          = 'XMP-dc:Description';
+    public const MAKE                     = 'IFD0:Make';
+    public const LENS                     = 'ExifIFD:LensModel';
+    public const LENS_ID                  = 'Composite:LensID';
+    public const SUBJECT                  = 'XMP-dc:Subject';
+    public const CONTENTIDENTIFIER        = 'Apple:ContentIdentifier';
+    public const MEDIA_GROUP_UUID         = 'Apple:MediaGroupUUID';
+    public const MICROVIDEOOFFSET         = 'XMP-GCamera:MicroVideoOffset';
+    public const SUBLOCATION              = 'IPTC2:Sublocation';
+    public const CITY                     = 'IPTC2:City';
+    public const STATE                    = 'IPTC2:Province-State';
+    public const COUNTRY                  = 'IPTC2:Country-PrimaryLocationName';
 
-    const DATETIMEORIGINAL_QUICKTIME  = 'QuickTime:CreateDate';
-    const DATETIMEORIGINAL_AVI        = 'RIFF:DateTimeOriginal';
-    const DATETIMEORIGINAL_WEBM       = 'Matroska:DateTimeOriginal';
-    const DATETIMEORIGINAL_OGG        = 'Theora:CreationTime';
-    const DATETIMEORIGINAL_WMV        = 'ASF:CreationDate';
-    const DATETIMEORIGINAL_APPLE      = 'Keys:CreationDate';
-    const IMAGEHEIGHT_VIDEO           = 'Composite:ImageSize';
-    const IMAGEWIDTH_VIDEO            = 'Composite:ImageSize';
-    const MAKE_QUICKTIME              = 'QuickTime:Make';
-    const MODEL_QUICKTIME             = 'QuickTime:Model';
-    const CONTENTIDENTIFIER_QUICKTIME = 'QuickTime:ContentIdentifier';
-    const CONTENTIDENTIFIER_KEYS      = 'Keys:ContentIdentifier';
-    const GPSLATITUDE_QUICKTIME       = 'Composite:GPSLatitude';
-    const GPSLONGITUDE_QUICKTIME      = 'Composite:GPSLongitude';
-    const GPSALTITUDE_QUICKTIME       = 'Composite:GPSAltitude';
-    const FRAMERATE                   = 'MPEG:FrameRate';
-    const FRAMERATE_QUICKTIME_1       = 'Track1:VideoFrameRate';
-    const FRAMERATE_QUICKTIME_2       = 'Track2:VideoFrameRate';
-    const FRAMERATE_QUICKTIME_3       = 'Track3:VideoFrameRate';
-    const FRAMERATE_AVI               = 'RIFF:VideoFrameRate';
-    const FRAMERATE_OGG               = 'Theora:FrameRate';
-    const DURATION                    = 'Composite:Duration';
-    const DURATION_QUICKTIME          = 'QuickTime:Duration';
-    const DURATION_WEBM               = 'Matroska:Duration';
-    const DURATION_WMV                = 'ASF:SendDuration';
-    const DATETIMEORIGINAL_PNG        = 'PNG:CreationTime';
+    public const DATETIMEORIGINAL_QUICKTIME  = 'QuickTime:CreateDate';
+    public const DATETIMEORIGINAL_AVI        = 'RIFF:DateTimeOriginal';
+    public const DATETIMEORIGINAL_WEBM       = 'Matroska:DateTimeOriginal';
+    public const DATETIMEORIGINAL_OGG        = 'Theora:CreationTime';
+    public const DATETIMEORIGINAL_WMV        = 'ASF:CreationDate';
+    public const DATETIMEORIGINAL_APPLE      = 'Keys:CreationDate';
+    public const IMAGEHEIGHT_VIDEO           = 'Composite:ImageSize';
+    public const IMAGEWIDTH_VIDEO            = 'Composite:ImageSize';
+    public const MAKE_QUICKTIME              = 'QuickTime:Make';
+    public const MODEL_QUICKTIME             = 'QuickTime:Model';
+    public const CONTENTIDENTIFIER_QUICKTIME = 'QuickTime:ContentIdentifier';
+    public const CONTENTIDENTIFIER_KEYS      = 'Keys:ContentIdentifier';
+    public const GPSLATITUDE_QUICKTIME       = 'Composite:GPSLatitude';
+    public const GPSLONGITUDE_QUICKTIME      = 'Composite:GPSLongitude';
+    public const GPSALTITUDE_QUICKTIME       = 'Composite:GPSAltitude';
+    public const FRAMERATE                   = 'MPEG:FrameRate';
+    public const FRAMERATE_QUICKTIME_1       = 'Track1:VideoFrameRate';
+    public const FRAMERATE_QUICKTIME_2       = 'Track2:VideoFrameRate';
+    public const FRAMERATE_QUICKTIME_3       = 'Track3:VideoFrameRate';
+    public const FRAMERATE_AVI               = 'RIFF:VideoFrameRate';
+    public const FRAMERATE_OGG               = 'Theora:FrameRate';
+    public const DURATION                    = 'Composite:Duration';
+    public const DURATION_QUICKTIME          = 'QuickTime:Duration';
+    public const DURATION_WEBM               = 'Matroska:Duration';
+    public const DURATION_WMV                = 'ASF:SendDuration';
+    public const DATETIMEORIGINAL_PNG        = 'PNG:CreationTime';
 
     /**
      * Maps the ExifTool fields to the fields of
@@ -185,7 +185,7 @@ class Exiftool implements MapperInterface
      * @param bool $numeric
      * @return \PHPExif\Mapper\Exiftool
      */
-    public function setNumeric(bool $numeric) : Exiftool
+    public function setNumeric(bool $numeric): Exiftool
     {
         $this->numeric = $numeric;
 
@@ -199,7 +199,7 @@ class Exiftool implements MapperInterface
      * @param array $data
      * @return array
      */
-    public function mapRawData(array $data) : array
+    public function mapRawData(array $data): array
     {
         $mappedData = array();
 
@@ -356,7 +356,7 @@ class Exiftool implements MapperInterface
                         continue 2;
                     }
                     break;
-                // Merge sources of keywords
+                    // Merge sources of keywords
                 case self::KEYWORDS:
                 case self::SUBJECT:
                     $xval = is_array($value) ? $value : [$value];
@@ -392,7 +392,7 @@ class Exiftool implements MapperInterface
      * @param string $coordinates
      * @return float|false
      */
-    protected function extractGPSCoordinates(string $coordinates) : float|false
+    protected function extractGPSCoordinates(string $coordinates): float|false
     {
         if (is_numeric($coordinates) === true || $this->numeric === true) {
             return ((float) $coordinates);
@@ -401,7 +401,10 @@ class Exiftool implements MapperInterface
                 return false;
             }
 
-            return floatval($matches[1]) + (floatval($matches[2]) / 60) + (floatval($matches[3]) / 3600);
+            return round(
+                floatval($matches[1]) + (floatval($matches[2]) / 60) + (floatval($matches[3]) / 3600),
+                self::ROUNDING_PRECISION
+            );
         }
     }
 }

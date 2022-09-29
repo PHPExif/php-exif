@@ -295,7 +295,7 @@ class ImageMagick implements MapperInterface
             if ($degrees === false || $minutes === false || $seconds === false) {
                 return false;
             }
-            return $degrees + $minutes / 60 + $seconds / 3600;
+            return round($degrees + $minutes / 60 + $seconds / 3600, self::ROUNDING_PRECISION);
         }
     }
 
