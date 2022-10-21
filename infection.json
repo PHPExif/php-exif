@@ -1,0 +1,21 @@
+{
+	"$schema": "vendor/infection/infection/resources/schema.json",
+	"source": {
+		"directories": ["lib"]
+	},
+	"logs": {
+		"html": "infection.html",
+		"github": true
+	},
+	"mutators": {
+		"@default": true,
+		"SharedCaseRemoval": false,
+		"IncrementInteger": false,
+		"DecrementInteger": false,
+		"@cast": false,
+		"ConcatOperandRemoval": false,
+		"Concat": false,
+		"Continue_": false,
+		"Break_": false
+	}
+}

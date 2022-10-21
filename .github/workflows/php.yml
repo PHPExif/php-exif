@@ -1,41 +1,122 @@
-name: Tests
+name: "Integrate"
 
 # Run this workflow every time a new commit pushed to your repository
 on:
   push:
     paths-ignore:
       - '**/*.md'
+      - 'public/dist/*.js'
+      - 'public/dist/**/*.js'
   pull_request:
     paths-ignore:
       - '**/*.md'
+      - 'public/dist/*.js'
+      - 'public/dist/**/*.js'
+  # Allow manually triggering the workflow.
+  workflow_dispatch:
 
 jobs:
-  tests:
-    runs-on: ${{ matrix.operating-system }}
+  kill_previous:
+    name: "0️⃣ Kill previous runs"
+    runs-on: "ubuntu-latest"
     # We want to run on external PRs, but not on our own internal PRs as they'll be run by the push to the branch.
     if: (github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository)
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
 
+  php_syntax_errors:
+    name: "1️⃣ PHP: Syntax errors"
+    runs-on: "ubuntu-latest"
+    needs:
+      - "kill_previous"
+    steps:
+      - name: "Set up PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "latest"
+
+      - name: "Checkout code"
+        uses: "actions/checkout@v3"
+
+      - name: "Install dependencies"
+        uses: "ramsey/composer-install@v2"
+
+      - name: Validate files
+        run: composer validate-files
+
+  code_style_errors:
+    name: "1️⃣ PHP: Code Style errors"
+    runs-on: "ubuntu-latest"
+    needs:
+      - "kill_previous"
+    steps:
+      - name: "Set up PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "latest"
+
+      - name: "Checkout code"
+        uses: "actions/checkout@v3"
+
+      - name: "Install dependencies"
+        uses: "ramsey/composer-install@v2"
+
+      - name: Check Style
+        run: composer check-code-style
+
+  phpstan:
+    name: "2️⃣ PHP: PHPStan"
+    runs-on: "ubuntu-latest"
+    needs:
+      - "php_syntax_errors"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.15.0
+        with:
+          php-version: "latest"
+          coverage: none
+          tools: phpstan
+
+      - name: Install Composer dependencies
+        uses: "ramsey/composer-install@v2"
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyze
+
+  tests:
+    name: "2️⃣ PHP ${{ matrix.php-version }}: ${{ matrix.beta }} ${{ matrix.dependencies }}"
+    needs:
+      - "php_syntax_errors"
+    runs-on: "ubuntu-latest"
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ubuntu-20.04]
-        php-versions: ['8.0', '8.1']
-        beta: ['beta', '']
-        dependencies: ['locked', 'lowest', 'highest']
+        php-version:
+          - "8.0"
+          - "8.1"
+        dependencies:
+          - "locked"
+          - "lowest"
+          - "highest"
+        beta:
+            - "beta"
+            - ""
         exclude:
-          - beta: 'beta'
-            dependencies: 'locked'
-          - beta: 'beta'
-            dependencies: 'lowest'
-
-    name: PHP ${{ matrix.php-versions }} -- ${{ matrix.beta }} ${{ matrix.dependencies }}
+          - beta: "beta"
+            dependencies: "locked"
+          - beta: "beta"
+            dependencies: "lowest"
 
     env:
       extensions: curl, dom, imagick, json, libxml, mbstring
-      key: cache-v1 # can be any string, change to clear the extension cache.
 
     steps:
-      # Checks out a copy of your repository on the ubuntu machine
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -48,7 +129,7 @@ jobs:
       - name: Setup PHP Action
         uses: shivammathur/setup-php@2.15.0
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
           extensions: ${{ env.extensions }}
           coverage: xdebug
           tools: pecl, composer
@@ -79,3 +160,44 @@ jobs:
 
       - name: Run tests
         run: composer run-tests
+
+      - name: Codecov
+        uses: codecov/codecov-action@v1
+
+  # support for mutation testing.
+  #
+  # This section is disabled because Mutation testing is a rather slow process
+  # and furthermore adds lots of noise into the pull request review panel by Github.
+  # While it is an intersting set of tests to have, this does not constitute major
+  # improvements to the full code base.
+  #
+  # TODO: This section can be uncommented once ALL the code paths are evaluted.
+  # This unfortunately includes changes such as in_array(...,..., true) into in_array(...,..., false)
+  # and other behaviours which are very edge cases
+  #
+  # infection:
+  #   name: "3️⃣ PHP: Mutation testing"
+  #   runs-on: "ubuntu-latest"
+  #   needs:
+  #   - "tests"
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Set Up Imagick, FFmpeg & Exiftools
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get --fix-broken install
+  #         sudo apt-get -y install ffmpeg libimage-exiftool-perl libmagickwand-dev
+
+  #     - name: Setup PHP
+  #       uses: shivammathur/setup-php@2.15.0
+  #       with:
+  #         php-version: "latest"
+  #         coverage: xdebug
+
+  #     - name: Install Composer dependencies
+  #       uses: "ramsey/composer-install@v2"
+
+  #     - name: Run Infection
+  #       run: vendor/bin/infection

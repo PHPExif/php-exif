@@ -17,7 +17,6 @@ use Safe\DateTime;
 use function Safe\preg_match;
 use function Safe\preg_replace;
 use function Safe\preg_split;
-use function Safe\sprintf;
 
 /**
  * PHP Exif Imagick Mapper
