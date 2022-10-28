@@ -1,13 +1,5 @@
 <?php
 /**
- * PHP Exif Reader Interface: Defines the interface for
- * the Reader functionality
- *
- * @link        http://github.com/miljar/PHPExif for the canonical source repository
- * @copyright   Copyright (c) 2015 Tom Van Herreweghe <tom@theanalogguy.be>
- * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
- * @category    PHPExif
- * @package     Reader
  * @codeCoverageIgnore
  */
 

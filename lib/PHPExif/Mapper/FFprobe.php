@@ -1,13 +1,4 @@
 <?php
-/**
- * PHP Exif Native Mapper
- *
- * @link        http://github.com/miljar/PHPExif for the canonical source repository
- * @copyright   Copyright (c) 2015 Tom Van Herreweghe <tom@theanalogguy.be>
- * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
- * @category    PHPExif
- * @package     Mapper
- */
 
 namespace PHPExif\Mapper;
 
@@ -24,7 +15,7 @@ use function Safe\preg_match;
  * @category    PHPExif
  * @package     Mapper
  */
-class FFprobe implements MapperInterface
+class FFprobe extends MapperAbstract
 {
     const HEIGHT           = 'height';
     const WIDTH            = 'width';
@@ -114,6 +105,7 @@ class FFprobe implements MapperInterface
             }
 
             $key = $this->map[$field];
+            $value = $this->trim($value);
 
             // manipulate the value if necessary
             switch ($field) {
@@ -286,7 +278,7 @@ class FFprobe implements MapperInterface
         if ($sign === '-') {
             $decimal = -1.0 * $decimal;
         }
-        return $decimal;
+        return round($decimal, self::ROUNDING_PRECISION);
     }
 
     /**

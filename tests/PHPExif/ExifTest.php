@@ -833,7 +833,7 @@ class ExifTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test that the values returned by both adapters are equal
+     * Test that the values returned by different adapters are equal
      *
      * @group consistency
      * @covers \PHPExif\Exif::getAperture
@@ -867,7 +867,9 @@ class ExifTest extends \PHPUnit\Framework\TestCase
         $testfiles = array(
             PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg',
             PHPEXIF_TEST_ROOT . '/files/dsc_5794.jpg',
-            PHPEXIF_TEST_ROOT . '/files/dsc_0003.jpg'
+            PHPEXIF_TEST_ROOT . '/files/dsc_0003.jpg',
+            PHPEXIF_TEST_ROOT . '/files/mongolia.jpeg',
+            PHPEXIF_TEST_ROOT . '/files/utf8.jpg',
         );
 
         $adapter_exiftool = new \PHPExif\Adapter\Exiftool();
@@ -882,7 +884,10 @@ class ExifTest extends \PHPUnit\Framework\TestCase
             // find all Getter methods on the results and compare its output
             foreach ($methods as $method) {
                 $name = $method->getName();
-                if (strpos($name, 'get') !== 0 || $name == 'getRawData' || $name == 'getData' || $name == 'getColorSpace' || ($name == 'getLens' && $file == PHPEXIF_TEST_ROOT . '/files/dsc_5794.jpg')) {
+                if (strpos($name, 'get') !== 0 || $name === 'getRawData' || $name === 'getData' || $name === 'getColorSpace' ||
+                    ($name === 'getLens' && $file === PHPEXIF_TEST_ROOT . '/files/dsc_5794.jpg') ||
+                    ($file === PHPEXIF_TEST_ROOT . '/files/mongolia.jpeg' && ($name === 'getKeywords' || $name === 'getLens')) ||
+                    ($file === PHPEXIF_TEST_ROOT . '/files/utf8.jpg' && ($name === 'getAuthor' || $name === 'getDescription'))) {
                     continue;
                 }
                 $this->assertEquals(
@@ -892,6 +897,30 @@ class ExifTest extends \PHPUnit\Framework\TestCase
                 );
                 $this->assertEquals(
                     call_user_func(array($result_native, $name)),
+                    call_user_func(array($result_imagemagick, $name)),
+                    'Adapter difference detected in method "' . $name . '" on image "' . basename($file) . '"'
+                );
+            }
+        }
+
+        // Native adapter does not support PNG files so we can't use it in
+        // this case.
+        $testfiles = array(
+            PHPEXIF_TEST_ROOT . '/files/1945c1.png'
+        );
+
+        foreach ($testfiles as $file) {
+            $result_exiftool = $adapter_exiftool->getExifFromFile($file);
+            $result_imagemagick = $adapter_imagemagick->getExifFromFile($file);
+
+            // find all Getter methods on the results and compare its output
+            foreach ($methods as $method) {
+                $name = $method->getName();
+                if (strpos($name, 'get') !== 0 || $name === 'getRawData' || $name === 'getData' || $name === 'getColorSpace') {
+                    continue;
+                }
+                $this->assertEquals(
+                    call_user_func(array($result_exiftool, $name)),
                     call_user_func(array($result_imagemagick, $name)),
                     'Adapter difference detected in method "' . $name . '" on image "' . basename($file) . '"'
                 );

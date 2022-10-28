@@ -375,13 +375,13 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
                           'altitude' => '8850',
                       ),
           '+1234.7-09854.1/' => array(
-                          'latitude' => '12.578333333333333',
-                          'longitude' => '-98.90166666666667',
+                          'latitude' => '12.578333333333',
+                          'longitude' => '-98.901666666667',
                           'altitude' => null,
                       ),
           '+352139+1384339+3776/' => array(
-                          'latitude' => '35.36083333333333333333333333',
-                          'longitude' => '138.7275000000000000000000000',
+                          'latitude' => '35.360833333333',
+                          'longitude' => '138.727500000000',
                           'altitude' => '3776',
                       ),
           '+40.75-074.00/' => array(
@@ -390,8 +390,8 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
                           'altitude' => null,
                       ),
           '+123456.7-0985432.1/' => array(
-                          'latitude' => '12.58241666666666666666666667',
-                          'longitude' => '-98.90891666666666666666666667',
+                          'latitude' => '12.582416666667',
+                          'longitude' => '-98.908916666667',
                           'altitude' => null,
                       ),
           '-90+000+2800/' => array(
@@ -447,42 +447,42 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
                           'seconds' => '',
                           'fraction' => '.5640',
                       ),
-          '12.578333333333333' => array(
+          '12.578333333333' => array(
                           'sign' => '+',
                           'degrees' => '12',
                           'minutes' => '34',
                           'seconds' => '',
                           'fraction' => '.7',
                       ),
-          '-98.90166666666666666666666667' => array(
+          '-98.901666666667' => array(
                           'sign' => '-',
                           'degrees' => '098',
                           'minutes' => '54',
                           'seconds' => '',
                           'fraction' => '.1',
                       ),
-          '+35.36083333333333333333333333' => array(
+          '+35.360833333333' => array(
                           'sign' => '+',
                           'degrees' => '35',
                           'minutes' => '21',
                           'seconds' => '39',
                           'fraction' => '',
                       ),
-          '+138.7275000000000000000000000' => array(
+          '+138.72750000000' => array(
                           'sign' => '+',
                           'degrees' => '138',
                           'minutes' => '43',
                           'seconds' => '39',
                           'fraction' => '',
                       ),
-          '12.58241666666666666666666667' => array(
+          '12.582416666667' => array(
                           'sign' => '+',
                           'degrees' => '12',
                           'minutes' => '34',
                           'seconds' => '56',
                           'fraction' => '.7',
                       ),
-          '-98.90891666666666666666666667' => array(
+          '-98.908916666667' => array(
                           'sign' => '-',
                           'degrees' => '098',
                           'minutes' => '54',

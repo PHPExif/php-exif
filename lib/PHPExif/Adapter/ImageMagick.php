@@ -1,13 +1,4 @@
 <?php
-/**
- * PHP Exif Imagick Reader Adapter
- *
- * @link        http://github.com/miljar/PHPExif for the canonical source repository
- * @copyright   Copyright (c) 2013 Tom Van Herreweghe <tom@theanalogguy.be>
- * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
- * @category    PHPExif
- * @package     Reader
- */
 
 namespace PHPExif\Adapter;
 
@@ -83,6 +74,8 @@ class ImageMagick extends AdapterAbstract
         }
 
         $data = array_merge($data_exif, $data_iptc, $additional_data);
+        // Force UTF8 encoding
+        $data = $this->convertToUTF8($data);
 
         // map the data:
         $mapper = $this->getMapper();

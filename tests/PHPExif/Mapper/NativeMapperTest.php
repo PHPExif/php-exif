@@ -55,6 +55,8 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
         unset($map[\PHPExif\Mapper\Native::SUBLOCATION]);
         unset($map[\PHPExif\Mapper\Native::STATE]);
         unset($map[\PHPExif\Mapper\Native::COUNTRY]);
+        unset($map[\PHPExif\Mapper\Native::LENS_LR]);
+        unset($map[\PHPExif\Mapper\Native::LENS_TYPE]);
 
         // create raw data
         $keys = array_keys($map);

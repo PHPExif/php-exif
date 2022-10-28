@@ -1,13 +1,4 @@
 <?php
-/**
- * PHP Exif Reader Adapter Abstract: Common functionality for adapters
- *
- * @link        http://github.com/miljar/PHPExif for the canonical source repository
- * @copyright   Copyright (c) 2013 Tom Van Herreweghe <tom@theanalogguy.be>
- * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
- * @category    PHPExif
- * @package     Reader
- */
 
 namespace PHPExif\Adapter;
 

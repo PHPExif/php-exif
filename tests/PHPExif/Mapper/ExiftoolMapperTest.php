@@ -44,6 +44,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
         // ignore custom formatted data stuff:
         unset($map[\PHPExif\Mapper\Exiftool::APERTURE]);
         unset($map[\PHPExif\Mapper\Exiftool::APPROXIMATEFOCUSDISTANCE]);
+        unset($map[\PHPExif\Mapper\Exiftool::COPYRIGHT_IPTC]);
         unset($map[\PHPExif\Mapper\Exiftool::DATETIMEORIGINAL]);
         unset($map[\PHPExif\Mapper\Exiftool::EXPOSURETIME]);
         unset($map[\PHPExif\Mapper\Exiftool::FOCALLENGTH]);

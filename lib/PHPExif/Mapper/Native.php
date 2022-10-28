@@ -1,13 +1,4 @@
 <?php
-/**
- * PHP Exif Native Mapper
- *
- * @link        http://github.com/miljar/PHPExif for the canonical source repository
- * @copyright   Copyright (c) 2015 Tom Van Herreweghe <tom@theanalogguy.be>
- * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
- * @category    PHPExif
- * @package     Mapper
- */
 
 namespace PHPExif\Mapper;
 
@@ -25,7 +16,7 @@ use function Safe\preg_replace;
  * @category    PHPExif
  * @package     Mapper
  */
-class Native implements MapperInterface
+class Native extends MapperAbstract
 {
     const APERTUREFNUMBER  = 'ApertureFNumber';
     const ARTIST           = 'Artist';
@@ -61,7 +52,7 @@ class Native implements MapperInterface
     const LENS             = 'LensInfo';
     const LENS_LR          = 'UndefinedTag:0xA434';
     const LENS_TYPE        = 'LensType';
-    const DESCRIPTION      = 'caption';
+    const DESCRIPTION      = 'ImageDescription';
     const SUBJECT          = 'subject';
     const FRAMERATE        = 'framerate';
     const DURATION         = 'duration';
@@ -172,9 +163,7 @@ class Native implements MapperInterface
             }
 
             $key = $this->map[$field];
-            if (is_string($value)) {
-                $value = trim($value);
-            }
+            $value = $this->trim($value);
 
             // manipulate the value if necessary
             switch ($field) {
@@ -365,7 +354,7 @@ class Native implements MapperInterface
             return false;
         }
         $flip = ($ref === 'W' || $ref === 'S') ? -1 : 1;
-        return $flip * ($degrees + (float) $minutes / 60 + (float) $seconds / 3600);
+        return round($flip * ($degrees + (float) $minutes / 60 + (float) $seconds / 3600), self::ROUNDING_PRECISION);
     }
 
     /**

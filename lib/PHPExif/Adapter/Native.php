@@ -1,19 +1,9 @@
 <?php
-/**
- * PHP Exif Native Reader Adapter
- *
- * @link        http://github.com/miljar/PHPExif for the canonical source repository
- * @copyright   Copyright (c) 2013 Tom Van Herreweghe <tom@theanalogguy.be>
- * @license     http://github.com/miljar/PHPExif/blob/master/LICENSE MIT License
- * @category    PHPExif
- * @package     Reader
- */
 
 namespace PHPExif\Adapter;
 
 use PHPExif\Exif;
 use Safe\Exceptions\ImageException;
-use Throwable;
 
 use function Safe\mime_content_type;
 use function Safe\filesize;
@@ -229,7 +219,7 @@ class Native extends AdapterAbstract
                 // Fail silently
             }
         }
-        
+
         // Force UTF8 encoding
         $data = $this->convertToUTF8($data);
 

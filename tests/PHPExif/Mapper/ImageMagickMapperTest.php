@@ -55,6 +55,7 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
         unset($map[\PHPExif\Mapper\ImageMagick::IMAGEHEIGHT_PNG]);
         unset($map[\PHPExif\Mapper\ImageMagick::IMAGEWIDTH_PNG]);
         unset($map[\PHPExif\Mapper\ImageMagick::CREATION_DATE]);
+        unset($map[\PHPExif\Mapper\ImageMagick::COPYRIGHT_IPTC]);
 
         // create raw data
         $keys = array_unique(array_keys($map));

@@ -25,7 +25,7 @@ use function Safe\preg_replace;
  * @category    PHPExif
  * @package     Mapper
  */
-class Exiftool implements MapperInterface
+class Exiftool extends MapperAbstract
 {
     public const APERTURE                 = 'Composite:Aperture';
     public const APPROXIMATEFOCUSDISTANCE = 'XMP-aux:ApproximateFocusDistance';
@@ -33,6 +33,7 @@ class Exiftool implements MapperInterface
     public const CAPTIONABSTRACT          = 'IPTC:Caption-Abstract';
     public const COLORSPACE               = 'ExifIFD:ColorSpace';
     public const COPYRIGHT                = 'IFD0:Copyright';
+    public const COPYRIGHT_IPTC           = 'IPTC:CopyrightNotice';
     public const DATETIMEORIGINAL         = 'ExifIFD:DateTimeOriginal';
     public const CREDIT                   = 'IPTC:Credit';
     public const EXPOSURETIME             = 'ExifIFD:ExposureTime';
@@ -109,6 +110,7 @@ class Exiftool implements MapperInterface
         self::MODEL                    => Exif::CAMERA,
         self::COLORSPACE               => Exif::COLORSPACE,
         self::COPYRIGHT                => Exif::COPYRIGHT,
+        self::COPYRIGHT_IPTC           => Exif::COPYRIGHT,
         self::DATETIMEORIGINAL         => Exif::CREATION_DATE,
         self::CREDIT                   => Exif::CREDIT,
         self::EXPOSURETIME             => Exif::EXPOSURE,
@@ -209,6 +211,7 @@ class Exiftool implements MapperInterface
             }
 
             $key = $this->map[$field];
+            $value = $this->trim($value);
 
             // manipulate the value if necessary
             switch ($field) {
@@ -388,13 +391,13 @@ class Exiftool implements MapperInterface
     /**
      * Extract GPS coordinates from formatted string
      *
-     * @param string $coordinates
+     * @param mixed $coordinates
      * @return float|false
      */
-    protected function extractGPSCoordinates(string $coordinates): float|false
+    protected function extractGPSCoordinates(mixed $coordinates): float|false
     {
         if (is_numeric($coordinates) === true || $this->numeric === true) {
-            return ((float) $coordinates);
+            return round(floatval($coordinates), self::ROUNDING_PRECISION);
         } else {
             if (preg_match('!^([0-9.]+) deg ([0-9.]+)\' ([0-9.]+)"!', $coordinates, $matches) === 0) {
                 return false;
