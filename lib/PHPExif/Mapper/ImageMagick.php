@@ -17,7 +17,7 @@ use function Safe\preg_split;
  * @category    PHPExif
  * @package     Mapper
  */
-class ImageMagick extends MapperAbstract
+class ImageMagick extends AbstractMapper
 {
     const APERTURE                 = 'exif:FNumber';
     const ARTIST                   = 'exif:Artist';
@@ -264,7 +264,8 @@ class ImageMagick extends MapperAbstract
 
         // add GPS coordinates, if available
         if ((isset($mappedData[Exif::LATITUDE])) && (isset($mappedData[Exif::LONGITUDE]))) {
-            $mappedData[Exif::GPS] = sprintf('%s,%s', $mappedData[Exif::LATITUDE], $mappedData[Exif::LONGITUDE]);
+            $mappedData[Exif::GPS] =
+                sprintf('%s,%s', (string) $mappedData[Exif::LATITUDE], (string) $mappedData[Exif::LONGITUDE]);
         }
         return $mappedData;
     }

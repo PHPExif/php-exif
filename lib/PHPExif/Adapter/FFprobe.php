@@ -29,7 +29,7 @@ use function Safe\array_replace_recursive;
  * @category    PHPExif
  * @package     Reader
  */
-class FFprobe extends AdapterAbstract
+class FFprobe extends AbstractAdapter
 {
     public const TOOL_NAME = 'ffprobe';
 

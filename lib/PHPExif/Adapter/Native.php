@@ -18,7 +18,7 @@ use function Safe\iptcparse;
  * @category    PHPExif
  * @package     Reader
  */
-class Native extends AdapterAbstract
+class Native extends AbstractAdapter
 {
     const INCLUDE_THUMBNAIL = true;
     const NO_THUMBNAIL      = false;

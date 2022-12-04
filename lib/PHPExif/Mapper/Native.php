@@ -16,7 +16,7 @@ use function Safe\preg_replace;
  * @category    PHPExif
  * @package     Mapper
  */
-class Native extends MapperAbstract
+class Native extends AbstractMapper
 {
     const APERTUREFNUMBER  = 'ApertureFNumber';
     const ARTIST           = 'Artist';
@@ -294,7 +294,8 @@ class Native extends MapperAbstract
 
         // add GPS coordinates, if available
         if ((isset($mappedData[Exif::LATITUDE])) && (isset($mappedData[Exif::LONGITUDE]))) {
-            $mappedData[Exif::GPS] = sprintf('%s,%s', $mappedData[Exif::LATITUDE], $mappedData[Exif::LONGITUDE]);
+            $mappedData[Exif::GPS] =
+                sprintf('%s,%s', (string) $mappedData[Exif::LATITUDE], (string) $mappedData[Exif::LONGITUDE]);
         }
 
         return $mappedData;

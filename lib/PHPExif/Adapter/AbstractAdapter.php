@@ -14,7 +14,7 @@ use ForceUTF8\Encoding;
  * @category    PHPExif
  * @package     Reader
  */
-abstract class AdapterAbstract implements AdapterInterface
+abstract class AbstractAdapter implements AdapterInterface
 {
     protected string $hydratorClass = '\\PHPExif\\Hydrator\\Mutator';
     protected ?MapperInterface $mapper = null;

@@ -25,7 +25,7 @@ use function Safe\preg_replace;
  * @category    PHPExif
  * @package     Mapper
  */
-class Exiftool extends MapperAbstract
+class Exiftool extends AbstractMapper
 {
     public const APERTURE                 = 'Composite:Aperture';
     public const APPROXIMATEFOCUSDISTANCE = 'XMP-aux:ApproximateFocusDistance';
@@ -382,7 +382,8 @@ class Exiftool extends MapperAbstract
 
         // add GPS coordinates, if available
         if ((isset($mappedData[Exif::LATITUDE])) && (isset($mappedData[Exif::LONGITUDE]))) {
-            $mappedData[Exif::GPS] = sprintf('%s,%s', $mappedData[Exif::LATITUDE], $mappedData[Exif::LONGITUDE]);
+            $mappedData[Exif::GPS] =
+                sprintf('%s,%s', (string) $mappedData[Exif::LATITUDE], (string) $mappedData[Exif::LONGITUDE]);
         }
 
         return $mappedData;

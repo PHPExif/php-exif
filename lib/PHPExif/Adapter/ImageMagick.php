@@ -18,7 +18,7 @@ use function Safe\mime_content_type;
  * @category    PHPExif
  * @package     Reader
  */
-class ImageMagick extends AdapterAbstract
+class ImageMagick extends AbstractAdapter
 {
     const TOOL_NAME = 'imagick';
 

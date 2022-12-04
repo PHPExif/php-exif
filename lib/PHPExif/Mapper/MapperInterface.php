@@ -15,8 +15,6 @@ namespace PHPExif\Mapper;
  */
 interface MapperInterface
 {
-    public const ROUNDING_PRECISION = 12;
-
     /**
      * Maps the array of raw source data to the correct
      * fields for the \PHPExif\Exif class

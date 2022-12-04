@@ -10,8 +10,10 @@ namespace PHPExif\Mapper;
  * @category    PHPExif
  * @package     Mapper
  */
-abstract class MapperAbstract implements MapperInterface
+abstract class AbstractMapper implements MapperInterface
 {
+    public const ROUNDING_PRECISION = 12;
+
     /**
      * Trim whitespaces recursively
      *

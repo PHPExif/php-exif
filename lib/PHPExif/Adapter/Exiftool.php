@@ -20,7 +20,7 @@ use function Safe\fclose;
  * @category    PHPExif
  * @package     Reader
  */
-class Exiftool extends AdapterAbstract
+class Exiftool extends AbstractAdapter
 {
     const TOOL_NAME = 'exiftool';
 

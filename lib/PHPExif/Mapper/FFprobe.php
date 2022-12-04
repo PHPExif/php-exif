@@ -15,7 +15,7 @@ use function Safe\preg_match;
  * @category    PHPExif
  * @package     Mapper
  */
-class FFprobe extends MapperAbstract
+class FFprobe extends AbstractMapper
 {
     const HEIGHT           = 'height';
     const WIDTH            = 'width';
@@ -171,7 +171,11 @@ class FFprobe extends MapperAbstract
 
         // add GPS coordinates, if available
         if ((isset($mappedData[Exif::LATITUDE])) && (isset($mappedData[Exif::LONGITUDE]))) {
-            $mappedData[Exif::GPS] = sprintf('%s,%s', $mappedData[Exif::LATITUDE], $mappedData[Exif::LONGITUDE]);
+            $mappedData[Exif::GPS] = sprintf(
+                '%s,%s',
+                (string) $mappedData[Exif::LATITUDE],
+                (string) $mappedData[Exif::LONGITUDE]
+            );
         }
 
         // Swap width and height if needed
