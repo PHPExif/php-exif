@@ -1,4 +1,4 @@
-# [PHPExif v0.7.11](http://github.com/LycheeOrg/php-exif)
+# [PHPExif](http://github.com/LycheeOrg/php-exif)
 
 [![GitHub Release][release-shield]](https://github.com/LycheeOrg/php-exif/releases)
 [![PHP 8.0 & 8.1][php-shield]](https://github.com/LycheeOrg/php-exif#installation-composer)

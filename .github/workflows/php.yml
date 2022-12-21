@@ -90,7 +90,7 @@ jobs:
         run: vendor/bin/phpstan analyze
 
   tests:
-    name: "2️⃣ PHP ${{ matrix.php-version }}: ${{ matrix.beta }} ${{ matrix.dependencies }}"
+    name: "2️⃣ PHP ${{ matrix.php-version }}: Tests"
     needs:
       - "php_syntax_errors"
     runs-on: "ubuntu-latest"
@@ -100,19 +100,7 @@ jobs:
         php-version:
           - "8.0"
           - "8.1"
-        dependencies:
-          - "locked"
-          - "lowest"
-          - "highest"
-        beta:
-            - "beta"
-            - ""
-        exclude:
-          - beta: "beta"
-            dependencies: "locked"
-          - beta: "beta"
-            dependencies: "lowest"
-
+          - "8.2"
     env:
       extensions: curl, dom, imagick, json, libxml, mbstring
 
@@ -134,17 +122,11 @@ jobs:
           coverage: xdebug
           tools: pecl, composer
 
-      - name: Fix beta
-        if: ${{ matrix.beta == 'beta' }}
-        run: perl -pi -e 's/^}$/,"minimum-stability":"beta"}/' composer.json
-
       # Install dependencies and handle caching in one go.
       # Dependencies need to be installed to make sure the PHPUnit classes are recognized.
       # @link https://github.com/marketplace/actions/install-php-dependencies-with-composer
       - name: Install Composer dependencies
         uses: "ramsey/composer-install@v2"
-        with:
-          dependency-versions: "${{ matrix.dependencies }}"
 
       # - name: boot test server
       #   run: vendor/bin/http_test_server > /dev/null 2>&1 &
