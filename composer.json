@@ -28,7 +28,7 @@
         "Imagick"
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-fileinfo": "*",
         "neitanod/forceutf8": "^2.0.4",
         "php-ffmpeg/php-ffmpeg": "^1.0",
@@ -73,7 +73,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.0.2"
+            "php": "8.1"
         },
         "preferred-install": "dist",
         "sort-packages": true,
