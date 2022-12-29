@@ -4,6 +4,7 @@ namespace PHPExif\Adapter;
 
 use PHPExif\Exif;
 use Imagick;
+use PHPExif\Mapper\ImageMagick as MapperImageMagick;
 use Safe\Exceptions\ImageException;
 
 use function Safe\filesize;
@@ -22,7 +23,7 @@ class ImageMagick extends AbstractAdapter
 {
     const TOOL_NAME = 'imagick';
 
-    protected string $mapperClass = '\\PHPExif\\Mapper\\ImageMagick';
+    protected string $mapperClass = MapperImageMagick::class;
 
     /**
      * Contains the mapping of names to IPTC field numbers
@@ -75,6 +76,7 @@ class ImageMagick extends AbstractAdapter
 
         $data = array_merge($data_exif, $data_iptc, $additional_data);
         // Force UTF8 encoding
+        /** @var array $data */
         $data = $this->convertToUTF8($data);
 
         // map the data:

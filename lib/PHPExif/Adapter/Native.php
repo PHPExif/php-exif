@@ -3,6 +3,7 @@
 namespace PHPExif\Adapter;
 
 use PHPExif\Exif;
+use PHPExif\Mapper\Native as MapperNative;
 use Safe\Exceptions\ImageException;
 
 use function Safe\mime_content_type;
@@ -52,7 +53,7 @@ class Native extends AbstractAdapter
      */
     protected bool $sectionsAsArrays = self::SECTIONS_FLAT;
 
-    protected string $mapperClass = '\\PHPExif\\Mapper\\Native';
+    protected string $mapperClass = MapperNative::class;
 
     /**
      * Contains the mapping of names to IPTC field numbers
@@ -221,6 +222,7 @@ class Native extends AbstractAdapter
         }
 
         // Force UTF8 encoding
+        /** @var array $data */
         $data = $this->convertToUTF8($data);
 
         // map the data:

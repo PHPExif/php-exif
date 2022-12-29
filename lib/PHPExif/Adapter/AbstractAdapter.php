@@ -5,6 +5,7 @@ namespace PHPExif\Adapter;
 use PHPExif\Mapper\MapperInterface;
 use PHPExif\Hydrator\HydratorInterface;
 use ForceUTF8\Encoding;
+use PHPExif\Hydrator\Mutator;
 
 /**
  * PHP Exif Reader Adapter Abstract
@@ -16,10 +17,12 @@ use ForceUTF8\Encoding;
  */
 abstract class AbstractAdapter implements AdapterInterface
 {
-    protected string $hydratorClass = '\\PHPExif\\Hydrator\\Mutator';
+    /** @var class-string $hydratorClass */
+    protected string $hydratorClass = Mutator::class;
     protected ?MapperInterface $mapper = null;
     protected ?HydratorInterface $hydrator = null;
-    protected string $mapperClass = '';
+    /** @var class-string $mapperClass */
+    protected string $mapperClass;
 
     /**
      * Class constructor

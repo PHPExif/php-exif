@@ -9,6 +9,7 @@ use PHPExif\Adapter\FFprobe as FFprobeAdapter;
 use PHPExif\Adapter\ImageMagick as ImageMagickAdapter;
 use PHPExif\Adapter\Native as NativeAdapter;
 use PHPExif\Exif;
+use PHPExif\Enum\ReaderType;
 
 /**
  * PHP Exif Reader
@@ -21,11 +22,6 @@ use PHPExif\Exif;
  */
 class Reader implements ReaderInterface
 {
-    const TYPE_NATIVE   = 'native';
-    const TYPE_EXIFTOOL = 'exiftool';
-    const TYPE_FFPROBE  = 'ffprobe';
-    const TYPE_IMAGICK  = 'imagick';
-
     /**
      * The current adapter
      */
@@ -47,7 +43,7 @@ class Reader implements ReaderInterface
      * @return \PHPExif\Adapter\AdapterInterface
      * @throws NoAdapterException When no adapter is set
      */
-    public function getAdapter() : AdapterInterface
+    public function getAdapter(): AdapterInterface
     {
         if ($this->adapter === null) {
             throw new NoAdapterException('No adapter set in the reader');
@@ -59,31 +55,20 @@ class Reader implements ReaderInterface
     /**
      * Factory for the reader
      *
-     * @param string $type
+     * @param ReaderType $type
      * @return Reader
      * @throws \InvalidArgumentException When given type is invalid
      */
-    public static function factory(string $type) : Reader
+    public static function factory(ReaderType $type): Reader
     {
         $classname = get_called_class();
-        switch ($type) {
-            case self::TYPE_NATIVE:
-                $adapter = new NativeAdapter();
-                break;
-            case self::TYPE_EXIFTOOL:
-                $adapter = new ExiftoolAdapter();
-                break;
-            case self::TYPE_FFPROBE:
-                $adapter = new FFProbeAdapter();
-                break;
-            case self::TYPE_IMAGICK:
-                $adapter = new ImageMagickAdapter();
-                break;
-            default:
-                throw new \InvalidArgumentException(
-                    sprintf('Unknown type "%1$s"', $type)
-                );
-        }
+        $adapter = match ($type) {
+            ReaderType::NATIVE => new NativeAdapter(),
+            ReaderType::EXIFTOOL => new ExiftoolAdapter(),
+            ReaderType::FFPROBE => new FFProbeAdapter(),
+            ReaderType::IMAGICK => new ImageMagickAdapter(),
+            default => throw new \InvalidArgumentException(sprintf('Unknown type "%1$s"', $type->value))
+        };
         return new $classname($adapter);
     }
 
@@ -93,7 +78,7 @@ class Reader implements ReaderInterface
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function read(string $file) : Exif|string|false
+    public function read(string $file): Exif|string|false
     {
         return $this->getAdapter()->getExifFromFile($file);
     }
@@ -104,7 +89,7 @@ class Reader implements ReaderInterface
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function getExifFromFile(string $file) : Exif|string|false
+    public function getExifFromFile(string $file): Exif|string|false
     {
         return $this->read($file);
     }

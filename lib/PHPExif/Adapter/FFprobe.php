@@ -14,6 +14,7 @@ namespace PHPExif\Adapter;
 use PHPExif\Exif;
 use InvalidArgumentException;
 use FFMpeg;
+use PHPExif\Mapper\FFprobe as MapperFFprobe;
 use Safe\Exceptions\ExecException;
 
 use function Safe\exec;
@@ -37,7 +38,7 @@ class FFprobe extends AbstractAdapter
      * Path to the exiftool binary
      */
     protected string $toolPath = '';
-    protected string $mapperClass = '\\PHPExif\\Mapper\\FFprobe';
+    protected string $mapperClass = MapperFFprobe::class;
 
 
     /**

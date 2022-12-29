@@ -4,6 +4,7 @@ namespace PHPExif\Adapter;
 
 use PHPExif\Exif;
 use InvalidArgumentException;
+use PHPExif\Mapper\Exiftool as MapperExiftool;
 use RuntimeException;
 use Safe\Exceptions\ExecException;
 
@@ -30,7 +31,7 @@ class Exiftool extends AbstractAdapter
     protected string $toolPath = '';
     protected bool $numeric = true;
     protected array $encoding = array();
-    protected string $mapperClass = '\\PHPExif\\Mapper\\Exiftool';
+    protected string $mapperClass = MapperExiftool::class;
 
     /**
      * Setter for the exiftool binary path

@@ -25,3 +25,7 @@ indent_size = 4
 indent_style = space
 indent_size = 2
 trim_trailing_whitespace = true
+
+[*.neon]
+indent_style = tab
+indent_size = 4
