@@ -1,7 +1,7 @@
 # [PHPExif](http://github.com/LycheeOrg/php-exif)
 
 [![GitHub Release][release-shield]](https://github.com/LycheeOrg/php-exif/releases)
-[![PHP 8.0 & 8.1][php-shield]](https://github.com/LycheeOrg/php-exif#installation-composer)
+[![PHP 8.1 & 8.2][php-shield]](https://github.com/LycheeOrg/php-exif#installation-composer)
 [![MIT License][license-shield]](https://github.com/LycheeOrg/php-exif/blob/master/LICENSE)
 <br>
 [![Build Status](https://github.com/LycheeOrg/php-exif/workflows/Tests/badge.svg)](https://github.com/LycheeOrg/php-exif/actions)
@@ -56,6 +56,7 @@ Have a bug or a feature request? [Please open a new issue](https://github.com/Ly
 * [kamil4](https://github.com/kamil4)
 * [ildyria](https://github.com/ildyria)
 * [nagmat84](https://github.com/nagmat84)
+* [qwerty287](https://github.com/qwerty287)
 
 ## License
 
@@ -63,5 +64,5 @@ Have a bug or a feature request? [Please open a new issue](https://github.com/Ly
 
 
 [release-shield]: https://img.shields.io/github/release-pre/LycheeOrg/php-exif.svg
-[php-shield]: https://img.shields.io/badge/PHP-8.0%20|%208.1-blue
+[php-shield]: https://img.shields.io/badge/PHP-8.1%20|%208.2-blue
 [license-shield]: https://img.shields.io/github/license/LycheeOrg/Lychee.svg
