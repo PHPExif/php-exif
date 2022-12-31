@@ -5,16 +5,16 @@
 ```php
 <?php
 // reader with Native adapter
-$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_NATIVE);
+$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Enum\ReaderType::NATIVE);
 
 // reader with Exiftool adapter
-//$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_EXIFTOOL);
+//$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Enum\ReaderType::EXIFTOOL);
 
 // reader with FFmpeg/FFprobe adapter
-//$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_FFPROBE);
+//$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Enum\ReaderType::FFPROBE);
 
 // reader with Imagick adapter
-//$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_IMAGICK);
+//$reader = \PHPExif\Reader\Reader::factory(\PHPExif\Enum\ReaderType::IMAGICK);
 
 $exif = $reader->read('/path/to/file');
 

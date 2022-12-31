@@ -7,10 +7,10 @@
 
 namespace PHPExif\Enum;
 
-enum ReaderType: string
+enum ReaderType
 {
-    case NATIVE   = 'native';
-    case EXIFTOOL = 'exiftool';
-    case FFPROBE  = 'ffprobe';
-    case IMAGICK  = 'imagick';
+    case NATIVE;
+    case EXIFTOOL;
+    case FFPROBE;
+    case IMAGICK;
 }
