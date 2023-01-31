@@ -3,7 +3,7 @@
  * @codeCoverageIgnore
  */
 
-namespace PHPExif\Adapter;
+namespace PHPExif\Contracts;
 
 use PHPExif\Exif;
 

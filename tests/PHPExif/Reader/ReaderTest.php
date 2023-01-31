@@ -18,8 +18,8 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp() : void
     {
-        /** @var \PHPExif\Adapter\AdapterInterface */
-        $adapter = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
+        /** @var \PHPExif\Contracts\AdapterInterface */
+        $adapter = $this->getMockBuilder('\PHPExif\Contracts\AdapterInterface')->getMockForAbstractClass();
         $this->reader = new \PHPExif\Reader\Reader($adapter);
     }
 
@@ -29,8 +29,8 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
      */
     public function testConstructorWithAdapter()
     {
-        /** @var \PHPExif\Adapter\AdapterInterface */
-        $mock = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
+        /** @var \PHPExif\Contracts\AdapterInterface */
+        $mock = $this->getMockBuilder('\PHPExif\Contracts\AdapterInterface')->getMockForAbstractClass();
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
 
@@ -45,7 +45,7 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetAdapterFromProperty()
     {
-        $mock = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
+        $mock = $this->getMockBuilder('\PHPExif\Contracts\AdapterInterface')->getMockForAbstractClass();
 
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
         $reflProperty->setAccessible(true);
@@ -75,7 +75,7 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetExifPassedToAdapter()
     {
-        $adapter = $this->getMockBuilder('\PHPExif\Adapter\AdapterInterface')->getMockForAbstractClass();
+        $adapter = $this->getMockBuilder('\PHPExif\Contracts\AdapterInterface')->getMockForAbstractClass();
         $adapter->expects($this->once())->method('getExifFromFile');
 
         $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');

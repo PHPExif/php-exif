@@ -2,12 +2,13 @@
 
 namespace PHPExif\Reader;
 
-use PHPExif\Adapter\AdapterInterface;
 use PHPExif\Adapter\NoAdapterException;
 use PHPExif\Adapter\Exiftool as ExiftoolAdapter;
 use PHPExif\Adapter\FFprobe as FFprobeAdapter;
 use PHPExif\Adapter\ImageMagick as ImageMagickAdapter;
 use PHPExif\Adapter\Native as NativeAdapter;
+use PHPExif\Contracts\AdapterInterface;
+use PHPExif\Contracts\ReaderInterface;
 use PHPExif\Exif;
 use PHPExif\Enum\ReaderType;
 
@@ -30,7 +31,7 @@ class Reader implements ReaderInterface
     /**
      * Reader constructor
      *
-     * @param \PHPExif\Adapter\AdapterInterface $adapter
+     * @param \PHPExif\Contracts\AdapterInterface $adapter
      */
     public function __construct(AdapterInterface $adapter)
     {
@@ -40,7 +41,7 @@ class Reader implements ReaderInterface
     /**
      * Getter for the reader adapter
      *
-     * @return \PHPExif\Adapter\AdapterInterface
+     * @return \PHPExif\Contracts\AdapterInterface
      * @throws NoAdapterException When no adapter is set
      */
     public function getAdapter(): AdapterInterface

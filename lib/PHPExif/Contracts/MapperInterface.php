@@ -3,7 +3,7 @@
  * @codeCoverageIgnore
  */
 
-namespace PHPExif\Mapper;
+namespace PHPExif\Contracts;
 
 /**
  * PHP Exif Mapper
