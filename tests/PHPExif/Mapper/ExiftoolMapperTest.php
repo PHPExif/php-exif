@@ -1,4 +1,7 @@
 <?php
+
+use PHPExif\Contracts\MapperInterface;
+
 /**
  * @covers \PHPExif\Mapper\Exiftool::<!public>
  */
@@ -16,7 +19,7 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
      */
     public function testClassImplementsCorrectInterface()
     {
-        $this->assertInstanceOf('\\PHPExif\\Mapper\\MapperInterface', $this->mapper);
+        $this->assertInstanceOf(MapperInterface::class, $this->mapper);
     }
 
     /**

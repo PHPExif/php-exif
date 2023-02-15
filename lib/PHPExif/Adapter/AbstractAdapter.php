@@ -2,9 +2,10 @@
 
 namespace PHPExif\Adapter;
 
-use PHPExif\Mapper\MapperInterface;
-use PHPExif\Hydrator\HydratorInterface;
 use ForceUTF8\Encoding;
+use PHPExif\Contracts\AdapterInterface;
+use PHPExif\Contracts\HydratorInterface;
+use PHPExif\Contracts\MapperInterface;
 use PHPExif\Hydrator\Mutator;
 
 /**
@@ -39,8 +40,8 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * Mutator for the data mapper
      *
-     * @param \PHPExif\Mapper\MapperInterface $mapper
-     * @return \PHPExif\Adapter\AdapterInterface
+     * @param \PHPExif\Contracts\MapperInterface $mapper
+     * @return \PHPExif\Contracts\AdapterInterface
      */
     public function setMapper(MapperInterface $mapper) : AdapterInterface
     {
@@ -52,7 +53,7 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * Accessor for the data mapper
      *
-     * @return \PHPExif\Mapper\MapperInterface
+     * @return \PHPExif\Contracts\MapperInterface
      */
     public function getMapper() : MapperInterface
     {
@@ -70,8 +71,8 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * Mutator for the hydrator
      *
-     * @param \PHPExif\Hydrator\HydratorInterface $hydrator
-     * @return \PHPExif\Adapter\AdapterInterface
+     * @param \PHPExif\Contracts\HydratorInterface $hydrator
+     * @return \PHPExif\Contracts\AdapterInterface
      */
     public function setHydrator(HydratorInterface $hydrator) : AdapterInterface
     {
@@ -83,7 +84,7 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * Accessor for the data hydrator
      *
-     * @return \PHPExif\Hydrator\HydratorInterface
+     * @return \PHPExif\Contracts\HydratorInterface
      */
     public function getHydrator() : HydratorInterface
     {
@@ -102,7 +103,7 @@ abstract class AbstractAdapter implements AdapterInterface
      * Set array of options in the current object
      *
      * @param array $options
-     * @return \PHPExif\Adapter\AdapterInterface
+     * @return \PHPExif\Contracts\AdapterInterface
      */
     public function setOptions(array $options) : AdapterInterface
     {

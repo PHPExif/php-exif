@@ -3,7 +3,7 @@
  * @codeCoverageIgnore
  */
 
-namespace PHPExif\Hydrator;
+namespace PHPExif\Contracts;
 
 /**
  * PHP Exif Hydrator

@@ -2,6 +2,8 @@
 
 namespace PHPExif\Mapper;
 
+use PHPExif\Contracts\MapperInterface;
+
 /**
  * PHP Exif Mapper Abstract
  *
