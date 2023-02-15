@@ -37,7 +37,7 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.3",
         "infection/infection": "^0.26.13",
-        "lychee-org/phpstan-lychee": "dev-master",
+        "lychee-org/phpstan-lychee": "dev-update-morerules",
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "phpmd/phpmd": "^2.9",
         "phpunit/phpunit": "^9.5.10",
@@ -85,5 +85,6 @@
             "infection/extension-installer": true
         }
     },
-    "prefer-stable": true
+	"prefer-stable": true,
+    "minimum-stability": "dev"
 }
