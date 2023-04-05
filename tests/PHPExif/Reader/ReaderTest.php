@@ -1,5 +1,11 @@
 <?php
 
+use PHPExif\Adapter\Exiftool;
+use PHPExif\Adapter\FFprobe;
+use PHPExif\Adapter\ImageMagick;
+use PHPExif\Adapter\Native;
+use PHPExif\Contracts\AdapterInterface;
+use PHPExif\Exif;
 use PHPExif\Reader\Reader;
 
 /**
@@ -19,7 +25,7 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     public function setUp() : void
     {
         /** @var \PHPExif\Contracts\AdapterInterface */
-        $adapter = $this->getMockBuilder('\PHPExif\Contracts\AdapterInterface')->getMockForAbstractClass();
+        $adapter = $this->getMockBuilder(AdapterInterface::class)->getMockForAbstractClass();
         $this->reader = new \PHPExif\Reader\Reader($adapter);
     }
 
@@ -30,8 +36,8 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     public function testConstructorWithAdapter()
     {
         /** @var \PHPExif\Contracts\AdapterInterface */
-        $mock = $this->getMockBuilder('\PHPExif\Contracts\AdapterInterface')->getMockForAbstractClass();
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $mock = $this->getMockBuilder(AdapterInterface::class)->getMockForAbstractClass();
+        $reflProperty = new \ReflectionProperty(Reader::class, 'adapter');
         $reflProperty->setAccessible(true);
 
         $reader = new \PHPExif\Reader\Reader($mock);
@@ -45,9 +51,9 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetAdapterFromProperty()
     {
-        $mock = $this->getMockBuilder('\PHPExif\Contracts\AdapterInterface')->getMockForAbstractClass();
+        $mock = $this->getMockBuilder(AdapterInterface::class)->getMockForAbstractClass();
 
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $reflProperty = new \ReflectionProperty(Reader::class, 'adapter');
         $reflProperty->setAccessible(true);
         $reflProperty->setValue($this->reader, $mock);
 
@@ -62,7 +68,7 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     public function testGetAdapterThrowsExceptionWhenNoAdapterIsSet()
     {
         $this->expectException('\PHPExif\Adapter\NoAdapterException');
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $reflProperty = new \ReflectionProperty(Reader::class, 'adapter');
         $reflProperty->setAccessible(true);
         $reflProperty->setValue($this->reader, null);
 
@@ -75,10 +81,10 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetExifPassedToAdapter()
     {
-        $adapter = $this->getMockBuilder('\PHPExif\Contracts\AdapterInterface')->getMockForAbstractClass();
+        $adapter = $this->getMockBuilder(AdapterInterface::class)->getMockForAbstractClass();
         $adapter->expects($this->once())->method('getExifFromFile');
 
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $reflProperty = new \ReflectionProperty(Reader::class, 'adapter');
         $reflProperty->setAccessible(true);
         $reflProperty->setValue($this->reader, $adapter);
 
@@ -103,7 +109,7 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     {
         $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Enum\ReaderType::NATIVE);
 
-        $this->assertInstanceOf('\PHPExif\Reader\Reader', $reader);
+        $this->assertInstanceOf(Reader::class, $reader);
     }
 
     /**
@@ -113,12 +119,12 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     public function testFactoryAdapterTypeNative()
     {
         $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Enum\ReaderType::NATIVE);
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $reflProperty = new \ReflectionProperty(Reader::class, 'adapter');
         $reflProperty->setAccessible(true);
 
         $adapter = $reflProperty->getValue($reader);
 
-        $this->assertInstanceOf('\PHPExif\Adapter\Native', $adapter);
+        $this->assertInstanceOf(Native::class, $adapter);
     }
 
     /**
@@ -128,12 +134,12 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     public function testFactoryAdapterTypeExiftool()
     {
         $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Enum\ReaderType::EXIFTOOL);
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $reflProperty = new \ReflectionProperty(Reader::class, 'adapter');
         $reflProperty->setAccessible(true);
 
         $adapter = $reflProperty->getValue($reader);
 
-        $this->assertInstanceOf('\PHPExif\Adapter\Exiftool', $adapter);
+        $this->assertInstanceOf(Exiftool::class, $adapter);
     }
 
     /**
@@ -143,12 +149,12 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     public function testFactoryAdapterTypeFFprobe()
     {
         $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Enum\ReaderType::FFPROBE);
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $reflProperty = new \ReflectionProperty(Reader::class, 'adapter');
         $reflProperty->setAccessible(true);
 
         $adapter = $reflProperty->getValue($reader);
 
-        $this->assertInstanceOf('\PHPExif\Adapter\FFprobe', $adapter);
+        $this->assertInstanceOf(FFprobe::class, $adapter);
     }
 
 
@@ -159,12 +165,12 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     public function testFactoryAdapterTypeImageMagick()
     {
         $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Enum\ReaderType::IMAGICK);
-        $reflProperty = new \ReflectionProperty('\PHPExif\Reader\Reader', 'adapter');
+        $reflProperty = new \ReflectionProperty(Reader::class, 'adapter');
         $reflProperty->setAccessible(true);
 
         $adapter = $reflProperty->getValue($reader);
 
-        $this->assertInstanceOf('\PHPExif\Adapter\ImageMagick', $adapter);
+        $this->assertInstanceOf(ImageMagick::class, $adapter);
     }
 
     /**
@@ -173,13 +179,14 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetExifFromFileCallsReadMethod()
     {
-        $mock = $this->getMockBuilder('\\PHPExif\\Reader\\Reader')
+        /** @var MockObject<Reader> $mock */
+        $mock = $this->getMockBuilder(Reader::class)
             ->onlyMethods(array('read'))
             ->disableOriginalConstructor()
             ->getMock();
 
         $expected = '/foo/bar/baz';
-        $expectedResult = 'test';
+        $expectedResult = new Exif([]);
 
         $mock->expects($this->once())
             ->method('read')

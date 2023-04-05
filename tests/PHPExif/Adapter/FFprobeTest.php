@@ -1,4 +1,8 @@
 <?php
+
+use PHPExif\Adapter\FFprobe;
+use PHPExif\Exif;
+
 /**
  * @covers \PHPExif\Adapter\Native::<!public>
  */
@@ -21,7 +25,7 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetToolPathFromProperty()
     {
-        $reflProperty = new \ReflectionProperty('\PHPExif\Adapter\FFprobe', 'toolPath');
+        $reflProperty = new \ReflectionProperty(FFprobe::class, 'toolPath');
         $reflProperty->setAccessible(true);
         $expected = '/foo/bar/baz';
         $reflProperty->setValue($this->adapter, $expected);
@@ -35,7 +39,7 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
      */
     public function testSetToolPathInProperty()
     {
-        $reflProperty = new \ReflectionProperty('\PHPExif\Adapter\FFprobe', 'toolPath');
+        $reflProperty = new \ReflectionProperty(FFprobe::class, 'toolPath');
         $reflProperty->setAccessible(true);
 
         $expected = '/tmp';
@@ -71,13 +75,13 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
     {
         $file = PHPEXIF_TEST_ROOT . '/files/IMG_3824.MOV';
         $result = $this->adapter->getExifFromFile($file);
-        $this->assertInstanceOf('\PHPExif\Exif', $result);
+        $this->assertInstanceOf(Exif::class, $result);
         $this->assertIsArray($result->getRawData());
         $this->assertNotEmpty($result->getRawData());
 
         $file = PHPEXIF_TEST_ROOT . '/files/IMG_3825.MOV';
         $result = $this->adapter->getExifFromFile($file);
-        $this->assertInstanceOf('\PHPExif\Exif', $result);
+        $this->assertInstanceOf(Exif::class, $result);
         $this->assertIsArray($result->getRawData());
         $this->assertNotEmpty($result->getRawData());
     }
@@ -88,11 +92,9 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
      */
     public function testErrorImageUsed()
     {
-        $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';;
-        $result = $this->adapter->getExifFromFile($file);
-        $this->assertIsBool($result);
-        $this->assertEquals(false, $result);
+        $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';
+        $this->expectException(RuntimeException::class);
+        $this->adapter->getExifFromFile($file);
     }
-
 
 }

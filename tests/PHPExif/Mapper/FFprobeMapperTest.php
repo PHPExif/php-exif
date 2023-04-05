@@ -1,9 +1,11 @@
 <?php
 
+use FFMpeg\FFProbe as FFMpegFFProbe;
 use PHPExif\Contracts\MapperInterface;
+use PHPExif\Mapper\FFprobe;
 
 /**
- * @covers \PHPExif\Mapper\FFprobe::<!public>
+ * @covers FFprobe::<!public>
  */
 class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 {
@@ -11,7 +13,7 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     public function setUp(): void
     {
-        $this->mapper = new \PHPExif\Mapper\FFprobe;
+        $this->mapper = new FFprobe();
     }
 
     /**
@@ -24,7 +26,7 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataIgnoresFieldIfItDoesntExist()
     {
@@ -36,7 +38,7 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataMapsFieldsCorrectly()
     {
@@ -45,24 +47,24 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
         $map = $reflProp->getValue($this->mapper);
 
         // ignore custom formatted data stuff:
-        unset($map[\PHPExif\Mapper\FFprobe::FILESIZE]);
-        unset($map[\PHPExif\Mapper\FFprobe::FILENAME]);
-        unset($map[\PHPExif\Mapper\FFprobe::MIMETYPE]);
-        unset($map[\PHPExif\Mapper\FFprobe::GPSLATITUDE]);
-        unset($map[\PHPExif\Mapper\FFprobe::GPSLONGITUDE]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_GPSALTITUDE]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_GPSLATITUDE]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_GPSLONGITUDE]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_DESCRIPTION]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_MAKE]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_MODEL]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_CONTENTIDENTIFIER]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_DESCRIPTION]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_TITLE]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_DATE]);
-        unset($map[\PHPExif\Mapper\FFprobe::QUICKTIME_KEYWORDS]);
-        unset($map[\PHPExif\Mapper\FFprobe::FRAMERATE]);
-        unset($map[\PHPExif\Mapper\FFprobe::DURATION]);
+        unset($map[FFprobe::FILESIZE]);
+        unset($map[FFprobe::FILENAME]);
+        unset($map[FFprobe::MIMETYPE]);
+        unset($map[FFprobe::GPSLATITUDE]);
+        unset($map[FFprobe::GPSLONGITUDE]);
+        unset($map[FFprobe::QUICKTIME_GPSALTITUDE]);
+        unset($map[FFprobe::QUICKTIME_GPSLATITUDE]);
+        unset($map[FFprobe::QUICKTIME_GPSLONGITUDE]);
+        unset($map[FFprobe::QUICKTIME_DESCRIPTION]);
+        unset($map[FFprobe::QUICKTIME_MAKE]);
+        unset($map[FFprobe::QUICKTIME_MODEL]);
+        unset($map[FFprobe::QUICKTIME_CONTENTIDENTIFIER]);
+        unset($map[FFprobe::QUICKTIME_DESCRIPTION]);
+        unset($map[FFprobe::QUICKTIME_TITLE]);
+        unset($map[FFprobe::QUICKTIME_DATE]);
+        unset($map[FFprobe::QUICKTIME_KEYWORDS]);
+        unset($map[FFprobe::FRAMERATE]);
+        unset($map[FFprobe::DURATION]);
 
         // create raw data
         $keys = array_keys($map);
@@ -81,12 +83,12 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsDateTimeOriginal()
     {
         $rawData = array(
-            \PHPExif\Mapper\FFprobe::DATETIMEORIGINAL => '2015:04:01 12:11:09',
+            FFprobe::DATETIMEORIGINAL => '2015:04:01 12:11:09',
         );
 
         $mapped = $this->mapper->mapRawData($rawData);
@@ -102,13 +104,13 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsCreationDateQuicktime()
     {
         $rawData = array(
-            \PHPExif\Mapper\FFprobe::QUICKTIME_DATE => '2015-04-01T12:11:09+0200',
-            \PHPExif\Mapper\FFprobe::DATETIMEORIGINAL => '2015-04-01T12:11:09.000000Z',
+            FFprobe::QUICKTIME_DATE => '2015-04-01T12:11:09+0200',
+            FFprobe::DATETIMEORIGINAL => '2015-04-01T12:11:09.000000Z',
         );
 
         $mapped = $this->mapper->mapRawData($rawData);
@@ -131,12 +133,12 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsCreationDateWithTimeZone()
     {
         $rawData = array(
-            \PHPExif\Mapper\FFprobe::DATETIMEORIGINAL => '2015:04:01 12:11:09+0200',
+            FFprobe::DATETIMEORIGINAL => '2015:04:01 12:11:09+0200',
         );
 
         $mapped = $this->mapper->mapRawData($rawData);
@@ -159,12 +161,12 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresIncorrectDateTimeOriginal()
     {
         $rawData = array(
-            \PHPExif\Mapper\FFprobe::DATETIMEORIGINAL => '2015:04:01',
+            FFprobe::DATETIMEORIGINAL => '2015:04:01',
         );
 
         $mapped = $this->mapper->mapRawData($rawData);
@@ -174,12 +176,12 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresIncorrectDateTimeOriginal2()
     {
         $rawData = array(
-            \PHPExif\Mapper\FFprobe::QUICKTIME_DATE => '2015:04:01',
+            FFprobe::QUICKTIME_DATE => '2015:04:01',
         );
 
         $mapped = $this->mapper->mapRawData($rawData);
@@ -189,7 +191,7 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsQuickTimeGPSData()
     {
@@ -213,7 +215,7 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataCorrectlyRotatesDimensions()
     {
@@ -235,7 +237,7 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsGPSData()
     {
@@ -259,7 +261,7 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     * @covers FFprobe::mapRawData
      */
     public function testMapRawDataCorrectlyFramerate()
     {
@@ -281,7 +283,7 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
     public function testMapRawDataCorrectlyFormatsDifferentDateTimeString()
     {
         $rawData = array(
-            \PHPExif\Mapper\FFprobe::DATETIMEORIGINAL => '2014-12-15 00:12:00'
+            FFprobe::DATETIMEORIGINAL => '2014-12-15 00:12:00'
         );
 
         $mapped = $this->mapper->mapRawData(
@@ -299,7 +301,7 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
     public function testMapRawDataCorrectlyIgnoresInvalidCreateDate()
     {
         $rawData = array(
-            \PHPExif\Mapper\FFprobe::DATETIMEORIGINAL => 'Invalid Date String'
+            FFprobe::DATETIMEORIGINAL => 'Invalid Date String'
         );
 
         $result = $this->mapper->mapRawData(
@@ -315,11 +317,11 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::normalizeComponent
+     * @covers FFprobe::normalizeComponent
      */
     public function testNormalizeComponentCorrectly()
     {
-        $reflMethod = new \ReflectionMethod('\PHPExif\Mapper\FFprobe', 'normalizeComponent');
+        $reflMethod = new \ReflectionMethod(FFprobe::class, 'normalizeComponent');
         $reflMethod->setAccessible(true);
 
         $rawData = array(
@@ -356,19 +358,19 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
         $keys = array_keys($mapped);
 
         $expected = array(
-            \PHPExif\Mapper\FFprobe::WIDTH,
-            \PHPExif\Mapper\FFprobe::MIMETYPE
+            FFprobe::WIDTH,
+            FFprobe::MIMETYPE
         );
         $this->assertEquals($expected, $keys);
     }
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::readISO6709
+     * @covers FFprobe::readISO6709
      */
     public function testreadISO6709()
     {
-        $reflMethod = new \ReflectionMethod('\PHPExif\Mapper\FFprobe', 'readISO6709');
+        $reflMethod = new \ReflectionMethod(FFprobe::class, 'readISO6709');
         $reflMethod->setAccessible(true);
 
         $testcase = array(
@@ -427,12 +429,12 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers \PHPExif\Mapper\FFprobe::convertDMStoDecimal
+     * @covers FFprobe::convertDMStoDecimal
      */
     public function testconvertDMStoDecimal()
     {
 
-        $reflMethod = new \ReflectionMethod('\PHPExif\Mapper\FFprobe', 'convertDMStoDecimal');
+        $reflMethod = new \ReflectionMethod(FFprobe::class, 'convertDMStoDecimal');
         $reflMethod->setAccessible(true);
 
         $testcase = array(

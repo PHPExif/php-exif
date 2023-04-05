@@ -1,5 +1,6 @@
 <?php
 
+use PHPExif\Adapter\AbstractAdapter;
 use PHPExif\Adapter\Exiftool;
 use PHPExif\Adapter\Native;
 
@@ -9,13 +10,13 @@ use PHPExif\Adapter\Native;
 class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPExif\Adapter\Exiftool|\PHPExif\Adapter\Native
+     * @var Exiftool|Native
      */
     protected Exiftool|Native $adapter;
 
     protected function setUp(): void
     {
-        $this->adapter = new \PHPExif\Adapter\Native();
+        $this->adapter = new Native();
     }
 
     /**
@@ -36,13 +37,13 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
     {
         $expected = array(
             'requiredSections'  => array('foo', 'bar', 'baz',),
-            'includeThumbnail' => \PHPExif\Adapter\Native::INCLUDE_THUMBNAIL,
-            'sectionsAsArrays' => \PHPExif\Adapter\Native::SECTIONS_AS_ARRAYS,
+            'includeThumbnail' => Native::INCLUDE_THUMBNAIL,
+            'sectionsAsArrays' => Native::SECTIONS_AS_ARRAYS,
         );
         $this->adapter->setOptions($expected);
 
         foreach ($expected as $key => $value) {
-            $reflProp = new \ReflectionProperty('\\PHPExif\\Adapter\\Native', $key);
+            $reflProp = new \ReflectionProperty(Native::class, $key);
             $reflProp->setAccessible(true);
             $this->assertEquals($value, $reflProp->getValue($this->adapter));
         }
@@ -60,7 +61,7 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
         $this->adapter->setOptions($expected);
 
         foreach ($expected as $key => $value) {
-            $reflProp = new \ReflectionProperty('\\PHPExif\\Adapter\\Native', $key);
+            $reflProp = new \ReflectionProperty(Native::class, $key);
             $reflProp->setAccessible(true);
             $this->assertNotEquals($value, $reflProp->getValue($this->adapter));
         }
@@ -75,13 +76,13 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
     {
         $expected = array(
             'requiredSections'  => array('foo', 'bar', 'baz',),
-            'includeThumbnail' => \PHPExif\Adapter\Native::INCLUDE_THUMBNAIL,
-            'sectionsAsArrays' => \PHPExif\Adapter\Native::SECTIONS_AS_ARRAYS,
+            'includeThumbnail' => Native::INCLUDE_THUMBNAIL,
+            'sectionsAsArrays' => Native::SECTIONS_AS_ARRAYS,
         );
-        $adapter = new \PHPExif\Adapter\Native($expected);
+        $adapter = new Native($expected);
 
         foreach ($expected as $key => $value) {
-            $reflProp = new \ReflectionProperty('\\PHPExif\\Adapter\\Native', $key);
+            $reflProp = new \ReflectionProperty(Native::class, $key);
             $reflProp->setAccessible(true);
             $this->assertEquals($value, $reflProp->getValue($adapter));
         }
@@ -107,7 +108,7 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
         $mapper = new \PHPExif\Mapper\Native();
         $this->adapter->setMapper($mapper);
 
-        $reflProp = new \ReflectionProperty('\\PHPExif\\Adapter\\AbstractAdapter', 'mapper');
+        $reflProp = new \ReflectionProperty(AbstractAdapter::class, 'mapper');
         $reflProp->setAccessible(true);
         $this->assertSame($mapper, $reflProp->getValue($this->adapter));
     }
@@ -119,7 +120,7 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
     public function testGetMapperCorrectlyReturnsFromProperty()
     {
         $mapper = new \PHPExif\Mapper\Native();
-        $reflProp = new \ReflectionProperty('\\PHPExif\\Adapter\\AbstractAdapter', 'mapper');
+        $reflProp = new \ReflectionProperty(AbstractAdapter::class, 'mapper');
         $reflProp->setAccessible(true);
         $reflProp->setValue($this->adapter, $mapper);
         $this->assertSame($mapper, $this->adapter->getMapper());
@@ -187,7 +188,7 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
         $hydrator = new \PHPExif\Hydrator\Mutator();
         $this->adapter->setHydrator($hydrator);
 
-        $reflProp = new \ReflectionProperty('\\PHPExif\\Adapter\\AbstractAdapter', 'hydrator');
+        $reflProp = new \ReflectionProperty(AbstractAdapter::class, 'hydrator');
         $reflProp->setAccessible(true);
         $this->assertSame($hydrator, $reflProp->getValue($this->adapter));
     }
@@ -199,7 +200,7 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
     public function testGetHydratorCorrectlyReturnsFromProperty()
     {
         $hydrator = new \PHPExif\Hydrator\Mutator();
-        $reflProp = new \ReflectionProperty('\\PHPExif\\Adapter\\AbstractAdapter', 'hydrator');
+        $reflProp = new \ReflectionProperty(AbstractAdapter::class, 'hydrator');
         $reflProp->setAccessible(true);
         $reflProp->setValue($this->adapter, $hydrator);
         $this->assertSame($hydrator, $this->adapter->getHydrator());

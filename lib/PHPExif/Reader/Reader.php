@@ -68,7 +68,6 @@ class Reader implements ReaderInterface
             ReaderType::EXIFTOOL => new ExiftoolAdapter(),
             ReaderType::FFPROBE => new FFProbeAdapter(),
             ReaderType::IMAGICK => new ImageMagickAdapter(),
-            default => throw new \InvalidArgumentException(sprintf('Unknown type "%1$s"', $type->value))
         };
         return new $classname($adapter);
     }
@@ -79,7 +78,7 @@ class Reader implements ReaderInterface
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function read(string $file): Exif|string|false
+    public function read(string $file): Exif
     {
         return $this->getAdapter()->getExifFromFile($file);
     }
@@ -90,7 +89,7 @@ class Reader implements ReaderInterface
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function getExifFromFile(string $file): Exif|string|false
+    public function getExifFromFile(string $file): Exif
     {
         return $this->read($file);
     }

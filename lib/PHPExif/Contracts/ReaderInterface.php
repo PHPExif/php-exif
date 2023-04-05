@@ -23,5 +23,5 @@ interface ReaderInterface
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function read(string $file) : Exif|false|string;
+    public function read(string $file) : Exif;
 }

@@ -1,6 +1,9 @@
 <?php
+
+use PhpExif\Hydrator\Mutator;
+
 /**
- * @covers \PHPExif\Hydrator\Mutator::<!public>
+ * @covers Mutator::<!public>
  */
 class MutatorTest extends \PHPUnit\Framework\TestCase
 {
@@ -13,7 +16,7 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group hydrator
-     * @covers \PHPExif\Hydrator\Mutator::hydrate
+     * @covers Mutator::hydrate
      */
     public function testHydrateCallsDetermineMutator()
     {
@@ -23,8 +26,8 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
         );
 
         // create mock
-        $mock = $this->getMockBuilder('\\PHPExif\\Hydrator\\Mutator')
-            ->setMethods(array('determineMutator'))
+        $mock = $this->getMockBuilder(Mutator::class)
+            ->onlyMethods(array('determineMutator'))
             ->getMock();
 
         $mock->expects($this->exactly(count($input)))
@@ -39,7 +42,7 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group hydrator
-     * @covers \PHPExif\Hydrator\Mutator::hydrate
+     * @covers Mutator::hydrate
      */
     public function testHydrateCallsMutatorsOnObject()
     {
@@ -58,13 +61,13 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
             ->with($this->equalTo($input['bar']));
 
         // do the test
-        $hydrator = new \PHPExif\Hydrator\Mutator;
+        $hydrator = new Mutator;
         $hydrator->hydrate($mock, $input);
     }
 
     /**
      * @group hydrator
-     * @covers \PHPExif\Hydrator\Mutator::hydrate
+     * @covers Mutator::hydrate
      */
     public function testHydrateCallsEmptyValues()
     {
@@ -76,7 +79,7 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
 
         // create mock
         $mock = $this->getMockBuilder('TestClass')
-            ->setMethods(array('setFoo', 'setBar'))
+            ->onlyMethods(array('setFoo', 'setBar'))
             ->getMock();
 
         $mock->expects($this->exactly(0))
@@ -85,7 +88,7 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
             ->method('setBar');
 
         // do the test
-        $hydrator = new \PHPExif\Hydrator\Mutator;
+        $hydrator = new Mutator;
         $hydrator->hydrate($mock, $input);
     }
 }
