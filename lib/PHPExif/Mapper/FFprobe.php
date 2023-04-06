@@ -17,27 +17,27 @@ use function Safe\preg_match;
  */
 class FFprobe extends AbstractMapper
 {
-    const HEIGHT           = 'height';
-    const WIDTH            = 'width';
-    const FILESIZE         = 'size';
-    const FILENAME         = 'filename';
-    const FRAMERATE        = 'avg_frame_rate';
-    const DURATION         = 'duration';
-    const DATETIMEORIGINAL = 'creation_time';
-    const GPSLATITUDE      = 'location';
-    const GPSLONGITUDE     = 'location';
-    const MIMETYPE         = 'MimeType';
+    public const HEIGHT           = 'height';
+    public const WIDTH            = 'width';
+    public const FILESIZE         = 'size';
+    public const FILENAME         = 'filename';
+    public const FRAMERATE        = 'avg_frame_rate';
+    public const DURATION         = 'duration';
+    public const DATETIMEORIGINAL = 'creation_time';
+    public const GPSLATITUDE      = 'location';
+    public const GPSLONGITUDE     = 'location';
+    public const MIMETYPE         = 'MimeType';
 
-    const QUICKTIME_GPSLATITUDE       = 'com.apple.quicktime.location.ISO6709';
-    const QUICKTIME_GPSLONGITUDE      = 'com.apple.quicktime.location.ISO6709';
-    const QUICKTIME_GPSALTITUDE       = 'com.apple.quicktime.location.ISO6709';
-    const QUICKTIME_DATE              = 'com.apple.quicktime.creationdate';
-    const QUICKTIME_DESCRIPTION       = 'com.apple.quicktime.description';
-    const QUICKTIME_TITLE             = 'com.apple.quicktime.title';
-    const QUICKTIME_KEYWORDS          = 'com.apple.quicktime.keywords';
-    const QUICKTIME_MAKE              = 'com.apple.quicktime.make';
-    const QUICKTIME_MODEL             = 'com.apple.quicktime.model';
-    const QUICKTIME_CONTENTIDENTIFIER = 'com.apple.quicktime.content.identifier';
+    public const QUICKTIME_GPSLATITUDE       = 'com.apple.quicktime.location.ISO6709';
+    public const QUICKTIME_GPSLONGITUDE      = 'com.apple.quicktime.location.ISO6709';
+    public const QUICKTIME_GPSALTITUDE       = 'com.apple.quicktime.location.ISO6709';
+    public const QUICKTIME_DATE              = 'com.apple.quicktime.creationdate';
+    public const QUICKTIME_DESCRIPTION       = 'com.apple.quicktime.description';
+    public const QUICKTIME_TITLE             = 'com.apple.quicktime.title';
+    public const QUICKTIME_KEYWORDS          = 'com.apple.quicktime.keywords';
+    public const QUICKTIME_MAKE              = 'com.apple.quicktime.make';
+    public const QUICKTIME_MODEL             = 'com.apple.quicktime.model';
+    public const QUICKTIME_CONTENTIDENTIFIER = 'com.apple.quicktime.content.identifier';
 
 
     /**
@@ -70,7 +70,7 @@ class FFprobe extends AbstractMapper
         self::QUICKTIME_CONTENTIDENTIFIER => Exif::CONTENTIDENTIFIER,
     );
 
-    const SECTION_TAGS      = 'tags';
+    public const SECTION_TAGS      = 'tags';
 
     /**
      * A list of section names
@@ -88,7 +88,7 @@ class FFprobe extends AbstractMapper
      * @param array $data
      * @return array
      */
-    public function mapRawData(array $data) : array
+    public function mapRawData(array $data): array
     {
         $mappedData = array();
 
@@ -195,7 +195,7 @@ class FFprobe extends AbstractMapper
      * @param string $field
      * @return bool
      */
-    protected function isSection(string $field) : bool
+    protected function isSection(string $field): bool
     {
         return (in_array($field, $this->sections, true));
     }
@@ -208,7 +208,7 @@ class FFprobe extends AbstractMapper
      * @param  string  &$field
      * @return bool
      */
-    protected function isFieldKnown(string &$field) : bool
+    protected function isFieldKnown(string &$field): bool
     {
         $lcfField = lcfirst($field);
         if (array_key_exists($lcfField, $this->map)) {
@@ -233,7 +233,7 @@ class FFprobe extends AbstractMapper
      * @param string $rational
      * @return float|false
      */
-    protected function normalizeComponent(string $rational) : float|false
+    protected function normalizeComponent(string $rational): float|false
     {
         $parts = explode('/', $rational, 2);
         if (count($parts) === 1) {
@@ -268,7 +268,7 @@ class FFprobe extends AbstractMapper
         string $minutes,
         string $seconds,
         string $fraction
-    ) : float {
+    ): float {
         if ($fraction !== '') {
             if ($seconds !== '') {
                 $seconds = $seconds . $fraction;
@@ -294,7 +294,7 @@ class FFprobe extends AbstractMapper
      *
      * @return array
      */
-    public function readISO6709(string $val_ISO6709) : array
+    public function readISO6709(string $val_ISO6709): array
     {
         $return = [
             'latitude' => null,

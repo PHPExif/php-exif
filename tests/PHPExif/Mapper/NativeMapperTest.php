@@ -3,16 +3,13 @@
 use PHPExif\Contracts\MapperInterface;
 use PHPExif\Mapper\Native;
 
-/**
- * @covers Native::<!public>
- */
 class NativeMapperTest extends \PHPUnit\Framework\TestCase
 {
     protected $mapper;
 
     public function setUp(): void
     {
-        $this->mapper = new Native;
+        $this->mapper = new Native();
     }
 
     /**
@@ -25,7 +22,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataIgnoresFieldIfItDoesntExist()
     {
@@ -37,7 +33,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataMapsFieldsCorrectly()
     {
@@ -80,7 +75,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsDateTimeOriginal()
     {
@@ -101,8 +95,7 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
         /**
          * @group mapper
-         * @covers Native::mapRawData
-         */
+             */
         public function testMapRawDataCorrectlyFormatsCreationDateWithTimeZone()
         {
             $rawData = array(
@@ -129,8 +122,7 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
         /**
          * @group mapper
-         * @covers Native::mapRawData
-         */
+             */
         public function testMapRawDataCorrectlyFormatsCreationDateWithTimeZone2()
         {
             $rawData = array(
@@ -158,7 +150,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresIncorrectDateTimeOriginal()
     {
@@ -173,7 +164,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresIncorrectTimeZone()
     {
@@ -194,7 +184,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsExposureTime()
     {
@@ -216,7 +205,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsFocalLength()
     {
@@ -231,7 +219,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsFocalLengthDivisionByZero()
     {
@@ -246,7 +233,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsXResolution()
     {
@@ -261,7 +247,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsYResolution()
     {
@@ -276,7 +261,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataFlattensRawDataWithSections()
     {
@@ -299,7 +283,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataMatchesFieldsWithoutCaseSensibilityOnFirstLetter()
     {
@@ -320,7 +303,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsGPSData()
     {
@@ -353,7 +335,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresEmptyGPSData()
     {
@@ -371,7 +352,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsAltitudeData()
     {
@@ -394,7 +374,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresIncorrectAltitude()
     {
@@ -444,7 +423,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::normalizeComponent
      */
     public function testNormalizeComponentCorrectly()
     {
@@ -471,7 +449,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyIsoFormats()
     {
@@ -495,11 +472,10 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyLensData()
     {
-        $data = array (
+        $data = array(
             array(
                 Native::LENS => 'LEICA DG 12-60/F2.8-4.0',
             ),
@@ -530,11 +506,10 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyLensData2()
     {
-        $data = array (
+        $data = array(
             array(
                 Native::LENS_LR => 'LUMIX G VARIO 12-32/F3.5-5.6',
             ),
@@ -555,7 +530,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyKeywords()
     {
@@ -573,7 +547,6 @@ class NativeMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Native::mapRawData
      */
     public function testMapRawDataCorrectlyKeywordsAndSubject()
     {

@@ -43,7 +43,7 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param \PHPExif\Contracts\MapperInterface $mapper
      * @return \PHPExif\Contracts\AdapterInterface
      */
-    public function setMapper(MapperInterface $mapper) : AdapterInterface
+    public function setMapper(MapperInterface $mapper): AdapterInterface
     {
         $this->mapper = $mapper;
 
@@ -55,12 +55,12 @@ abstract class AbstractAdapter implements AdapterInterface
      *
      * @return \PHPExif\Contracts\MapperInterface
      */
-    public function getMapper() : MapperInterface
+    public function getMapper(): MapperInterface
     {
         if (null === $this->mapper) {
             // lazy load one
             /** @var MapperInterface */
-            $mapper = new $this->mapperClass;
+            $mapper = new $this->mapperClass();
 
             $this->setMapper($mapper);
         }
@@ -74,7 +74,7 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param \PHPExif\Contracts\HydratorInterface $hydrator
      * @return \PHPExif\Contracts\AdapterInterface
      */
-    public function setHydrator(HydratorInterface $hydrator) : AdapterInterface
+    public function setHydrator(HydratorInterface $hydrator): AdapterInterface
     {
         $this->hydrator = $hydrator;
 
@@ -86,12 +86,12 @@ abstract class AbstractAdapter implements AdapterInterface
      *
      * @return \PHPExif\Contracts\HydratorInterface
      */
-    public function getHydrator() : HydratorInterface
+    public function getHydrator(): HydratorInterface
     {
         if (null === $this->hydrator) {
             // lazy load one
             /** @var HydratorInterface */
-            $hydrator = new $this->hydratorClass;
+            $hydrator = new $this->hydratorClass();
 
             $this->setHydrator($hydrator);
         }
@@ -105,7 +105,7 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param array $options
      * @return \PHPExif\Contracts\AdapterInterface
      */
-    public function setOptions(array $options) : AdapterInterface
+    public function setOptions(array $options): AdapterInterface
     {
         $hydrator = $this->getHydrator();
         $hydrator->hydrate($this, $options);
@@ -122,7 +122,7 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     // @codeCoverageIgnoreStart
     // this is fine because we use it directly in our tests for Exiftool and Native
-    public function convertToUTF8(array|string $data) : array|string
+    public function convertToUTF8(array|string $data): array|string
     {
         if (is_array($data)) {
             /** @var array|string|null $v */

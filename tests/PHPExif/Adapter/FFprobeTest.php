@@ -2,26 +2,23 @@
 
 use PHPExif\Adapter\FFprobe;
 use PHPExif\Exif;
+use PHPExif\Reader\PhpExifReaderException;
 
-/**
- * @covers \PHPExif\Adapter\Native::<!public>
- */
 class FFprobeTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var \PHPExif\Adapter\FFprobe
+     * @var FFprobe
      */
-    protected $adapter;
+    protected FFprobe $adapter;
 
     public function setUp(): void
     {
-        $this->adapter = new \PHPExif\Adapter\FFprobe();
+        $this->adapter = new FFprobe();
     }
 
 
     /**
      * @group ffprobe
-     * @covers \PHPExif\Adapter\FFprobe::getToolPath
      */
     public function testGetToolPathFromProperty()
     {
@@ -35,7 +32,6 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group ffprobe
-     * @covers \PHPExif\Adapter\FFprobe::setToolPath
      */
     public function testSetToolPathInProperty()
     {
@@ -50,7 +46,6 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group ffprobe
-     * @covers \PHPExif\Adapter\FFprobe::setToolPath
      */
     public function testSetToolPathThrowsException()
     {
@@ -60,7 +55,6 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group ffprobe
-     * @covers \PHPExif\Adapter\FFprobe::getToolPath
      */
     public function testGetToolPathLazyLoadsPath()
     {
@@ -69,7 +63,6 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group ffprobe
-     * @covers \PHPExif\Adapter\FFprobe::getExifFromFile
      */
     public function testGetExifFromFileHasData()
     {
@@ -88,12 +81,11 @@ class FFprobeTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group ffprobe
-     * @covers \PHPExif\Adapter\FFprobe::getExifFromFile
      */
     public function testErrorImageUsed()
     {
         $file = PHPEXIF_TEST_ROOT . '/files/morning_glory_pool_500.jpg';
-        $this->expectException(RuntimeException::class);
+        $this->expectException(PhpExifReaderException::class);
         $this->adapter->getExifFromFile($file);
     }
 

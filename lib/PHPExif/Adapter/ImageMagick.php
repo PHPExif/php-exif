@@ -21,7 +21,7 @@ use function Safe\mime_content_type;
  */
 class ImageMagick extends AbstractAdapter
 {
-    const TOOL_NAME = 'imagick';
+    public const TOOL_NAME = 'imagick';
 
     protected string $mapperClass = MapperImageMagick::class;
 
@@ -49,7 +49,7 @@ class ImageMagick extends AbstractAdapter
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function getExifFromFile(string $file) : Exif
+    public function getExifFromFile(string $file): Exif
     {
         /* Create the object */
         $im = new Imagick($file);
@@ -98,7 +98,7 @@ class ImageMagick extends AbstractAdapter
      * @param string $profile Raw IPTC data
      * @return array
      */
-    public function getIptcData(string $profile) : array
+    public function getIptcData(string $profile): array
     {
         $arrData = [];
         try {

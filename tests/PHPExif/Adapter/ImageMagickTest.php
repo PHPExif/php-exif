@@ -3,15 +3,12 @@
 use PHPExif\Adapter\ImageMagick;
 use PHPExif\Exif;
 
-/**
- * @covers ImageMagick::<!public>
- */
 class ImageMagickTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ImageMagick
      */
-    protected $adapter;
+    protected ImageMagick $adapter;
 
     public function setUp(): void
     {
@@ -20,7 +17,6 @@ class ImageMagickTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group ImageMagick
-     * @covers ImageMagick::getExifFromFile
      */
     public function testGetExifFromFile()
     {
@@ -33,7 +29,6 @@ class ImageMagickTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group ImageMagick
-     * @covers ImageMagick::getIptcData
      */
     public function testGetEmptyIptcData()
     {

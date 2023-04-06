@@ -3,16 +3,13 @@
 use PHPExif\Contracts\MapperInterface;
 use PhpExif\Mapper\Exiftool;
 
-/**
- * @covers Exiftool::<!public>
- */
 class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 {
     protected $mapper;
 
     public function setUp(): void
     {
-        $this->mapper = new Exiftool;
+        $this->mapper = new Exiftool();
     }
 
     /**
@@ -25,7 +22,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataIgnoresFieldIfItDoesntExist()
     {
@@ -37,7 +33,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataMapsFieldsCorrectly()
     {
@@ -115,7 +110,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsAperture()
     {
@@ -130,7 +124,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsFocusDistance()
     {
@@ -145,7 +138,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsCreationDate()
     {
@@ -165,7 +157,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsCreationDateWithTimeZone()
     {
@@ -206,7 +197,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsCreationDateWithTimeZone2()
     {
@@ -235,7 +225,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresIncorrectCreationDate()
     {
@@ -250,7 +239,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresIncorrectCreationDate2()
     {
@@ -265,7 +253,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresIncorrectTimeZone()
     {
@@ -286,7 +273,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsExposureTime()
     {
@@ -308,7 +294,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsFocalLength()
     {
@@ -323,7 +308,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsGPSData()
     {
@@ -348,7 +332,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataIncorrectlyFormatedGPSData()
     {
@@ -367,7 +350,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsNumericGPSData()
     {
@@ -391,7 +373,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataOnlyLatitude()
     {
@@ -407,7 +388,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresEmptyGPSData()
     {
@@ -425,7 +405,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresIncorrectImageDirection()
     {
@@ -440,7 +419,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectImageDirection()
     {
@@ -455,7 +433,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::setNumeric
      */
     public function testSetNumericInProperty()
     {
@@ -505,7 +482,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyAltitude()
     {
@@ -521,7 +497,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyNegativeAltitude()
     {
@@ -537,7 +512,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyIgnoresIncorrectAltitude()
     {
@@ -552,7 +526,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyFormatsQuicktimeGPSData()
     {
@@ -575,7 +548,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyQuicktimeAltitude()
     {
@@ -591,7 +563,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyHeightVideo()
     {
@@ -636,7 +607,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyWidthVideo()
     {
@@ -680,7 +650,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyIsoFormats()
     {
@@ -701,7 +670,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyLensData()
     {
@@ -731,7 +699,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyLensData2()
     {
@@ -749,7 +716,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyKeywords()
     {
@@ -767,7 +733,6 @@ class ExiftoolMapperTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group mapper
-     * @covers Exiftool::mapRawData
      */
     public function testMapRawDataCorrectlyKeywordsAndSubject()
     {

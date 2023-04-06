@@ -18,57 +18,57 @@ use function Safe\preg_replace;
  */
 class Native extends AbstractMapper
 {
-    const APERTUREFNUMBER  = 'ApertureFNumber';
-    const ARTIST           = 'Artist';
-    const CAPTION          = 'caption';
-    const COLORSPACE       = 'ColorSpace';
-    const COPYRIGHT        = 'copyright';
-    const DATETIMEORIGINAL = 'DateTimeOriginal';
-    const CREDIT           = 'credit';
-    const EXPOSURETIME     = 'ExposureTime';
-    const FILESIZE         = 'FileSize';
-    const FILENAME         = 'FileName';
-    const FOCALLENGTH      = 'FocalLength';
-    const FOCUSDISTANCE    = 'FocusDistance';
-    const HEADLINE         = 'headline';
-    const HEIGHT           = 'Height';
-    const ISOSPEEDRATINGS  = 'ISOSpeedRatings';
-    const JOBTITLE         = 'jobtitle';
-    const KEYWORDS         = 'keywords';
-    const MIMETYPE         = 'MimeType';
-    const MODEL            = 'Model';
-    const ORIENTATION      = 'Orientation';
-    const SOFTWARE         = 'Software';
-    const SOURCE           = 'source';
-    const TITLE            = 'title';
-    const WIDTH            = 'Width';
-    const XRESOLUTION      = 'XResolution';
-    const YRESOLUTION      = 'YResolution';
-    const GPSLATITUDE      = 'GPSLatitude';
-    const GPSLONGITUDE     = 'GPSLongitude';
-    const GPSALTITUDE      = 'GPSAltitude';
-    const IMGDIRECTION     = 'GPSImgDirection';
-    const MAKE             = 'Make';
-    const LENS             = 'LensInfo';
-    const LENS_LR          = 'UndefinedTag:0xA434';
-    const LENS_TYPE        = 'LensType';
-    const DESCRIPTION      = 'ImageDescription';
-    const SUBJECT          = 'subject';
-    const FRAMERATE        = 'framerate';
-    const DURATION         = 'duration';
-    const CITY             = 'city';
-    const SUBLOCATION      = 'sublocation';
-    const STATE            = 'state';
-    const COUNTRY          = 'country';
+    public const APERTUREFNUMBER  = 'ApertureFNumber';
+    public const ARTIST           = 'Artist';
+    public const CAPTION          = 'caption';
+    public const COLORSPACE       = 'ColorSpace';
+    public const COPYRIGHT        = 'copyright';
+    public const DATETIMEORIGINAL = 'DateTimeOriginal';
+    public const CREDIT           = 'credit';
+    public const EXPOSURETIME     = 'ExposureTime';
+    public const FILESIZE         = 'FileSize';
+    public const FILENAME         = 'FileName';
+    public const FOCALLENGTH      = 'FocalLength';
+    public const FOCUSDISTANCE    = 'FocusDistance';
+    public const HEADLINE         = 'headline';
+    public const HEIGHT           = 'Height';
+    public const ISOSPEEDRATINGS  = 'ISOSpeedRatings';
+    public const JOBTITLE         = 'jobtitle';
+    public const KEYWORDS         = 'keywords';
+    public const MIMETYPE         = 'MimeType';
+    public const MODEL            = 'Model';
+    public const ORIENTATION      = 'Orientation';
+    public const SOFTWARE         = 'Software';
+    public const SOURCE           = 'source';
+    public const TITLE            = 'title';
+    public const WIDTH            = 'Width';
+    public const XRESOLUTION      = 'XResolution';
+    public const YRESOLUTION      = 'YResolution';
+    public const GPSLATITUDE      = 'GPSLatitude';
+    public const GPSLONGITUDE     = 'GPSLongitude';
+    public const GPSALTITUDE      = 'GPSAltitude';
+    public const IMGDIRECTION     = 'GPSImgDirection';
+    public const MAKE             = 'Make';
+    public const LENS             = 'LensInfo';
+    public const LENS_LR          = 'UndefinedTag:0xA434';
+    public const LENS_TYPE        = 'LensType';
+    public const DESCRIPTION      = 'ImageDescription';
+    public const SUBJECT          = 'subject';
+    public const FRAMERATE        = 'framerate';
+    public const DURATION         = 'duration';
+    public const CITY             = 'city';
+    public const SUBLOCATION      = 'sublocation';
+    public const STATE            = 'state';
+    public const COUNTRY          = 'country';
 
-    const SECTION_FILE      = 'FILE';
-    const SECTION_COMPUTED  = 'COMPUTED';
-    const SECTION_IFD0      = 'IFD0';
-    const SECTION_THUMBNAIL = 'THUMBNAIL';
-    const SECTION_COMMENT   = 'COMMENT';
-    const SECTION_EXIF      = 'EXIF';
-    const SECTION_ALL       = 'ANY_TAG';
-    const SECTION_IPTC      = 'IPTC';
+    public const SECTION_FILE      = 'FILE';
+    public const SECTION_COMPUTED  = 'COMPUTED';
+    public const SECTION_IFD0      = 'IFD0';
+    public const SECTION_THUMBNAIL = 'THUMBNAIL';
+    public const SECTION_COMMENT   = 'COMMENT';
+    public const SECTION_EXIF      = 'EXIF';
+    public const SECTION_ALL       = 'ANY_TAG';
+    public const SECTION_IPTC      = 'IPTC';
 
     /**
      * A list of section names
@@ -145,7 +145,7 @@ class Native extends AbstractMapper
      * @param array $data
      * @return array
      */
-    public function mapRawData(array $data) : array
+    public function mapRawData(array $data): array
     {
         $mappedData = array();
 
@@ -264,7 +264,7 @@ class Native extends AbstractMapper
                         continue 2;
                     }
                     break;
-                // Merge sources of keywords
+                    // Merge sources of keywords
                 case self::KEYWORDS:
                 case self::SUBJECT:
                     $xval = is_array($value) ? $value : [$value];
@@ -307,7 +307,7 @@ class Native extends AbstractMapper
      * @param string $field
      * @return bool
      */
-    protected function isSection(string $field) : bool
+    protected function isSection(string $field): bool
     {
         return (in_array($field, $this->sections, true));
     }
@@ -320,7 +320,7 @@ class Native extends AbstractMapper
      * @param  string  &$field
      * @return bool
      */
-    protected function isFieldKnown(string &$field) : bool
+    protected function isFieldKnown(string &$field): bool
     {
         $lcfField = lcfirst($field);
         if (array_key_exists($lcfField, $this->map)) {
@@ -346,7 +346,7 @@ class Native extends AbstractMapper
      * @param string $ref
      * @return float|false
      */
-    protected function extractGPSCoordinate(array $coordinate, string $ref) : float|false
+    protected function extractGPSCoordinate(array $coordinate, string $ref): float|false
     {
         $degrees = count($coordinate) > 0 ? $this->normalizeComponent($coordinate[0]) : 0;
         $minutes = count($coordinate) > 1 ? $this->normalizeComponent($coordinate[1]) : 0;
@@ -364,7 +364,7 @@ class Native extends AbstractMapper
      * @param string $rational
      * @return float|false
      */
-    protected function normalizeComponent(string $rational) : float|false
+    protected function normalizeComponent(string $rational): float|false
     {
         $parts = explode('/', $rational, 2);
         if (count($parts) === 1) {

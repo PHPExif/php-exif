@@ -21,20 +21,20 @@ use function Safe\iptcparse;
  */
 class Native extends AbstractAdapter
 {
-    const INCLUDE_THUMBNAIL = true;
-    const NO_THUMBNAIL      = false;
+    public const INCLUDE_THUMBNAIL = true;
+    public const NO_THUMBNAIL      = false;
 
-    const SECTIONS_AS_ARRAYS    = true;
-    const SECTIONS_FLAT         = false;
+    public const SECTIONS_AS_ARRAYS    = true;
+    public const SECTIONS_FLAT         = false;
 
-    const SECTION_FILE      = 'FILE';
-    const SECTION_COMPUTED  = 'COMPUTED';
-    const SECTION_IFD0      = 'IFD0';
-    const SECTION_THUMBNAIL = 'THUMBNAIL';
-    const SECTION_COMMENT   = 'COMMENT';
-    const SECTION_EXIF      = 'EXIF';
-    const SECTION_ALL       = 'ANY_TAG';
-    const SECTION_IPTC      = 'IPTC';
+    public const SECTION_FILE      = 'FILE';
+    public const SECTION_COMPUTED  = 'COMPUTED';
+    public const SECTION_IFD0      = 'IFD0';
+    public const SECTION_THUMBNAIL = 'THUMBNAIL';
+    public const SECTION_COMMENT   = 'COMMENT';
+    public const SECTION_EXIF      = 'EXIF';
+    public const SECTION_ALL       = 'ANY_TAG';
+    public const SECTION_IPTC      = 'IPTC';
 
     /**
      * List of EXIF sections
@@ -79,7 +79,7 @@ class Native extends AbstractAdapter
      *
      * @return array
      */
-    public function getRequiredSections() : array
+    public function getRequiredSections(): array
     {
         return $this->requiredSections;
     }
@@ -90,7 +90,7 @@ class Native extends AbstractAdapter
      * @param array $sections List of EXIF sections
      * @return \PHPExif\Adapter\Native Current instance for chaining
      */
-    public function setRequiredSections(array $sections) : Native
+    public function setRequiredSections(array $sections): Native
     {
         $this->requiredSections = $sections;
 
@@ -103,7 +103,7 @@ class Native extends AbstractAdapter
      * @param string $section
      * @return \PHPExif\Adapter\Native Current instance for chaining
      */
-    public function addRequiredSection(string $section) : Native
+    public function addRequiredSection(string $section): Native
     {
         if (!in_array($section, $this->requiredSections, true)) {
             array_push($this->requiredSections, $section);
@@ -118,7 +118,7 @@ class Native extends AbstractAdapter
      * @param boolean $value
      * @return \PHPExif\Adapter\Native Current instance for chaining
      */
-    public function setIncludeThumbnail(bool $value) : Native
+    public function setIncludeThumbnail(bool $value): Native
     {
         $this->includeThumbnail = $value;
 
@@ -130,7 +130,7 @@ class Native extends AbstractAdapter
      *
      * @return boolean
      */
-    public function getIncludeThumbnail() : bool
+    public function getIncludeThumbnail(): bool
     {
         return $this->includeThumbnail;
     }
@@ -141,7 +141,7 @@ class Native extends AbstractAdapter
      * @param boolean $value
      * @return \PHPExif\Adapter\Native Current instance for chaining
      */
-    public function setSectionsAsArrays(bool $value) : Native
+    public function setSectionsAsArrays(bool $value): Native
     {
         $this->sectionsAsArrays = $value;
 
@@ -153,7 +153,7 @@ class Native extends AbstractAdapter
      *
      * @return boolean
      */
-    public function getSectionsAsArrays() : bool
+    public function getSectionsAsArrays(): bool
     {
         return $this->sectionsAsArrays;
     }
@@ -164,7 +164,7 @@ class Native extends AbstractAdapter
      * @param string $file
      * @return \PHPExif\Exif Instance of Exif object with data
      */
-    public function getExifFromFile(string $file) : Exif
+    public function getExifFromFile(string $file): Exif
     {
         $mimeType = mime_content_type($file);
 
@@ -245,7 +245,7 @@ class Native extends AbstractAdapter
      * @param string $file The file to read the IPTC data from
      * @return array
      */
-    public function getIptcData(string $file) : array
+    public function getIptcData(string $file): array
     {
         getimagesize($file, $info);
         $arrData = array();

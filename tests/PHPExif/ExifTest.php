@@ -1,9 +1,7 @@
 <?php
 
 use PHPExif\Exif;
-/**
- * @covers Exif::<!public>
- */
+
 class ExifTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -21,7 +19,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::__construct
      */
     public function testConstructorCallsSetData()
     {
@@ -47,7 +44,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getRawData
      */
     public function testGetRawData()
     {
@@ -59,7 +55,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::setRawData
      */
     public function testSetRawData()
     {
@@ -75,7 +70,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getData
      */
     public function testGetData()
     {
@@ -87,7 +81,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::setData
      */
     public function testSetData()
     {
@@ -104,49 +97,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
     /**
      *
      * @dataProvider providerUndefinedPropertiesReturnFalse
-     * @covers Exif::getAperture
-     * @covers Exif::getIso
-     * @covers Exif::getExposure
-     * @covers Exif::getExposureMilliseconds
-     * @covers Exif::getFocusDistance
-     * @covers Exif::getWidth
-     * @covers Exif::getHeight
-     * @covers Exif::getTitle
-     * @covers Exif::getCaption
-     * @covers Exif::getCopyright
-     * @covers Exif::getKeywords
-     * @covers Exif::getCamera
-     * @covers Exif::getHorizontalResolution
-     * @covers Exif::getVerticalResolution
-     * @covers Exif::getSoftware
-     * @covers Exif::getFocalLength
-     * @covers Exif::getCreationDate
-     * @covers Exif::getAuthor
-     * @covers Exif::getCredit
-     * @covers Exif::getSource
-     * @covers Exif::getJobtitle
-     * @covers Exif::getMimeType
-     * @covers Exif::getFileSize
-     * @covers Exif::getFileName
-     * @covers Exif::getHeadline
-     * @covers Exif::getColorSpace
-     * @covers Exif::getOrientation
-     * @covers Exif::getGPS
-     * @covers Exif::getDescription
-     * @covers Exif::getMake
-     * @covers Exif::getAltitude
-     * @covers Exif::getLatitude
-     * @covers Exif::getLongitude
-     * @covers Exif::getImgDirection
-     * @covers Exif::getLens
-     * @covers Exif::getContentIdentifier
-     * @covers Exif::getFramerate
-     * @covers Exif::getDuration
-     * @covers Exif::getMicroVideoOffset
-     * @covers Exif::getCity
-     * @covers Exif::getSublocation
-     * @covers Exif::getState
-     * @covers Exif::getCountry
      * @param string $accessor
      */
     public function testUndefinedPropertiesReturnFalse($accessor)
@@ -212,7 +162,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getAperture
      */
     public function testGetAperture()
     {
@@ -225,7 +174,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getIso
      */
     public function testGetIso()
     {
@@ -237,7 +185,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getExposure
      */
     public function testGetExposure()
     {
@@ -249,7 +196,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getExposureMilliseconds
      */
     public function testGetExposureMilliseconds()
     {
@@ -270,7 +216,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getFocusDistance
      */
     public function testGetFocusDistance()
     {
@@ -282,7 +227,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getWidth
      */
     public function testGetWidth()
     {
@@ -294,7 +238,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getHeight
      */
     public function testGetHeight()
     {
@@ -306,7 +249,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getTitle
      */
     public function testGetTitle()
     {
@@ -318,7 +260,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getCaption
      */
     public function testGetCaption()
     {
@@ -330,7 +271,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getCopyright
      */
     public function testGetCopyright()
     {
@@ -342,7 +282,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getKeywords
      */
     public function testGetKeywords()
     {
@@ -354,7 +293,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getCamera
      */
     public function testGetCamera()
     {
@@ -366,7 +304,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getHorizontalResolution
      */
     public function testGetHorizontalResolution()
     {
@@ -378,7 +315,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getVerticalResolution
      */
     public function testGetVerticalResolution()
     {
@@ -390,7 +326,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getSoftware
      */
     public function testGetSoftware()
     {
@@ -402,7 +337,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getFocalLength
      */
     public function testGetFocalLength()
     {
@@ -414,7 +348,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getCreationDate
      */
     public function testGetCreationDate()
     {
@@ -427,7 +360,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getAuthor
      */
     public function testGetAuthor()
     {
@@ -439,7 +371,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getHeadline
      */
     public function testGetHeadline()
     {
@@ -451,7 +382,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getCredit
      */
     public function testGetCredit()
     {
@@ -463,7 +393,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getSource
      */
     public function testGetSource()
     {
@@ -475,7 +404,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getJobtitle
      */
     public function testGetJobtitle()
     {
@@ -487,7 +415,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getColorSpace
      */
     public function testGetColorSpace()
     {
@@ -499,7 +426,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getMimeType
      */
     public function testGetMimeType()
     {
@@ -511,7 +437,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getFileSize
      */
     public function testGetFileSize()
     {
@@ -523,7 +448,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getFileName
      */
     public function testGetFileName()
     {
@@ -535,7 +459,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getOrientation
      */
     public function testGetOrientation()
     {
@@ -547,7 +470,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getGPS
      */
     public function testGetGPS()
     {
@@ -559,7 +481,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getDescription
      */
     public function testGetDescription()
     {
@@ -571,7 +492,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getMake
      */
     public function testGetMake()
     {
@@ -583,7 +503,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getAltitude
      */
     public function testGetAltitude()
     {
@@ -595,7 +514,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getLatitude
      */
     public function testGetLatitude()
     {
@@ -607,7 +525,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getLongitude
      */
     public function testGetLongitude()
     {
@@ -619,7 +536,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getImgDirection
      */
     public function testGetImgDirection()
     {
@@ -631,7 +547,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getLens
      */
     public function testGetLens()
     {
@@ -643,7 +558,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getContentIdentifier
      */
     public function testGetContentIdentifier()
     {
@@ -655,7 +569,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getFramerate
      */
     public function testGetFramerate()
     {
@@ -667,7 +580,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getDuration
      */
     public function testGetDuration()
     {
@@ -679,7 +591,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getMicroVideoOffset
      */
     public function testGetMicroVideoOffset()
     {
@@ -691,7 +602,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getCity
      */
     public function testGetCity()
     {
@@ -703,7 +613,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getSublocation
      */
     public function testGetSublocation()
     {
@@ -715,7 +624,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getState
      */
     public function testGetState()
     {
@@ -727,7 +635,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::getCountry
      */
     public function testGetCountry()
     {
@@ -739,48 +646,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group exif
-     * @covers Exif::setAperture
-     * @covers Exif::setIso
-     * @covers Exif::setExposure
-     * @covers Exif::setFocusDistance
-     * @covers Exif::setWidth
-     * @covers Exif::setHeight
-     * @covers Exif::setTitle
-     * @covers Exif::setCaption
-     * @covers Exif::setCopyright
-     * @covers Exif::setKeywords
-     * @covers Exif::setCamera
-     * @covers Exif::setHorizontalResolution
-     * @covers Exif::setVerticalResolution
-     * @covers Exif::setSoftware
-     * @covers Exif::setFocalLength
-     * @covers Exif::setCreationDate
-     * @covers Exif::setAuthor
-     * @covers Exif::setCredit
-     * @covers Exif::setSource
-     * @covers Exif::setJobtitle
-     * @covers Exif::setMimeType
-     * @covers Exif::setFileSize
-     * @covers Exif::setFileName
-     * @covers Exif::setHeadline
-     * @covers Exif::setColorSpace
-     * @covers Exif::setOrientation
-     * @covers Exif::setGPS
-     * @covers Exif::setDescription
-     * @covers Exif::setMake
-     * @covers Exif::setAltitude
-     * @covers Exif::setLongitude
-     * @covers Exif::setLatitude
-     * @covers Exif::setImgDirection
-     * @covers Exif::setLens
-     * @covers Exif::setContentIdentifier
-     * @covers Exif::setFramerate
-     * @covers Exif::setDuration
-     * @covers Exif::setMicroVideoOffset
-     * @covers Exif::setCity
-     * @covers Exif::setSublocation
-     * @covers Exif::setState
-     * @covers Exif::setCountry
      */
     public function testMutatorMethodsSetInProperty()
     {
@@ -825,6 +690,7 @@ class ExifTest extends \PHPUnit\Framework\TestCase
                     break;
                 case 'focalDistance':
                     $setter = 'setFocusDistance';
+                    // no break
                 default:
                     $this->exif->$setter($expected);
                     $propertyValue = $reflProp->getValue($this->exif);
@@ -838,29 +704,6 @@ class ExifTest extends \PHPUnit\Framework\TestCase
      * Test that the values returned by different adapters are equal
      *
      * @group consistency
-     * @covers Exif::getAperture
-     * @covers Exif::getIso
-     * @covers Exif::getExposure
-     * @covers Exif::getExposureMilliseconds
-     * @covers Exif::getFocusDistance
-     * @covers Exif::getWidth
-     * @covers Exif::getHeight
-     * @covers Exif::getTitle
-     * @covers Exif::getCaption
-     * @covers Exif::getCopyright
-     * @covers Exif::getKeywords
-     * @covers Exif::getCamera
-     * @covers Exif::getHorizontalResolution
-     * @covers Exif::getVerticalResolution
-     * @covers Exif::getSoftware
-     * @covers Exif::getFocalLength
-     * @covers Exif::getCreationDate
-     * @covers Exif::getAuthor
-     * @covers Exif::getCredit
-     * @covers Exif::getSource
-     * @covers Exif::getJobtitle
-     * @covers Exif::getMimeType
-     * @covers Exif::getFileSize
      */
     public function testAdapterConsistency()
     {

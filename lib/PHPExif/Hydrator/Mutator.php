@@ -22,7 +22,7 @@ class Mutator implements HydratorInterface
      * @param array $data
      * @return void
      */
-    public function hydrate($object, array $data) : void
+    public function hydrate($object, array $data): void
     {
         foreach ($data as $property => $value) {
             if ($value !== null && $value !== '') {
@@ -41,7 +41,7 @@ class Mutator implements HydratorInterface
      * @param string $property  The property to determine the mutator for
      * @return string   The name of the mutator method
      */
-    protected function determineMutator(string $property) : string
+    protected function determineMutator(string $property): string
     {
         $method = 'set' . ucfirst($property);
         return $method;

@@ -19,48 +19,48 @@ use function Safe\preg_split;
  */
 class ImageMagick extends AbstractMapper
 {
-    const APERTURE                 = 'exif:FNumber';
-    const ARTIST                   = 'exif:Artist';
-    const COLORSPACE               = 'exif:ColorSpace';
-    const COPYRIGHT                = 'exif:Copyright';
-    const CREATION_DATE            = 'date:create';
-    const DATETIMEORIGINAL         = 'exif:DateTimeOriginal';
-    const DESCRIPTION              = 'exif:ImageDescription';
-    const EXPOSURETIME             = 'exif:ExposureTime';
-    const FILESIZE                 = 'filesize';
-    const FILENAME                 = 'filename';
-    const FOCALLENGTH              = 'exif:FocalLength';
-    const GPSLATITUDE              = 'exif:GPSLatitude';
-    const GPSLONGITUDE             = 'exif:GPSLongitude';
-    const GPSALTITUDE              = 'exif:GPSAltitude';
-    const IMAGEHEIGHT              = 'exif:PixelYDimension';
-    const IMAGEHEIGHT_PNG          = 'png:IHDR.width,height';
-    const HEIGHT                   = 'height';
-    const IMAGEWIDTH               = 'exif:PixelXDimension';
-    const IMAGEWIDTH_PNG           = 'png:IHDR.width,height';
-    const WIDTH                    = 'width';
-    const IMGDIRECTION             = 'exif:GPSImgDirection';
-    const ISO                      = 'exif:PhotographicSensitivity';
-    const LENS                     = 'exif:LensModel';
-    const MAKE                     = 'exif:Make';
-    const MIMETYPE                 = 'MimeType';
-    const MODEL                    = 'exif:Model';
-    const ORIENTATION              = 'exif:Orientation';
-    const SOFTWARE                 = 'exif:Software';
-    const XRESOLUTION              = 'exif:XResolution';
-    const YRESOLUTION              = 'exif:YResolution';
-    const TITLE                    = 'iptc:title';
-    const KEYWORDS                 = 'iptc:keywords';
-    const COPYRIGHT_IPTC           = 'iptc:copyright';
-    const CAPTION                  = 'iptc:caption';
-    const HEADLINE                 = 'iptc:headline';
-    const CREDIT                   = 'iptc:credit';
-    const SOURCE                   = 'iptc:source';
-    const JOBTITLE                 = 'iptc:jobtitle';
-    const CITY                     = 'iptc:city';
-    const SUBLOCATION              = 'iptc:sublocation';
-    const STATE                    = 'iptc:state';
-    const COUNTRY                  = 'iptc:country';
+    public const APERTURE                 = 'exif:FNumber';
+    public const ARTIST                   = 'exif:Artist';
+    public const COLORSPACE               = 'exif:ColorSpace';
+    public const COPYRIGHT                = 'exif:Copyright';
+    public const CREATION_DATE            = 'date:create';
+    public const DATETIMEORIGINAL         = 'exif:DateTimeOriginal';
+    public const DESCRIPTION              = 'exif:ImageDescription';
+    public const EXPOSURETIME             = 'exif:ExposureTime';
+    public const FILESIZE                 = 'filesize';
+    public const FILENAME                 = 'filename';
+    public const FOCALLENGTH              = 'exif:FocalLength';
+    public const GPSLATITUDE              = 'exif:GPSLatitude';
+    public const GPSLONGITUDE             = 'exif:GPSLongitude';
+    public const GPSALTITUDE              = 'exif:GPSAltitude';
+    public const IMAGEHEIGHT              = 'exif:PixelYDimension';
+    public const IMAGEHEIGHT_PNG          = 'png:IHDR.width,height';
+    public const HEIGHT                   = 'height';
+    public const IMAGEWIDTH               = 'exif:PixelXDimension';
+    public const IMAGEWIDTH_PNG           = 'png:IHDR.width,height';
+    public const WIDTH                    = 'width';
+    public const IMGDIRECTION             = 'exif:GPSImgDirection';
+    public const ISO                      = 'exif:PhotographicSensitivity';
+    public const LENS                     = 'exif:LensModel';
+    public const MAKE                     = 'exif:Make';
+    public const MIMETYPE                 = 'MimeType';
+    public const MODEL                    = 'exif:Model';
+    public const ORIENTATION              = 'exif:Orientation';
+    public const SOFTWARE                 = 'exif:Software';
+    public const XRESOLUTION              = 'exif:XResolution';
+    public const YRESOLUTION              = 'exif:YResolution';
+    public const TITLE                    = 'iptc:title';
+    public const KEYWORDS                 = 'iptc:keywords';
+    public const COPYRIGHT_IPTC           = 'iptc:copyright';
+    public const CAPTION                  = 'iptc:caption';
+    public const HEADLINE                 = 'iptc:headline';
+    public const CREDIT                   = 'iptc:credit';
+    public const SOURCE                   = 'iptc:source';
+    public const JOBTITLE                 = 'iptc:jobtitle';
+    public const CITY                     = 'iptc:city';
+    public const SUBLOCATION              = 'iptc:sublocation';
+    public const STATE                    = 'iptc:state';
+    public const COUNTRY                  = 'iptc:country';
 
 
     /**
@@ -123,7 +123,7 @@ class ImageMagick extends AbstractMapper
      * @param array $data
      * @return array
      */
-    public function mapRawData(array $data) : array
+    public function mapRawData(array $data): array
     {
         $mappedData = array();
 
@@ -276,7 +276,7 @@ class ImageMagick extends AbstractMapper
      * @param string $coordinates
      * @return float|false
      */
-    protected function extractGPSCoordinates(string $coordinates) : float|false
+    protected function extractGPSCoordinates(string $coordinates): float|false
     {
         if (is_numeric($coordinates) === true) {
             return ((float) $coordinates);
@@ -301,7 +301,7 @@ class ImageMagick extends AbstractMapper
      * @param string $rational
      * @return float|false
      */
-    protected function normalizeComponent(string $rational) : float|false
+    protected function normalizeComponent(string $rational): float|false
     {
         $parts = explode('/', $rational, 2);
         if (count($parts) === 1) {

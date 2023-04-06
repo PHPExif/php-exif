@@ -15,7 +15,7 @@ use PHPExif\Exif;
 use InvalidArgumentException;
 use FFMpeg;
 use PHPExif\Mapper\FFprobe as MapperFFprobe;
-use RuntimeException;
+use PHPExif\Reader\PhpExifReaderException;
 use Safe\Exceptions\ExecException;
 
 use function Safe\exec;
@@ -113,7 +113,7 @@ class FFprobe extends AbstractAdapter
 
         // file is not a video -> wrong adapter
         if (strpos($mimeType, 'video') !== 0) {
-            throw new RuntimeException('Could not read the video');
+            throw new PhpExifReaderException('Could not read the video');
         }
 
         $ffprobe = FFMpeg\FFProbe::create(array(

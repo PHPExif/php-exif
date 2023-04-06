@@ -22,7 +22,7 @@ abstract class AbstractMapper implements MapperInterface
      * @param mixed $data
      * @return mixed
      */
-    public function trim(mixed $data) : mixed
+    public function trim(mixed $data): mixed
     {
         if (is_array($data)) {
             /** @var mixed $v */

@@ -4,9 +4,6 @@ use PHPExif\Adapter\AbstractAdapter;
 use PHPExif\Adapter\Exiftool;
 use PHPExif\Adapter\Native;
 
-/**
- * @covers \PHPExif\Adapter\AbstractAdapter::<!public>
- */
 class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 {
     /**
@@ -21,7 +18,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::setOptions
      */
     public function testSetOptionsReturnsCurrentInstance()
     {
@@ -31,7 +27,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::setOptions
      */
     public function testSetOptionsCorrectlySetsProperties()
     {
@@ -51,7 +46,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::setOptions
      */
     public function testSetOptionsIgnoresPropertiesWithoutSetters()
     {
@@ -70,7 +64,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::__construct
      */
     public function testConstructorSetsOptions()
     {
@@ -90,7 +83,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::setMapper
      */
     public function testSetMapperReturnsCurrentInstance()
     {
@@ -101,7 +93,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::setMapper
      */
     public function testSetMapperCorrectlySetsInProperty()
     {
@@ -115,7 +106,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::getMapper
      */
     public function testGetMapperCorrectlyReturnsFromProperty()
     {
@@ -128,7 +118,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::getMapper
      */
     public function testGetMapperLazyLoadsMapperWhenNotPresent()
     {
@@ -146,7 +135,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::getMapper
      */
     public function testGetMapperLazyLoadingSetsInProperty()
     {
@@ -170,7 +158,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::setHydrator
      */
     public function testSetHydratorReturnsCurrentInstance()
     {
@@ -181,7 +168,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::setHydrator
      */
     public function testSetHydratorCorrectlySetsInProperty()
     {
@@ -195,7 +181,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::getHydrator
      */
     public function testGetHydratorCorrectlyReturnsFromProperty()
     {
@@ -208,7 +193,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::getHydrator
      */
     public function testGetHydratorLazyLoadsHydratorWhenNotPresent()
     {
@@ -218,7 +202,6 @@ class AbstractAdapterTest extends PHPUnit\Framework\TestCase
 
     /**
      * @group adapter
-     * @covers \PHPExif\Adapter\AbstractAdapter::getHydrator
      */
     public function testGetHydratorLazyLoadingSetsInProperty()
     {

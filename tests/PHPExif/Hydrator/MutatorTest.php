@@ -2,9 +2,6 @@
 
 use PhpExif\Hydrator\Mutator;
 
-/**
- * @covers Mutator::<!public>
- */
 class MutatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -16,7 +13,6 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group hydrator
-     * @covers Mutator::hydrate
      */
     public function testHydrateCallsDetermineMutator()
     {
@@ -42,7 +38,6 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @group hydrator
-     * @covers Mutator::hydrate
      */
     public function testHydrateCallsMutatorsOnObject()
     {
@@ -61,13 +56,12 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
             ->with($this->equalTo($input['bar']));
 
         // do the test
-        $hydrator = new Mutator;
+        $hydrator = new Mutator();
         $hydrator->hydrate($mock, $input);
     }
 
     /**
      * @group hydrator
-     * @covers Mutator::hydrate
      */
     public function testHydrateCallsEmptyValues()
     {
@@ -88,7 +82,7 @@ class MutatorTest extends \PHPUnit\Framework\TestCase
             ->method('setBar');
 
         // do the test
-        $hydrator = new Mutator;
+        $hydrator = new Mutator();
         $hydrator->hydrate($mock, $input);
     }
 }
