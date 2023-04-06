@@ -18,7 +18,6 @@ use PHPExif\Enum\ReaderType;
  *
  * @category    PHPExif
  * @package     Reader
- * @
  */
 class Reader implements ReaderInterface
 {
@@ -36,7 +35,6 @@ class Reader implements ReaderInterface
      *
      * @param ReaderType $type
      * @return Reader
-     * @throws \InvalidArgumentException When given type is invalid
      */
     public static function factory(ReaderType $type): Reader
     {
@@ -55,6 +53,7 @@ class Reader implements ReaderInterface
      *
      * @param string $file
      * @return Exif Instance of Exif object with data
+     * @throws PhpExifReaderException If the EXIF data could not be read
      */
     public function read(string $file): Exif
     {
