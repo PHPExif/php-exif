@@ -53,7 +53,6 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
         unset($map[ImageMagick::HEIGHT]);
         unset($map[ImageMagick::IMAGEHEIGHT_PNG]);
         unset($map[ImageMagick::IMAGEWIDTH_PNG]);
-        unset($map[ImageMagick::CREATION_DATE]);
         unset($map[ImageMagick::COPYRIGHT_IPTC]);
 
         // create raw data
@@ -88,25 +87,6 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
     /**
      * @group mapper
      */
-    public function testMapRawDataCorrectlyFormatsCreationDate()
-    {
-        $rawData = array(
-            ImageMagick::CREATION_DATE => '2015:04:01 12:11:09',
-        );
-
-        $mapped = $this->mapper->mapRawData($rawData);
-
-        $result = reset($mapped);
-        $this->assertInstanceOf('\\DateTime', $result);
-        $this->assertEquals(
-            reset($rawData),
-            $result->format('Y:m:d H:i:s')
-        );
-    }
-
-    /**
-     * @group mapper
-     */
     public function testMapRawDataCorrectlyFormatsDateTimeOriginal()
     {
         $rawData = array(
@@ -120,48 +100,6 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             reset($rawData),
             $result->format('Y:m:d H:i:s')
-        );
-    }
-
-    /**
-     * @group mapper
-     */
-    public function testMapRawDataCorrectlyFormatsCreationDateAndDateTimeOriginal1()
-    {
-        $rawData = array(
-            ImageMagick::CREATION_DATE => '2016:04:01 12:11:09',
-            ImageMagick::DATETIMEORIGINAL => '2015:04:01 12:11:09',
-        );
-
-        $mapped = $this->mapper->mapRawData($rawData);
-
-        $result = reset($mapped);
-        $expected = new \DateTime('2015:04:01 12:11:09');
-        $this->assertInstanceOf('\\DateTime', $result);
-        $this->assertEquals(
-            $expected,
-            $result
-        );
-    }
-
-    /**
-     * @group mapper
-     */
-    public function testMapRawDataCorrectlyFormatsCreationDateAndDateTimeOriginal2()
-    {
-        $rawData = array(
-            ImageMagick::DATETIMEORIGINAL => '2015:04:01 12:11:09',
-            ImageMagick::CREATION_DATE => '2016:04:01 12:11:09',
-        );
-
-        $mapped = $this->mapper->mapRawData($rawData);
-
-        $result = reset($mapped);
-        $expected = new \DateTime('2015:04:01 12:11:09');
-        $this->assertInstanceOf('\\DateTime', $result);
-        $this->assertEquals(
-            $expected,
-            $result
         );
     }
 
@@ -232,21 +170,6 @@ class ImageMagickMapperTest extends \PHPUnit\Framework\TestCase
             $result->getTimezone()->getName()
         );
     }
-
-    /**
-     * @group mapper
-     */
-    public function testMapRawDataCorrectlyIgnoresIncorrectCreationDate()
-    {
-        $rawData = array(
-            ImageMagick::CREATION_DATE => '2015:04:01',
-        );
-
-        $mapped = $this->mapper->mapRawData($rawData);
-
-        $this->assertEquals(false, reset($mapped));
-    }
-
 
     /**
      * @group mapper

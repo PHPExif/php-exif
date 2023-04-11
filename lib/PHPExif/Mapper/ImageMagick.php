@@ -23,7 +23,6 @@ class ImageMagick extends AbstractMapper
     public const ARTIST                   = 'exif:Artist';
     public const COLORSPACE               = 'exif:ColorSpace';
     public const COPYRIGHT                = 'exif:Copyright';
-    public const CREATION_DATE            = 'date:create';
     public const DATETIMEORIGINAL         = 'exif:DateTimeOriginal';
     public const DESCRIPTION              = 'exif:ImageDescription';
     public const EXPOSURETIME             = 'exif:ExposureTime';
@@ -74,7 +73,6 @@ class ImageMagick extends AbstractMapper
         self::ARTIST                   => Exif::AUTHOR,
         self::COLORSPACE               => Exif::COLORSPACE,
         self::COPYRIGHT                => Exif::COPYRIGHT,
-        self::CREATION_DATE            => Exif::CREATION_DATE,
         self::DATETIMEORIGINAL         => Exif::CREATION_DATE,
         self::DESCRIPTION              => Exif::DESCRIPTION,
         self::EXPOSURETIME             => Exif::EXPOSURE,
@@ -144,18 +142,6 @@ class ImageMagick extends AbstractMapper
                         continue 2;
                     }
                     $value = sprintf('f/%01.1f', $value);
-                    break;
-                case self::CREATION_DATE:
-                    if (!isset($mappedData[Exif::CREATION_DATE])
-                            && preg_match('/^0000[-:]00[-:]00.00:00:00/', $value) === 0) {
-                        try {
-                            $value = new DateTime($value);
-                        } catch (\Exception $e) {
-                            continue 2;
-                        }
-                    } else {
-                        continue 2;
-                    }
                     break;
                 case self::DATETIMEORIGINAL:
                     if (preg_match('/^0000[-:]00[-:]00.00:00:00/', $value) === 1) {
