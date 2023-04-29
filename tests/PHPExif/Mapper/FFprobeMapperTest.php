@@ -482,4 +482,58 @@ class FFprobeMapperTest extends \PHPUnit\Framework\TestCase
             $this->assertEquals($expected, $result);
         }
     }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     */
+    public function testMapRawDataCorrectlyKeywords()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\FFprobe::QUICKTIME_KEYWORDS => 'Keyword_1 Keyword_2',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(
+            ['Keyword_1 Keyword_2'],
+            reset($mapped)
+        );
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     */
+    public function testMapRawDataCorrectlySplitKeywords()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\FFprobe::QUICKTIME_KEYWORDS => 'Keyword_1,Keyword_2',
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(
+            ['Keyword_1', 'Keyword_2'],
+            reset($mapped)
+        );
+    }
+
+    /**
+     * @group mapper
+     * @covers \PHPExif\Mapper\FFprobe::mapRawData
+     */
+    public function testMapRawDataCorrectlyArrayKeywords()
+    {
+        $rawData = array(
+            \PHPExif\Mapper\FFprobe::QUICKTIME_KEYWORDS => array('Keyword_1', 'Keyword_2'),
+        );
+
+        $mapped = $this->mapper->mapRawData($rawData);
+
+        $this->assertEquals(
+            ['Keyword_1', 'Keyword_2'],
+            reset($mapped)
+        );
+    }
 }

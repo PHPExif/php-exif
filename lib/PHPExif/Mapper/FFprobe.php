@@ -163,6 +163,13 @@ class FFprobe extends AbstractMapper
                     $mappedData[Exif::LONGITUDE] = $location_data['longitude'];
                     $mappedData[Exif::ALTITUDE]  = $location_data['altitude'];
                     continue 2;
+                case self::QUICKTIME_KEYWORDS:
+                    if (is_string($value)) {
+                        $mappedData[Exif::KEYWORDS] = explode(",", $value);
+                    } else {
+                        $mappedData[Exif::KEYWORDS] = $value;
+                    }
+                    continue 2;
             }
 
             // set end result
