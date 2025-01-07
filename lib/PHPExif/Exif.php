@@ -817,7 +817,7 @@ class Exif
     /**
      * Returns GPS coordinates, if it exists
      *
-     * @return array|boolean
+     * @return string|boolean
      */
     public function getGPS()
     {
